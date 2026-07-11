@@ -2,8 +2,8 @@ name: Stock Report Automation
 
 on:
   schedule:
-    # 日本時間 8:30, 12:30, 19:30 に実行 (UTC換算)
-    - cron: '30 23,3,10 * * *'
+    # 日本時間 8:00, 12:00, 19:00 に実行 (UTC換算)
+    - cron: '0 23,3,10 * * *'
   workflow_dispatch:
 
 jobs:
