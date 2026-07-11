@@ -231,39 +231,109 @@ def update_stock_data(sheet):
             print(f"[yfinance例外エラー] {code}: {e}")
 
 def generate_analysis_report(sheet, timing):
-    row2 = sheet.row_values(2)
-    # V列(22列分)まで安全にパディング
-    row2 = row2 + [""] * (22 - len(row2))
+    records = sheet.get_all_values()
+    if len(records) < 2:
+        print("【警告】スプレッドシートにデータが登録されていません。")
+        return None
+        
+    stocks_data = []
     
-    code = row2[0]
-    name = row2[1]
-    avg_price = row2[3]
-    cur_price = row2[4]
-    change_pct = row2[5]
-    change_yen = row2[6]
-    volume = row2[7]
-    trading_value = row2[8]
-    prev_close = row2[9]
-    open_price = row2[10]
-    day_high = row2[11]
-    day_low = row2[12]
-    week52_high = row2[13]
-    week52_low = row2[14]
-    market_cap = row2[15]
-    per = row2[16]
-    pbr = row2[17]
-    div_yield = row2[18]
-    div_rate = row2[19]
-    roe = row2[20]
-    sector = row2[21]
+    # 2行目以降の全データをループ処理
+    for i, row in enumerate(records[1:], start=2):
+        if not row or len(row) < 1:
+            continue
+        code = row[0].strip()
+        if not code:
+            continue
+            
+        # 安全のために22列分パディング
+        row = row + [""] * (22 - len(row))
+        
+        name = row[1]
+        avg_price = row[3]
+        cur_price = row[4]
+        change_pct = row[5]
+        change_yen = row[6]
+        volume = row[7]
+        trading_value = row[8]
+        prev_close = row[9]
+        open_price = row[10]
+        day_high = row[11]
+        day_low = row[12]
+        week52_high = row[13]
+        week52_low = row[14]
+        market_cap = row[15]
+        per = row[16]
+        pbr = row[17]
+        div_yield = row[18]
+        div_rate = row[19]
+        roe = row[20]
+        sector = row[21]
+        
+        # 夜間PTS情報の取得（夜のレポートの場合のみ）
+        pts_info = ""
+        if timing == "夜":
+            pts_price = get_pts_price(code)
+            if pts_price:
+                pts_diff_str = ""
+                try:
+                    p_val = float(re.sub(r'[^\d.]', '', pts_price))
+                    c_val = float(re.sub(r'[^\d.]', '', cur_price))
+                    diff = p_val - c_val
+                    diff_pct = (diff / c_val) * 100
+                    sign = "+" if diff > 0 else ""
+                    pts_diff_str = f" (大引け比: {sign}{diff:.1f}円 / {sign}{diff_pct:.2f}%)"
+                except Exception:
+                    pass
+                pts_info = f"夜間PTS価格: {pts_price}{pts_diff_str}"
+            else:
+                pts_info = "夜間PTS価格: 取引なしまたは取得失敗"
 
-    print(f"【2】Geminiへのリクエスト準備: 銘柄={code} {name} ({timing}のレポート)")
+        stocks_data.append({
+            "code": code,
+            "name": name,
+            "avg_price": avg_price,
+            "cur_price": cur_price,
+            "change_pct": change_pct,
+            "change_yen": change_yen,
+            "volume": volume,
+            "trading_value": trading_value,
+            "prev_close": prev_close,
+            "open_price": open_price,
+            "day_high": day_high,
+            "day_low": day_low,
+            "week52_high": week52_high,
+            "week52_low": week52_low,
+            "market_cap": market_cap,
+            "per": per,
+            "pbr": pbr,
+            "div_yield": div_yield,
+            "div_rate": div_rate,
+            "roe": roe,
+            "sector": sector,
+            "pts_info": pts_info
+        })
 
-    # 1. タイミング固有の情報収集
+    # プロンプト用の保有銘柄テキストの構築
+    stocks_prompt_text = ""
+    for s in stocks_data:
+        pts_part = f"\n【PTS状況】{s['pts_info']}" if s['pts_info'] else ""
+        stocks_prompt_text += f"""
+---
+【銘柄】{s['code']} {s['name']} (業種: {s['sector']})
+【平均取得単価】{s['avg_price']}円
+【本日の値動き】現在値:{s['cur_price']}円 (前日比: {s['change_pct']} / {s['change_yen']})、始値:{s['open_price']}円、高値:{s['day_high']}円、安値:{s['day_low']}円、前日終値:{s['prev_close']}円
+【相場エネルギー】出来高:{s['volume']}株、売買代金:{s['trading_value']}万円
+【長期指標】52週高値:{s['week52_high']}円、52週安値:{s['week52_low']}円、時価総額:{s['market_cap']}億円
+【指標】PER:{s['per']}、PBR:{s['pbr']}、配当利回り:{s['div_yield']}、1株配当:{s['div_rate']}、ROE:{s['roe']}{pts_part}
+"""
+
+    print(f"【2】Geminiへの一括リクエスト準備: {len(stocks_data)}銘柄 ({timing}の総合レポート)")
+
     timing_info = ""
-    analysis_1_title = "1. 本日の値動き・テクニカル評価"
-    analysis_2_title = "2. トレンドと需給動向"
-    strategy_title = "3. 具体アクションプラン"
+    analysis_1_title = "1. 保有銘柄全体のテクニカル・需給評価"
+    analysis_2_title = "2. ポートフォリオのトレンド分析"
+    strategy_title = "3. ポートフォリオ全体のアクションプラン"
 
     if timing == "朝":
         market_data = get_market_indicators()
@@ -272,60 +342,38 @@ def generate_analysis_report(sheet, timing):
 【前日の海外市場・外部指標】
 {market_str}
 ※特にSOX指数（半導体株価指数）の値動きや主要米国指数の動向を分析し、今日の日本市場開始前の地合いを評価してください。
-また、今日のこの銘柄の寄り付き・値動きがどうなりそうか予測してください。
+また、今日の日本市場開始に伴い、保有銘柄それぞれの寄り付き・値動きがどうなりそうか予測してください。
 """
         analysis_1_title = "1. 海外市場の動向と本日の地合い予測"
-        analysis_2_title = "2. 今日の値動き・寄り付き予測"
-        strategy_title = "3. 本日の取引アクションプラン"
+        analysis_2_title = "2. 保有銘柄の本日寄り付き・値動き予測"
+        strategy_title = "3. 本日のポートフォリオ戦略"
 
     elif timing == "昼":
         timing_info = f"""
 ※現在は【昼（前場終了後）】です。
-前場（9:00〜11:30）の株価は現在値 {cur_price}円 (前日比: {change_pct} / {change_yen})、出来高は {volume}株 でした。
-これらを踏まえ、後場（12:30〜15:00）に向けての値動きの予想や、後場での投資行動の指標を示してください。
+前場（9:00〜11:30）の株価変動と出来高データを踏まえ、後場（12:30〜15:00）に向けての値動き予想や、保有銘柄全体へのアプローチ（押し目買い・ホールド・利益確定などの投資アクション）を総合的に示してください。
 """
-        analysis_1_title = "1. 前場の値動き・テクニカル評価"
+        analysis_1_title = "1. 前場時点の保有銘柄評価"
         analysis_2_title = "2. 後場（12:30〜）の値動き・トレンド予想"
         strategy_title = "3. 後場のトレードアクションプラン"
 
     elif timing == "夜":
-        pts_price = get_pts_price(code)
-        pts_str = f"{pts_price}" if pts_price else "取得失敗または取引なし"
-        
-        pts_diff_str = ""
-        try:
-            if pts_price and cur_price:
-                p_val = float(re.sub(r'[^\d.]', '', pts_price))
-                c_val = float(re.sub(r'[^\d.]', '', cur_price))
-                diff = p_val - c_val
-                diff_pct = (diff / c_val) * 100
-                sign = "+" if diff > 0 else ""
-                pts_diff_str = f" (大引け終値比: {sign}{diff:.1f}円 / {sign}{diff_pct:.2f}%)"
-        except Exception:
-            pass
-
         timing_info = f"""
-【本日の夜間PTS取引状況】
-・PTS現在値: {pts_str}{pts_diff_str}
-※現在は【夜（本日大引け後・PTS稼働時間中）】です。
-本日の大引け確定値、および17時から19時時点の夜間PTSの動きを含めて分析し、明日以降の株価動向、あるいは中長期的な投資判断を評価してください。
+※現在は【夜（本日大引け後・夜間PTS稼働時間中）】です。
+本日の大引け確定値、および各銘柄の夜間PTS取引データ（提示されている場合）を総合的に分析し、明日以降の株価動向、あるいは中長期的なポートフォリオの投資判断（買い増し、売却、静観など）を評価してください。
 """
-        analysis_1_title = "1. 本日大引け評価と夜間PTSの動向分析"
-        analysis_2_title = "2. 明日以降の株価トレンド予測"
-        strategy_title = "3. 明日以降の具体的な投資戦略"
+        analysis_1_title = "1. 本日大引けと夜間PTSの動向分析"
+        analysis_2_title = "2. 明日以降の保有銘柄トレンド予測"
+        strategy_title = "3. 明日以降のポートフォリオ戦略"
 
-    prompt = f"""以下のデータから、{timing}の投資戦略レポートをJSON形式のみで作成してください。解説文やMarkdownのマークアップは一切除外してください。
+    prompt = f"""以下の保有銘柄データから、ポートフォリオ全体をスキャンした{timing}の総合投資戦略レポートをJSON形式のみで作成してください。解説文やMarkdownのマークアップは一切除外してください。
 
-【銘柄】{code} {name} (業種: {sector})
-【平均取得単価】{avg_price}円
-【本日の値動き】現在値:{cur_price}円 (前日比: {change_pct} / {change_yen})、始値:{open_price}円、高値:{day_high}円、安値:{day_low}円、前日終値:{prev_close}円
-【相場エネルギー】出来高:{volume}株、売買代金:{trading_value}万円
-【長期指標】52週高値:{week52_high}円、52週安値:{week52_low}円、時価総額:{market_cap}億円
-【指標】PER:{per}、PBR:{pbr}、配当利回り:{div_yield}、1株配当:{div_rate}、ROE:{roe}
+【保有銘柄データ】
+{stocks_prompt_text}
 {timing_info}
 
 【出力形式】次のJSONフォーマットのみを返してください。
-{{"title": "{timing}の{name}戦略レポート", "statusColor": "#b91c1c", "metrics": [{{"label":"現在値","value":"{cur_price}円"}},{{"label":"前日比","value":"{change_pct}"}},{{"label":"高安","value":"{day_high}円 / {day_low}円"}},{{"label":"売買代金","value":"{trading_value}万円"}},{{"label":"PER / PBR","value":"{per} / {pbr}"}},{{"label":"52週高安","value":"{week52_high}円 / {week52_low}円"}}], "analysis_1_title": "{analysis_1_title}", "analysis_1_content": "分析内容", "analysis_2_title": "{analysis_2_title}", "analysis_2_content": "評価内容", "strategy_title": "{strategy_title}", "strategy_content": "戦略内容"}}"""
+{{"title": "{timing}の保有銘柄・総合戦略レポート", "statusColor": "#b91c1c", "stocks": [{{"name":"銘柄名1", "code":"コード1", "price":"現在値1(前日比1)", "info":"平均取得単価や配当など簡潔な補足"}}, {{"name":"銘柄名2", "code":"コード2", "price":"現在値2(前日比2)", "info":"補足"}}], "analysis_1_title": "{analysis_1_title}", "analysis_1_content": "分析内容", "analysis_2_title": "{analysis_2_title}", "analysis_2_content": "評価内容", "strategy_title": "{strategy_title}", "strategy_content": "戦略内容"}}"""
 
     genai.configure(api_key=GEMINI_API_KEY)
     model = genai.GenerativeModel('gemini-2.5-flash')
@@ -338,33 +386,53 @@ def send_to_line(data):
     url = "https://api.line.me/v2/bot/message/push"
     color = data.get("statusColor", "#b91c1c")
     
-    flex_metrics = [{
+    # 複数銘柄のリストテーブル用のFlex componentsを組み立てる
+    flex_stocks = []
+    
+    # テーブルヘッダー
+    flex_stocks.append({
         "type": "box", "layout": "horizontal", "contents": [
-            { "type": "text", "text": m.get("label", "-"), "size": "sm", "color": "#555555" },
-            { "type": "text", "text": m.get("value", "-"), "size": "sm", "align": "end", "weight": "bold" }
+            { "type": "text", "text": "銘柄 (コード)", "size": "xs", "color": "#aaaaaa", "weight": "bold" },
+            { "type": "text", "text": "現在値 (前日比)", "size": "xs", "color": "#aaaaaa", "align": "center", "weight": "bold" },
+            { "type": "text", "text": "補足情報", "size": "xs", "color": "#aaaaaa", "align": "end", "weight": "bold" }
         ]
-    } for m in data.get("metrics", [])]
+    })
+    flex_stocks.append({ "type": "separator", "margin": "xs" })
+    
+    # 各銘柄のデータ行を追加
+    for s in data.get("stocks", []):
+        flex_stocks.append({
+            "type": "box", "layout": "horizontal", "margin": "sm", "contents": [
+                { "type": "text", "text": f"{s.get('name', '')} ({s.get('code', '')})", "size": "xs", "weight": "bold", "wrap": True },
+                { "type": "text", "text": s.get("price", "-"), "size": "xs", "align": "center", "wrap": True },
+                { "type": "text", "text": s.get("info", "-"), "size": "xs", "align": "end", "wrap": True, "color": "#555555" }
+            ]
+        })
         
     flex_message = {
         "to": LINE_USER_ID,
         "messages": [{
             "type": "flex",
-            "altText": data.get("title", "レポート")[:40],
+            "altText": data.get("title", "総合レポート")[:40],
             "contents": {
                 "type": "bubble",
                 "header": {
                     "type": "box", "layout": "vertical", "backgroundColor": color,
-                    "contents": [{ "type": "text", "text": data.get("title", "レポート")[:40], "weight": "bold", "color": "#ffffff", "size": "md" }]
+                    "contents": [{ "type": "text", "text": data.get("title", "総合レポート")[:40], "weight": "bold", "color": "#ffffff", "size": "md" }]
                 },
                 "body": {
                     "type": "box", "layout": "vertical", "spacing": "md",
                     "contents": [
-                        { "type": "box", "layout": "vertical", "spacing": "sm", "contents": flex_metrics },
+                        # 銘柄リストテーブル
+                        { "type": "box", "layout": "vertical", "spacing": "xs", "contents": flex_stocks },
                         { "type": "separator" },
+                        # 分析セクション1
                         { "type": "text", "text": data.get("analysis_1_title", "分析1"), "weight": "bold", "size": "sm" },
                         { "type": "text", "text": data.get("analysis_1_content", "内容なし"), "wrap": True, "size": "xs", "color": "#333333" },
+                        # 分析セクション2
                         { "type": "text", "text": data.get("analysis_2_title", "分析2"), "weight": "bold", "size": "sm" },
                         { "type": "text", "text": data.get("analysis_2_content", "内容なし"), "wrap": True, "size": "xs", "color": "#333333" },
+                        # 投資戦略セクション
                         { "type": "text", "text": data.get("strategy_title", "戦略"), "weight": "bold", "size": "sm", "color": "#b91c1c" },
                         { "type": "text", "text": data.get("strategy_content", "内容なし"), "wrap": True, "size": "xs", "color": "#333333" }
                     ]
@@ -378,6 +446,7 @@ def send_to_line(data):
         print(f"【3】LINE送信完了 ステータス: {res.status_code}")
     except Exception as e:
         print(f"【3】LINE送信エラー: {e}")
+
 
 if __name__ == "__main__":
     sheet = get_sheet()
