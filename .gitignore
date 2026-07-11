@@ -1,0 +1,13 @@
+# Credentials
+gen-lang-client-0001329181-b47d41c19dcb.json
+*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.DS_Store

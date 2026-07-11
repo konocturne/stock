@@ -1,0 +1,5 @@
+yfinance
+gspread
+google-auth
+google-generativeai
+requests
