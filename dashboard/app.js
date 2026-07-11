@@ -204,15 +204,15 @@ function escape(s) {
 
 function renderStockCard(stock, index) {
   const { pnl, pnl_pct, current_price, quantity, avg_cost,
-          change_pct_str, recommendation, consensus_target, stop_loss,
-          target_divergence_comment, risk_factors, technical_detail, news_impact } = stock;
+          change_pct_str, analyst_rating, consensus_target, stop_loss_guide,
+          target_divergence_comment, risk_comment, technical_detail, news_impact, personal_action } = stock;
 
   const cls       = pnlCls(pnl);
   const pnlSign   = (pnl ?? 0) >= 0 ? '+' : '';
   const barPct    = pnl_pct != null ? Math.min(Math.abs(pnl_pct) / 30 * 100, 100) : 0;
   const barColor  = (pnl ?? 0) >= 0 ? '#22c55e' : '#f43f5e';
   const chgCls    = pnlCls(parseFloat((change_pct_str || '0').replace(/[+%]/g,'')));
-  const recCls    = recClass(recommendation);
+  const recCls    = recClass(analyst_rating);
 
   // 目標株価乖離度
   let targetDevHTML = '';
@@ -237,7 +237,7 @@ function renderStockCard(stock, index) {
           <span class="stock-code">${stock.code}</span>
           <div class="stock-name">${stock.name}</div>
           <span class="stock-sector">${stock.sector || '---'}</span>
-          ${recommendation ? `<div><span class="rec-badge ${recCls}">${recommendation}</span></div>` : ''}
+          ${analyst_rating ? `<div><span class="rec-badge ${recCls}">${analyst_rating.split(" ")[0]}</span></div>` : ''}
         </div>
         <div class="stock-price-block">
           <div class="stock-price">¥${fmt(current_price)}</div>
@@ -259,7 +259,7 @@ function renderStockCard(stock, index) {
         </div>
       </div>
 
-      ${(consensus_target || stop_loss) ? `
+      ${(consensus_target || stop_loss_guide) ? `
       <div class="stock-targets">
         <div class="target-item">
           <div class="target-label">🎯 機関コンセンサス目標</div>
@@ -267,9 +267,15 @@ function renderStockCard(stock, index) {
           ${target_divergence_comment ? `<div class="target-basis">${target_divergence_comment}</div>` : ''}
         </div>
         <div class="target-item">
-          <div class="target-label">🛑 ストップロス</div>
-          <div class="target-value negative">¥${stop_loss ? fmt(stop_loss) : '---'}</div>
+          <div class="target-label">🛑 ストップロス目安 (52週安値)</div>
+          <div class="target-value negative">¥${stop_loss_guide ? fmt(stop_loss_guide) : '---'}</div>
         </div>
+      </div>` : ''}
+
+      ${personal_action ? `
+      <div class="stock-technical" style="background:rgba(59,130,246,0.05);border-bottom:1px solid rgba(59,130,246,0.15);">
+        <div class="tech-title" style="color:#60a5fa;">👤 個人戦略提案</div>
+        <div class="tech-body">${personal_action}</div>
       </div>` : ''}
 
       ${technical_detail ? `
@@ -278,9 +284,9 @@ function renderStockCard(stock, index) {
         <div class="tech-body">${technical_detail}</div>
       </div>` : ''}
 
-      ${(risk_factors || news_impact) ? `
+      ${(risk_comment || news_impact) ? `
       <div class="stock-risk">
-        ${risk_factors ? `<div class="risk-label">⚠️ リスク要因</div>${risk_factors}<br>` : ''}
+        ${risk_comment ? `<div class="risk-label">⚠️ リスク要因</div>${risk_comment}<br>` : ''}
         ${news_impact  ? `<span style="color:#60a5fa;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">📰 ニュース影響</span> ${news_impact}` : ''}
       </div>` : ''}
 

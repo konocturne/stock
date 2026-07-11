@@ -300,14 +300,14 @@ if __name__ == "__main__":
         rs = report_stocks_map.get(stock["code"], {})
         stock["sentiment"]            = rs.get("sentiment", "")
         stock["sentiment_reason"]     = rs.get("sentiment_reason", "")
-        stock["recommendation"]       = rs.get("recommendation", "")
-        stock["recommendation_reason"]= rs.get("recommendation_reason", "")
+        stock["analyst_rating"]       = rs.get("analyst_rating", "")
         stock["consensus_target"]     = rs.get("consensus_target", 0)
         stock["target_divergence_comment"] = rs.get("target_divergence_comment", "")
-        stock["stop_loss"]            = rs.get("stop_loss", 0)
-        stock["risk_factors"]         = rs.get("risk_factors", "")
+        stock["stop_loss_guide"]      = rs.get("stop_loss_guide", 0)
+        stock["risk_comment"]         = rs.get("risk_comment", "")
         stock["technical_detail"]     = rs.get("technical_detail", "")
         stock["news_impact"]          = rs.get("news_impact", "")
+        stock["personal_action"]      = rs.get("personal_action", "")
 
     # 各銘柄チャート生成
     for stock in stocks_data:

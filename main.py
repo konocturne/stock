@@ -352,17 +352,32 @@ def update_stock_data(sheet):
                 target_high = info.get("targetHighPrice")
                 target_low  = info.get("targetLowPrice")
                 analysts_count = info.get("numberOfAnalystOpinions")
-                rec_key = info.get("recommendationKey")
+                
+                rec_mean = info.get("recommendationMean")
+                if rec_mean:
+                    if rec_mean <= 1.5: rec_text = "強気買い"
+                    elif rec_mean <= 2.5: rec_text = "買い"
+                    elif rec_mean <= 3.5: rec_text = "保有"
+                    elif rec_mean <= 4.5: rec_text = "売り"
+                    else: rec_text = "強気売り"
+                    rec_str = f"{rec_text} (スコア:{rec_mean})"
+                else:
+                    rec_str = info.get("recommendationKey") or "データなし"
+
+                beta = info.get("beta")
+                w52_high = info.get("fiftyTwoWeekHigh")
+                w52_low = info.get("fiftyTwoWeekLow")
 
                 analyst_text = ""
                 if target_mean and target_mean > 0:
                     analyst_text = (
                         f"【機関コンセンサス】平均目標: {format_currency(target_mean)}円 "
                         f"(高値: {format_currency(target_high)}円 / 安値: {format_currency(target_low)}円)\n"
-                        f"　アナリスト数: {analysts_count}名 / 推奨: {rec_key}"
+                        f"　推奨: {rec_str} / アナリスト数: {analysts_count}名\n"
+                        f"【指標・リスク】ベータ値(市場連動): {beta} / 52週高値: {format_currency(w52_high)}円 / 52週安値: {format_currency(w52_low)}円"
                     )
                 else:
-                    analyst_text = "【機関コンセンサス】データなし"
+                    analyst_text = f"【機関コンセンサス】データなし\n【指標・リスク】ベータ値: {beta} / 52週高値: {format_currency(w52_high)}円 / 52週安値: {format_currency(w52_low)}円"
 
                 # テクニカルコンテキスト文字列
                 if tech["rsi"]:
@@ -479,7 +494,7 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
 
 以下の保有銘柄データから、ポートフォリオ全体をスキャンした詳細な投資戦略レポートをJSON形式のみで作成してください。Markdownは不要。
 専門的なアナリストとして、テクニカル・ファンダメンタル両面から徹底分析してください。
-目標株価はAIで独自算出せず、データ内にある「機関コンセンサス」の平均目標株価をそのまま使用し、現在の株価との乖離度について分析してください。
+目標株価、推奨度、損切りラインなどはAIで独自算出せず、データ内にある「機関コンセンサス」「52週安値」等の客観的な指標を優先して使用し、事実情報に基づいた分析をしてください。
 
 【保有銘柄データ】
 {stocks_prompt_text}
@@ -499,14 +514,14 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
     "price": "現在値（前日比%）",
     "sentiment": "ポジティブ/ネガティブ/ニュートラル",
     "sentiment_reason": "感情判定の根拠（50字以内）",
-    "recommendation": "強気買い/買い増し/保有/一部利確/利確/売却",
-    "recommendation_reason": "推奨根拠（100字以内）",
+    "analyst_rating": "データにある【推奨】(強気買い/買い等)をそのまま記載。無い場合は「データなし」",
     "consensus_target": 0,
-    "target_divergence_comment": "機関の平均目標株価と現在値との乖離度についての見解（80字以内）",
-    "stop_loss": 0,
-    "risk_factors": "主なリスク要因（80字以内）",
+    "target_divergence_comment": "機関平均目標と現在値の乖離に対する見解（80字以内）",
+    "stop_loss_guide": 0,
+    "risk_comment": "ベータ値や直近のボラティリティを踏まえた客観的なリスク解説（80字以内）",
     "technical_detail": "RSI・MACD・BB・SMAを使った詳細テクニカル解説（150字以内）",
     "news_impact": "直近ニュースの影響評価（50字以内）",
+    "personal_action": "保有数と取得単価(含み損益)を加味した個人へのアクション提案(一部利確/ホールド等、60字以内)",
     "one_liner": "LINEに送る超短い一言コメント（20字以内）"
   }}],
   "analysis_market": "市場環境の詳細分析（300字以内）",
@@ -572,9 +587,9 @@ def send_to_line(data, today_str=None, dashboard_url=""):
     stock_rows = []
     for s in data.get("stocks", []):
         emoji  = s_emoji.get(s.get("sentiment", "ニュートラル"), "➡️")
-        rec    = s.get("recommendation", "保有")
+        rec    = s.get("analyst_rating", "データなし").split(" ")[0]
         c      = r_color.get(rec, "#94a3b8")
-        liner  = s.get("one_liner") or s.get("info", "") or ""
+        liner  = s.get("one_liner") or ""
         tgt    = s.get("consensus_target")
         tgt_str = f" 目標:{int(tgt):,}円" if tgt and int(tgt) > 0 else ""
         stock_rows.append({
