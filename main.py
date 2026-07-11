@@ -344,6 +344,8 @@ def update_stock_data(sheet):
                 per       = info.get("forwardPE") or info.get("trailingPE")
                 pbr       = info.get("priceToBook")
                 div_yield = info.get("dividendYield")
+                rev_growth = info.get("revenueGrowth")
+                earn_growth = info.get("earningsGrowth")
 
                 recent_news = fetch_recent_news(code, name)
 
@@ -394,7 +396,13 @@ def update_stock_data(sheet):
                     f"({pnl_sign}{pnl_pct:.2f}%) "
                     f"評価額:{format_currency(eval_total)}円"
                 )
-                technical_context[code] = f"{tech_text}\n{analyst_text}\n{pnl_text}\n【ニュース】{recent_news}"
+                
+                funda_text = (
+                    f"【ファンダメンタル】PER: {f'{per:.1f}' if per else '---'} / PBR: {f'{pbr:.2f}' if pbr else '---'} / 配当利回り: {f'{div_yield:.2f}' if div_yield else '---'}%\n"
+                    f"　売上成長率: {f'{rev_growth*100:.1f}%' if rev_growth else '---'} / 利益成長率: {f'{earn_growth*100:.1f}%' if earn_growth else '---'}"
+                )
+
+                technical_context[code] = f"{tech_text}\n{funda_text}\n{analyst_text}\n{pnl_text}\n【ニュース】{recent_news}"
 
                 # スプレッドシート更新
                 update_row = [
