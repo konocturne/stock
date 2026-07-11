@@ -1,0 +1,32 @@
+{
+  "updated_at": "2026-07-12T02:22:20.343627+09:00",
+  "today": "2026-07-12",
+  "github_pages_url": "https://konocturne.github.io/stock",
+  "portfolio": {
+    "total_cost": 722960.0,
+    "total_eval": 721000.0,
+    "total_pnl": -1960.0,
+    "total_pnl_pct": -0.27
+  },
+  "stocks": [
+    {
+      "code": "5803",
+      "name": "Fujikura Ltd.",
+      "quantity": 140,
+      "avg_cost": 5164.0,
+      "current_price": 5150.0,
+      "change_pct_str": "+4.29%",
+      "change_str": "+212.0円",
+      "per": "17.01倍",
+      "pbr": "15.22倍",
+      "div_yield": "0.74%",
+      "sector": "Industrials",
+      "pnl": -1960.0,
+      "pnl_pct": -0.27,
+      "eval_total": 721000.0,
+      "cost_total": 722960.0,
+      "chart_url": "charts/2026-07-12/5803.png"
+    }
+  ],
+  "history": []
+}
