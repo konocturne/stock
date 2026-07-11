@@ -3,3 +3,4 @@ gspread
 google-auth
 google-generativeai
 requests
+python-dotenv

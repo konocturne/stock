@@ -11,3 +11,5 @@ venv/
 ENV/
 env/
 .DS_Store
+.env
+

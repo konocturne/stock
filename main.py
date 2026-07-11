@@ -6,6 +6,11 @@ import yfinance as yf
 import gspread
 from google.oauth2.service_account import Credentials
 import google.generativeai as genai
+from dotenv import load_dotenv
+
+# .envファイルから環境変数を読み込む
+load_dotenv()
+
 
 # 環境変数から設定を取得 (GitHub Secretsから安全に渡されます)
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
