@@ -1,6 +1,7 @@
 import os
 import json
 import time
+from datetime import datetime, timedelta, timezone
 import requests
 import yfinance as yf
 import gspread
@@ -8,20 +9,47 @@ from google.oauth2.service_account import Credentials
 import google.generativeai as genai
 from dotenv import load_dotenv
 
-# .envファイルから環境変数を読み込む
+# .envファイルから環境変数を読み込む (ローカル実行用)
 load_dotenv()
 
-
-# 環境変数から設定を取得 (GitHub Secretsから安全に渡されます)
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 LINE_ACCESS_TOKEN = os.environ.get("LINE_ACCESS_TOKEN")
 LINE_USER_ID = os.environ.get("LINE_USER_ID")
 GOOGLE_CREDENTIALS_JSON = os.environ.get("GOOGLE_CREDENTIALS_JSON")
 SPREADSHEET_KEY = "1-bql8g-s0JcEzy4neAzSaM9cU0dGZQ5eYhhc6cTuwF0"
 
+def get_current_timing():
+    # 日本時間 (JST) を取得して時間帯を判定
+    jst = timezone(timedelta(hours=9))
+    now_jst = datetime.now(timezone.utc).astimezone(jst)
+    hour = now_jst.hour
+    
+    if 5 <= hour < 11:
+        return "朝"
+    elif 11 <= hour < 16:
+        return "昼"
+    else:
+        return "夜"
+
 def get_sheet():
-    creds_dict = json.loads(GOOGLE_CREDENTIALS_JSON)
+    creds_dict = None
+    if GOOGLE_CREDENTIALS_JSON:
+        try:
+            creds_dict = json.loads(GOOGLE_CREDENTIALS_JSON)
+        except json.JSONDecodeError:
+            pass
+            
+    if not creds_dict:
+        # ローカルのJSONファイルから読み込むフォールバック
+        json_path = "gen-lang-client-0001329181-b47d41c19dcb.json"
+        if os.path.exists(json_path):
+            with open(json_path, "r") as f:
+                creds_dict = json.load(f)
+        else:
+            raise ValueError("Google credentials are not set (missing env var or local JSON file)")
+            
     creds = Credentials.from_service_account_info(
+
         creds_dict,
         scopes=[
             "https://www.googleapis.com/auth/spreadsheets",
@@ -29,7 +57,7 @@ def get_sheet():
         ]
     )
     client = gspread.authorize(creds)
-    return client.open_by_key(SPREADSHEET_KEY).sheet_by_name("保有銘柄")
+    return client.open_by_key(SPREADSHEET_KEY).worksheet("保有銘柄")
 
 def update_stock_data(sheet):
     print("【1】yfinanceからのデータ取得を開始します")
@@ -47,8 +75,6 @@ def update_stock_data(sheet):
         
         try:
             info = ticker.info
-            
-            # 安全にデータを取得（無い場合は歴史データから補完）
             current_price = info.get("currentPrice") or info.get("regularMarketPrice")
             prev_close = info.get("previousClose") or info.get("regularMarketPreviousClose")
             
@@ -73,7 +99,6 @@ def update_stock_data(sheet):
             change_pct_str = f"+{raw_change_pct:.2f}%" if raw_change_pct > 0 else f"{raw_change_pct:.2f}%"
             
             trading_value = round((current_price * volume) / 10000) if current_price and volume else ""
-            
             market_cap_raw = info.get("marketCap", 0)
             market_cap_oku = round(market_cap_raw / 100000000) if market_cap_raw else ""
             
@@ -83,25 +108,13 @@ def update_stock_data(sheet):
             pbr = info.get("priceToBook")
             pbr_str = f"{pbr:.2f}倍" if pbr else "---"
             
-            # E列(5)からR列(18)までの更新データを1行分作成
             update_row = [
-                current_price or "",
-                change_pct_str,
-                change_str,
-                volume or "",
-                trading_value,
-                prev_close or "",
-                open_price or "",
-                day_high or "",
-                day_low or "",
-                info.get("fiftyTwoWeekHigh") or "",
-                info.get("fiftyTwoWeekLow") or "",
-                market_cap_oku,
-                per_str,
-                pbr_str
+                current_price or "", change_pct_str, change_str, volume or "",
+                trading_value, prev_close or "", open_price or "", day_high or "",
+                day_low or "", info.get("fiftyTwoWeekHigh") or "",
+                info.get("fiftyTwoWeekLow") or "", market_cap_oku, per_str, pbr_str
             ]
             
-            # スプレッドシートへ書き込み
             sheet.update(range_name=f"E{i}:R{i}", values=[update_row])
             print(f"[取得完了] {code}: 現在値 {current_price}円 / PER {per_str} / PBR {pbr_str}")
             time.sleep(1)
@@ -111,33 +124,18 @@ def update_stock_data(sheet):
 
 def generate_analysis_report(sheet, timing):
     row2 = sheet.row_values(2)
-    
-    # 列の位置に合わせてデータを抽出
-    code = row2[0]
-    name = row2[1]
-    avg_price = row2[3]
-    cur_price = row2[4]
-    change_pct = row2[5]
-    change_yen = row2[6]
-    volume = row2[7]
-    trading_value = row2[8]
-    open_price = row2[10]
-    day_high = row2[11]
-    day_low = row2[12]
-    week52_high = row2[13]
-    week52_low = row2[14]
-    market_cap = row2[15]
-    per = row2[16]
-    pbr = row2[17]
+    # スプレッドシートの列が足りない場合に備えて空文字で18列分パディング
+    row2 = row2 + [""] * (18 - len(row2))
+    code, name, _, avg_price, cur_price, change_pct, change_yen, volume, trading_value, _, open_price, day_high, day_low, week52_high, week52_low, market_cap, per, pbr = row2[:18]
 
-    print(f"【2】Geminiへのリクエスト準備: 銘柄={code} {name}")
+    print(f"【2】Geminiへのリクエスト準備: 銘柄={code} {name} ({timing}のレポート)")
 
     prompt = f"""以下のデータから投資戦略レポートをJSON形式のみで作成してください。解説文は一切除外してください。
 【銘柄】{code} {name}
 【平均取得単価】{avg_price}円
 【本日の値動き】現在値:{cur_price}円 (前日比: {change_pct} / {change_yen})、始値:{open_price}円、高値:{day_high}円、安値:{day_low}円
 【相場エネルギー】出来高:{volume}株、売買代金:{trading_value}万円
-【長期指標】52週高値:{week52_high}円、52週安値:{week52_low}円、時価総額:${market_cap}億円
+【長期指標】52週高値:{week52_high}円、52週安値:{week52_low}円、時価総額:{market_cap}億円
 【割安性指標】PER:{per}、PBR:{pbr}
 
 【出力形式】次のJSONフォーマットのみを返してください。
@@ -145,29 +143,21 @@ def generate_analysis_report(sheet, timing):
 
     genai.configure(api_key=GEMINI_API_KEY)
     model = genai.GenerativeModel('gemini-2.5-flash')
-    
-    response = model.generate_content(
-        prompt,
-        generation_config={"response_mime_type": "application/json"}
-    )
-    
+    response = model.generate_content(prompt, generation_config={"response_mime_type": "application/json"})
     return json.loads(response.text)
 
 def send_to_line(data):
     if not data:
         return
-        
     url = "https://api.line.me/v2/bot/message/push"
     color = data.get("statusColor", "#b91c1c")
     
-    flex_metrics = []
-    for m in data.get("metrics", []):
-        flex_metrics.append({
-            "type": "box", "layout": "horizontal", "contents": [
-                { "type": "text", "text": m.get("label", "-"), "size": "sm", "color": "#555555" },
-                { "type": "text", "text": m.get("value", "-"), "size": "sm", "align": "end", "weight": "bold" }
-            ]
-        })
+    flex_metrics = [{
+        "type": "box", "layout": "horizontal", "contents": [
+            { "type": "text", "text": m.get("label", "-"), "size": "sm", "color": "#555555" },
+            { "type": "text", "text": m.get("value", "-"), "size": "sm", "align": "end", "weight": "bold" }
+        ]
+    } for m in data.get("metrics", [])]
         
     flex_message = {
         "to": LINE_USER_ID,
@@ -197,16 +187,15 @@ def send_to_line(data):
         }]
     }
     
-    headers = {
-        "Authorization": f"Bearer {LINE_ACCESS_TOKEN}",
-        "Content-Type": "application/json"
-    }
-    
-    res = requests.post(url, headers=headers, json=flex_message)
-    print(f"【3】LINE送信完了 ステータス: {res.status_code}")
+    try:
+        res = requests.post(url, headers={"Authorization": f"Bearer {LINE_ACCESS_TOKEN}", "Content-Type": "application/json"}, json=flex_message)
+        print(f"【3】LINE送信完了 ステータス: {res.status_code}")
+    except Exception as e:
+        print(f"【3】LINE送信エラー: {e}")
 
 if __name__ == "__main__":
     sheet = get_sheet()
     update_stock_data(sheet)
-    report = generate_analysis_report(sheet, "朝")
+    timing = get_current_timing()  # 現在時刻から「朝・昼・夜」を自動判定
+    report = generate_analysis_report(sheet, timing)
     send_to_line(report)
