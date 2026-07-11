@@ -1,6 +1,8 @@
 # Credentials
 gen-lang-client-0001329181-b47d41c19dcb.json
-*.json
+
+# JSON (認証ファイル以外は除外しない)
+# ※ requirements.txt や workflow は除外しない
 
 # Python
 __pycache__/
@@ -12,4 +14,11 @@ ENV/
 env/
 .DS_Store
 .env
+
+# 一時ファイル（GitHub Actions 実行後の生成物）
+last_report.json
+report_state.json   # 廃止済み
+
+# GitHub Pages デプロイ用出力（ローカルで実行した場合）
+gh_pages_output/
 

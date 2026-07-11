@@ -2,31 +2,144 @@ name: Stock Report Automation
 
 on:
   schedule:
-    # 日本時間 8:00, 12:00, 19:00 に実行 (UTC換算)
+    # 日本時間 8:00 / 12:00 / 19:00 に実行 (UTC 換算)
     - cron: '0 23,3,10 * * *'
   workflow_dispatch:
 
+# gh-pages への書き込み権限
+permissions:
+  contents: write
+
 jobs:
-  run-python:
+  run-report:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      # -------------------------------------------------------
+      # 1. ソース取得
+      # -------------------------------------------------------
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      # -------------------------------------------------------
+      # 2. Python セットアップ
+      # -------------------------------------------------------
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      # -------------------------------------------------------
+      # 3. pip キャッシュ + 依存関係インストール
+      # -------------------------------------------------------
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
 
-    - name: Run Main Script
-      env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        LINE_ACCESS_TOKEN: ${{ secrets.LINE_ACCESS_TOKEN }}
-        LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
-        GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
-      run: python main.py
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # -------------------------------------------------------
+      # 4. 日本語フォント（matplotlib 用）
+      # -------------------------------------------------------
+      - name: Install Japanese fonts for matplotlib
+        run: |
+          sudo apt-get install -y --no-install-recommends fonts-noto-cjk
+          fc-cache -fv
+
+      # -------------------------------------------------------
+      # 5. 環境変数を設定
+      #    - GITHUB_PAGES_URL : チャート画像 / ダッシュボードの URL
+      #    - REPORT_TIMING    : 朝 / 昼 / 夜
+      # -------------------------------------------------------
+      - name: Set runtime environment variables
+        run: |
+          OWNER=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f1)
+          REPO=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
+          PAGES_URL="https://${OWNER}.github.io/${REPO}"
+          TIMING=$(python3 -c "
+          from datetime import datetime, timedelta, timezone
+          jst = timezone(timedelta(hours=9))
+          h = datetime.now(jst).hour
+          print('朝' if 5 <= h < 11 else '昼' if 11 <= h < 16 else '夜')
+          ")
+          echo "GITHUB_PAGES_URL=${PAGES_URL}" >> $GITHUB_ENV
+          echo "REPORT_TIMING=${TIMING}" >> $GITHUB_ENV
+          echo "実行タイミング: ${TIMING} / Pages URL: ${PAGES_URL}"
+
+      # -------------------------------------------------------
+      # 6. チャート生成 + data.json 出力
+      #    → gh_pages_output/ ディレクトリに書き出す
+      # -------------------------------------------------------
+      - name: Generate Charts and data.json
+        env:
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+          GITHUB_PAGES_URL: ${{ env.GITHUB_PAGES_URL }}
+        run: python generate_charts.py
+
+      # -------------------------------------------------------
+      # 7. ダッシュボード静的ファイルをデプロイ用ディレクトリにコピー
+      # -------------------------------------------------------
+      - name: Copy dashboard files to deploy directory
+        run: |
+          cp dashboard/index.html gh_pages_output/index.html
+          cp dashboard/style.css  gh_pages_output/style.css
+          cp dashboard/app.js     gh_pages_output/app.js
+
+      # -------------------------------------------------------
+      # 8. GitHub Pages へデプロイ
+      #    keep_files: true → 過去のチャート画像を保持
+      # -------------------------------------------------------
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./gh_pages_output
+          keep_files: true
+          commit_message: "chore: update charts and dashboard [skip ci]"
+
+      # -------------------------------------------------------
+      # 9. GitHub Pages の伝播を待つ
+      #    LINE に送る画像 URL が有効になってから main.py を呼ぶ
+      # -------------------------------------------------------
+      - name: Wait for GitHub Pages propagation
+        run: sleep 45
+
+      # -------------------------------------------------------
+      # 10. メインレポート生成・LINE 送信
+      #     ★ Gemini 呼び出しはここで 1回のみ ★
+      # -------------------------------------------------------
+      - name: Run Main Report Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          LINE_ACCESS_TOKEN: ${{ secrets.LINE_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+          GITHUB_PAGES_URL: ${{ env.GITHUB_PAGES_URL }}
+          GEMINI_MODEL: gemini-2.5-flash
+        run: python main.py
+
+      # -------------------------------------------------------
+      # 11. アラートチェック（Gemini 不使用・価格/出来高の数値判定のみ）
+      #     アラートなしの場合は LINE 送信しない → 無料枠節約
+      # -------------------------------------------------------
+      - name: Run Alert Check
+        env:
+          LINE_ACCESS_TOKEN: ${{ secrets.LINE_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+        run: python alert.py
+
+      # -------------------------------------------------------
+      # 12. レポートをスプレッドシートの「履歴」シートに追記
+      #     main.py が生成した last_report.json を読み込む
+      # -------------------------------------------------------
+      - name: Save Report History to Spreadsheet
+        env:
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+        run: python history.py

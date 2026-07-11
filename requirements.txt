@@ -4,3 +4,6 @@ google-auth
 google-generativeai
 requests
 python-dotenv
+pandas
+numpy
+matplotlib

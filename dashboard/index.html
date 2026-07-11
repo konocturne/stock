@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Dashboard | 株式ポートフォリオ管理</title>
+  <meta name="description" content="Gemini AI × GitHub Actions による自動株式ポートフォリオ管理ダッシュボード。保有銘柄の損益・テクニカル分析を可視化。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ===== Header ===== -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-icon">📊</span>
+          <div>
+            <h1>Portfolio Dashboard</h1>
+            <p class="header-sub">Gemini AI × GitHub Actions 自動株式管理システム</p>
+          </div>
+        </div>
+        <div class="header-meta">
+          <div class="update-badge">
+            <span class="update-dot"></span>
+            <span id="updated-at">読み込み中...</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== Loading ===== -->
+    <div id="loading" class="loading-screen">
+      <div class="loader"></div>
+      <p>データを読み込み中...</p>
+    </div>
+
+    <!-- ===== Main Content ===== -->
+    <main id="main-content" class="main" style="display:none;">
+
+      <!-- Portfolio Summary Cards -->
+      <section class="section">
+        <div class="summary-grid">
+          <div class="summary-card" id="card-eval">
+            <div class="summary-label">評価額合計</div>
+            <div class="summary-value" id="total-eval">---</div>
+          </div>
+          <div class="summary-card" id="card-pnl">
+            <div class="summary-label">含み損益</div>
+            <div class="summary-value" id="total-pnl">---</div>
+            <div class="summary-sub" id="total-pnl-pct">---</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">取得総額</div>
+            <div class="summary-value" id="total-cost">---</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">保有銘柄数</div>
+            <div class="summary-value" id="stock-count">---</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Performance Chart -->
+      <section class="section">
+        <div class="section-header">
+          <h2>📈 含み損益パフォーマンス</h2>
+          <span class="section-badge" id="perf-date">---</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="portfolioChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Stock Cards -->
+      <section class="section">
+        <div class="section-header">
+          <h2>🗂️ 保有銘柄</h2>
+          <span class="section-badge" id="stocks-count-badge">---</span>
+        </div>
+        <div class="stocks-grid" id="stocks-grid">
+          <!-- 動的挿入 -->
+        </div>
+      </section>
+
+      <!-- History -->
+      <section class="section" id="history-section" style="display:none;">
+        <div class="section-header">
+          <h2>📋 AI レポート履歴</h2>
+          <span class="section-badge">直近10件</span>
+        </div>
+        <div class="history-list" id="history-list">
+          <!-- 動的挿入 -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ===== Error ===== -->
+    <div id="error-screen" class="error-screen" style="display:none;">
+      <div class="error-inner">
+        <p class="error-icon">⚠️</p>
+        <p class="error-title">データを読み込めませんでした</p>
+        <p class="error-msg">GitHub Actions が実行されていないか、data.json が存在しない可能性があります。</p>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>Powered by Gemini 2.5 Flash &times; GitHub Actions &times; LINE Bot &times; Google Sheets</p>
+    </footer>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
