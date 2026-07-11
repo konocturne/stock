@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio Dashboard | 株式ポートフォリオ管理</title>
-  <meta name="description" content="Gemini AI × GitHub Actions による自動株式ポートフォリオ管理ダッシュボード。保有銘柄の損益・テクニカル分析を可視化。" />
+  <meta name="description" content="Gemini AI × GitHub Actions による自動株式ポートフォリオ管理ダッシュボード。詳細分析レポート付き。" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -23,11 +23,17 @@
             <p class="header-sub">Gemini AI × GitHub Actions 自動株式管理システム</p>
           </div>
         </div>
-        <div class="header-meta">
+        <div class="header-right">
           <div class="update-badge">
             <span class="update-dot"></span>
             <span id="updated-at">読み込み中...</span>
           </div>
+          <nav class="header-nav">
+            <a href="#section-summary" class="nav-link">サマリー</a>
+            <a href="#section-report" class="nav-link">AIレポート</a>
+            <a href="#section-stocks" class="nav-link">銘柄</a>
+            <a href="#section-history" class="nav-link">履歴</a>
+          </nav>
         </div>
       </div>
     </header>
@@ -41,8 +47,12 @@
     <!-- ===== Main Content ===== -->
     <main id="main-content" class="main" style="display:none;">
 
-      <!-- Portfolio Summary Cards -->
-      <section class="section">
+      <!-- ① Portfolio Summary Cards -->
+      <section class="section" id="section-summary">
+        <div class="section-header">
+          <h2>📈 ポートフォリオ概要</h2>
+          <span class="section-badge" id="perf-date">---</span>
+        </div>
         <div class="summary-grid">
           <div class="summary-card" id="card-eval">
             <div class="summary-label">評価額合計</div>
@@ -62,44 +72,63 @@
             <div class="summary-value" id="stock-count">---</div>
           </div>
         </div>
-      </section>
 
-      <!-- Performance Chart -->
-      <section class="section">
-        <div class="section-header">
-          <h2>📈 含み損益パフォーマンス</h2>
-          <span class="section-badge" id="perf-date">---</span>
-        </div>
-        <div class="chart-container">
-          <canvas id="portfolioChart"></canvas>
+        <!-- Portfolio P&L Chart -->
+        <div class="chart-card">
+          <div class="chart-card-title">含み損益パフォーマンス (%)</div>
+          <div class="chart-container">
+            <canvas id="portfolioChart"></canvas>
+          </div>
         </div>
       </section>
 
-      <!-- Stock Cards -->
-      <section class="section">
+      <!-- ② AI Report Section -->
+      <section class="section" id="section-report" style="display:none;">
         <div class="section-header">
-          <h2>🗂️ 保有銘柄</h2>
+          <h2 id="report-title">🤖 AIアナリスト・レポート</h2>
+          <span class="section-badge" id="report-badge">Gemini 2.5 Flash</span>
+        </div>
+
+        <!-- Alerts Banner -->
+        <div id="alerts-banner" class="alerts-banner" style="display:none;"></div>
+
+        <!-- Market / Benchmark strip -->
+        <div class="report-strip" id="report-strip" style="display:none;"></div>
+
+        <!-- Report Tabs -->
+        <div class="tab-nav">
+          <button class="tab-btn active" data-tab="market">🌐 市場分析</button>
+          <button class="tab-btn" data-tab="technical">📉 テクニカル</button>
+          <button class="tab-btn" data-tab="portfolio">🗂️ PF評価</button>
+          <button class="tab-btn" data-tab="strategy">🎯 戦略</button>
+        </div>
+
+        <div id="tab-market"    class="tab-panel active"></div>
+        <div id="tab-technical" class="tab-panel"></div>
+        <div id="tab-portfolio" class="tab-panel"></div>
+        <div id="tab-strategy"  class="tab-panel"></div>
+      </section>
+
+      <!-- ③ Stock Detail Cards -->
+      <section class="section" id="section-stocks">
+        <div class="section-header">
+          <h2>🗂️ 保有銘柄 詳細</h2>
           <span class="section-badge" id="stocks-count-badge">---</span>
         </div>
-        <div class="stocks-grid" id="stocks-grid">
-          <!-- 動的挿入 -->
-        </div>
+        <div class="stocks-grid" id="stocks-grid"></div>
       </section>
 
-      <!-- History -->
-      <section class="section" id="history-section" style="display:none;">
+      <!-- ④ History -->
+      <section class="section" id="section-history" style="display:none;">
         <div class="section-header">
           <h2>📋 AI レポート履歴</h2>
           <span class="section-badge">直近10件</span>
         </div>
-        <div class="history-list" id="history-list">
-          <!-- 動的挿入 -->
-        </div>
+        <div class="history-list" id="history-list"></div>
       </section>
 
     </main>
 
-    <!-- ===== Error ===== -->
     <div id="error-screen" class="error-screen" style="display:none;">
       <div class="error-inner">
         <p class="error-icon">⚠️</p>
@@ -111,7 +140,6 @@
     <footer class="footer">
       <p>Powered by Gemini 2.5 Flash &times; GitHub Actions &times; LINE Bot &times; Google Sheets</p>
     </footer>
-
   </div>
   <script src="app.js"></script>
 </body>
