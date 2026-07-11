@@ -460,31 +460,42 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
     prompt = f"""{role_prompt}
 {prev_context}
 
-以下の保有銘柄データから、ポートフォリオ全体をスキャンした総合投資戦略レポートをJSON形式のみで作成してください。Markdownは不要。
+以下の保有銘柄データから、ポートフォリオ全体をスキャンした詳細な投資戦略レポートをJSON形式のみで作成してください。Markdownは不要。
+専門的なアナリストとして、テクニカル・ファンダメンタル両面から徹底分析してください。
 
 【保有銘柄データ】
 {stocks_prompt_text}
 
 【出力形式】必ず次のJSON構造のみを返すこと。
 {{
-  "title": "{timing}の証券アナリスト・レポート",
+  "title": "{timing}のアナリスト・レポート",
   "statusColor": "#b91c1c",
   "alerts": ["🚨 XX銘柄で過熱感のサイン", "💡 XXセクターに好材料"],
   "weather": "半導体:☀️ / 銀行:☁️",
   "benchmark": "日経225({nikkei_change}) vs ポートフォリオ: ±X.XX%",
+  "market_summary": "市場全体の概況・地合いを200字程度で解説",
+  "tomorrow_outlook": "明日の見通しを100字程度で",
   "stocks": [{{
     "name": "銘柄名",
     "code": "コード",
-    "price": "現在値(前日比)",
+    "price": "現在値（前日比%）",
     "sentiment": "ポジティブ/ネガティブ/ニュートラル",
-    "info": "ニュース・テクニカルの要約（50字以内）"
+    "sentiment_reason": "感情判定の根拠（50字以内）",
+    "recommendation": "強気買い/買い増し/保有/一部利確/利確/売却",
+    "recommendation_reason": "推奨根拠（100字以内）",
+    "target_price": 0,
+    "target_basis": "目標株価の算出根拠（PER・BB・抵抗線など、80字以内）",
+    "stop_loss": 0,
+    "risk_factors": "主なリスク要因（80字以内）",
+    "technical_detail": "RSI・MACD・BB・SMAを使った詳細テクニカル解説（150字以内）",
+    "news_impact": "直近ニュースの影響評価（50字以内）",
+    "one_liner": "LINEに送る超短い一言コメント（20字以内）"
   }}],
-  "analysis_1_title": "市場環境と答え合わせ",
-  "analysis_1_content": "分析内容（200字以内）",
-  "analysis_2_title": "テクニカル＆セクター分析",
-  "analysis_2_content": "RSI・MACD・BB・過去パターンを含む分析（200字以内）",
-  "strategy_title": "アクションプラン",
-  "strategy_content": "具体的な売買戦略（200字以内）"
+  "analysis_market": "市場環境の詳細分析（300字以内）",
+  "analysis_technical": "テクニカル総合評価・セクターローテーション・特筆すべきパターン（300字以内）",
+  "analysis_portfolio": "ポートフォリオ全体のバランス・リスク分散状況の評価（200字以内）",
+  "strategy_short": "今日〜今週の短期アクションプラン（200字以内）",
+  "strategy_mid": "1〜3ヶ月の中期戦略・注目イベント（200字以内）"
 }}"""
 
     print(f"【2】Gemini ({GEMINI_MODEL}) で分析レポートを生成中 (本実行で1回のみ)...")
@@ -514,108 +525,121 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
     return None
 
 # ========================
-# LINE 送信（Flex Message + チャート画像 + 感情カラー + ベンチマーク）
+# LINE 送信（超ミニマル版 — 重要情報のみ）
+# 詳細はダッシュボードで確認できるため、LINEは通知として機能する最小限に絞る
 # ========================
 
-def send_to_line(data, today_str=None):
+def send_to_line(data, today_str=None, dashboard_url=""):
     if not data:
         return
     url = "https://api.line.me/v2/bot/message/push"
 
-    sentiment_colors = {
-        "ポジティブ": "#15803d",
-        "ネガティブ": "#b91c1c",
-        "ニュートラル": "#475569",
+    # 感情絵文字マッピング
+    s_emoji = {"ポジティブ": "📈", "ネガティブ": "📉", "ニュートラル": "➡️"}
+    r_color = {
+        "強気買い": "#15803d", "買い増し": "#16a34a",
+        "保有": "#475569", "一部利確": "#b45309",
+        "利確": "#ea580c", "売却": "#b91c1c",
     }
 
-    # 銘柄テーブル
-    flex_stocks = [
-        {
-            "type": "box", "layout": "horizontal", "contents": [
-                {"type": "text", "text": "銘柄",    "size": "xs", "color": "#888888", "weight": "bold", "flex": 2},
-                {"type": "text", "text": "値動き",  "size": "xs", "color": "#888888", "align": "center", "weight": "bold", "flex": 3},
-                {"type": "text", "text": "感情/一言", "size": "xs", "color": "#888888", "align": "end", "weight": "bold", "flex": 5},
-            ]
-        },
-        {"type": "separator", "margin": "sm"},
-    ]
+    # アラート行（最大2件）
+    alert_contents = []
+    for a in data.get("alerts", [])[:2]:
+        alert_contents.append({
+            "type": "text", "text": a,
+            "size": "xxs", "wrap": True, "color": "#fca5a5",
+        })
 
+    # 銘柄サマリー行（1銘柄1行）
+    stock_rows = []
     for s in data.get("stocks", []):
-        sentiment = s.get("sentiment", "ニュートラル")
-        s_color   = sentiment_colors.get(sentiment, "#475569")
-        tag       = sentiment[:3] if len(sentiment) >= 3 else sentiment
-        flex_stocks.append({
-            "type": "box", "layout": "horizontal", "margin": "sm", "contents": [
-                {"type": "text", "text": s.get("name", ""),  "size": "xs", "weight": "bold", "wrap": True, "flex": 2},
-                {"type": "text", "text": s.get("price", ""), "size": "xs", "align": "center", "wrap": True, "flex": 3},
-                {"type": "text", "text": f"[{tag}] {s.get('info', '')}",
-                 "size": "xxs", "align": "end", "wrap": True, "color": s_color, "flex": 5},
+        emoji  = s_emoji.get(s.get("sentiment", "ニュートラル"), "➡️")
+        rec    = s.get("recommendation", "保有")
+        c      = r_color.get(rec, "#94a3b8")
+        liner  = s.get("one_liner") or s.get("info", "") or ""
+        tgt    = s.get("target_price")
+        tgt_str = f" 目標:{int(tgt):,}円" if tgt and int(tgt) > 0 else ""
+        stock_rows.append({
+            "type": "box", "layout": "horizontal",
+            "contents": [
+                {"type": "text", "text": f"{emoji} {s.get('code','')}",
+                 "size": "xs", "weight": "bold", "flex": 2, "color": "#e2e8f0"},
+                {"type": "text", "text": s.get("price", ""),
+                 "size": "xxs", "flex": 3, "align": "center", "color": "#94a3b8"},
+                {"type": "text", "text": f"[{rec}]{tgt_str} {liner}",
+                 "size": "xxs", "flex": 5, "align": "end", "wrap": True, "color": c},
             ]
         })
 
-    alerts_box = [
-        {"type": "text", "text": a, "size": "sm", "color": "#b91c1c", "weight": "bold", "wrap": True}
-        for a in data.get("alerts", [])
-    ]
+    # 短期戦略（60字で切り捨て）
+    strategy_short = (data.get("strategy_short") or "")[:60]
+    if len(data.get("strategy_short") or "") > 60:
+        strategy_short += "…"
 
     body_contents = []
-    if alerts_box:
+    if alert_contents:
         body_contents.append({
             "type": "box", "layout": "vertical",
-            "backgroundColor": "#fee2e2", "paddingAll": "sm", "cornerRadius": "md",
-            "contents": alerts_box,
+            "backgroundColor": "#1a0a0a", "paddingAll": "sm", "cornerRadius": "sm",
+            "contents": alert_contents,
         })
     if data.get("benchmark"):
         body_contents.append({
-            "type": "text", "text": f"📊 {data['benchmark']}",
-            "size": "xs", "color": "#1d4ed8", "wrap": True, "margin": "sm",
+            "type": "text",
+            "text": f"📊 {data['benchmark']}",
+            "size": "xxs", "color": "#60a5fa", "wrap": True, "margin": "sm",
         })
-    body_contents += [
-        {"type": "box", "layout": "vertical", "spacing": "xs", "contents": flex_stocks},
-        {"type": "separator", "margin": "lg"},
-        {"type": "text", "text": data.get("analysis_1_title", ""), "weight": "bold", "size": "sm", "color": "#334155"},
-        {"type": "text", "text": data.get("analysis_1_content", ""), "wrap": True, "size": "xs", "color": "#475569"},
-        {"type": "text", "text": data.get("analysis_2_title", ""), "weight": "bold", "size": "sm", "color": "#334155", "margin": "md"},
-        {"type": "text", "text": data.get("analysis_2_content", ""), "wrap": True, "size": "xs", "color": "#475569"},
-        {
-            "type": "box", "layout": "vertical", "margin": "lg",
-            "backgroundColor": "#eff6ff", "paddingAll": "md", "cornerRadius": "md",
-            "contents": [
-                {"type": "text", "text": data.get("strategy_title", ""), "weight": "bold", "size": "sm", "color": "#1d4ed8"},
-                {"type": "text", "text": data.get("strategy_content", ""), "wrap": True, "size": "xs", "color": "#1e3a8a", "margin": "sm"},
-            ],
-        },
-    ]
+    body_contents.append({"type": "separator", "margin": "sm"})
+    body_contents += stock_rows
+    body_contents.append({"type": "separator", "margin": "sm"})
+    body_contents.append({
+        "type": "text",
+        "text": f"📌 {strategy_short}",
+        "size": "xxs", "wrap": True, "color": "#a5b4fc", "margin": "sm",
+    })
+
+    # ダッシュボードリンクボタン
+    footer_contents = []
+    if dashboard_url:
+        footer_contents.append({
+            "type": "button",
+            "action": {"type": "uri", "label": "📊 詳細レポートを見る", "uri": dashboard_url},
+            "style": "primary", "color": "#1d4ed8", "height": "sm",
+        })
 
     bubble = {
-        "type": "bubble",
+        "type": "bubble", "size": "kilo",
         "header": {
-            "type": "box", "layout": "vertical", "backgroundColor": "#1e293b",
+            "type": "box", "layout": "vertical",
+            "backgroundColor": "#0f172a", "paddingAll": "md",
             "contents": [
-                {"type": "text", "text": data.get("title", "レポート"), "weight": "bold", "color": "#ffffff", "size": "md"},
-                {"type": "text", "text": f"セクター: {data.get('weather', '')}", "color": "#cbd5e1", "size": "sm", "margin": "sm"},
+                {"type": "text", "text": data.get("title", "レポート"),
+                 "weight": "bold", "color": "#f1f5f9", "size": "sm"},
+                {"type": "text", "text": data.get("weather", ""),
+                 "color": "#64748b", "size": "xxs", "margin": "xs"},
             ],
         },
-        "body": {"type": "box", "layout": "vertical", "spacing": "md", "contents": body_contents},
+        "body": {
+            "type": "box", "layout": "vertical",
+            "spacing": "xs", "paddingAll": "md",
+            "contents": body_contents,
+        },
     }
-
-    # ポートフォリオ概要チャートをヒーロー画像として添付
-    if GITHUB_PAGES_URL and today_str:
-        overview_url = f"{GITHUB_PAGES_URL}/charts/{today_str}/portfolio_overview.png"
-        bubble["hero"] = {
-            "type": "image",
-            "url": overview_url,
-            "size": "full",
-            "aspectRatio": "20:8",
-            "aspectMode": "cover",
-            "action": {"type": "uri", "uri": f"{GITHUB_PAGES_URL}/"},
+    if footer_contents:
+        bubble["footer"] = {
+            "type": "box", "layout": "vertical", "paddingAll": "md",
+            "contents": footer_contents,
         }
+
+    alt_text = data.get("title", "アナリストレポート")
+    if data.get("alerts"):
+        alt_text += " ⚠️" + data["alerts"][0][:20]
 
     flex_message = {
         "to": LINE_USER_ID,
         "messages": [{
             "type": "flex",
-            "altText": data.get("title", "アナリストレポート"),
+            "altText": alt_text,
             "contents": bubble,
         }],
     }
@@ -641,8 +665,9 @@ if __name__ == "__main__":
     sheet       = spreadsheet.worksheet("保有銘柄")
     initialize_headers(sheet)
 
-    timing    = get_current_timing()
-    today_str = datetime.now(JST).strftime("%Y-%m-%d")
+    timing       = get_current_timing()
+    today_str    = datetime.now(JST).strftime("%Y-%m-%d")
+    dashboard_url = GITHUB_PAGES_URL if GITHUB_PAGES_URL else ""
     print(f"=== 実行開始: {today_str} {timing} (モデル: {GEMINI_MODEL}) ===")
 
     tech_context = update_stock_data(sheet)
@@ -650,8 +675,8 @@ if __name__ == "__main__":
     report       = generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_data)
 
     if report:
-        send_to_line(report, today_str)
-        # history.py 用にレポートを一時保存
+        send_to_line(report, today_str, dashboard_url=dashboard_url)
+        # generate_charts.py / history.py 用にレポートを一時保存
         with open(LAST_REPORT_FILE, "w", encoding="utf-8") as f:
             json.dump({"report": report, "timing": timing, "date": today_str}, f, ensure_ascii=False)
         print(f"【完了】レポートを {LAST_REPORT_FILE} に保存")

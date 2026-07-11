@@ -269,6 +269,7 @@ if __name__ == "__main__":
     today_str     = datetime.now(JST).strftime("%Y-%m-%d")
     charts_dir    = os.path.join(OUTPUT_DIR, "charts", today_str)
     github_pages  = os.environ.get("GITHUB_PAGES_URL", "")
+    last_report_file = os.environ.get("LAST_REPORT_FILE", "last_report.json")
 
     print("【チャート生成】スプレッドシートからデータ取得中...")
     spreadsheet = get_spreadsheet()
@@ -278,6 +279,35 @@ if __name__ == "__main__":
     # データ整形
     stocks_data, portfolio = build_stocks_data(records, today_str)
     history_data           = get_history_data(spreadsheet)
+
+    # last_report.json の読み込み（main.py が生成した Gemini レポート）
+    ai_report = {}
+    if os.path.exists(last_report_file):
+        try:
+            with open(last_report_file, "r", encoding="utf-8") as f:
+                saved = json.load(f)
+                ai_report = saved.get("report", {})
+            print(f"[AIレポート] {last_report_file} の読み込み完了")
+        except Exception as e:
+            print(f"[警告] {last_report_file} の読み込み失敗: {e}")
+
+    # AIレポートの銘柄データを stocks_data にマージ
+    report_stocks_map = {
+        s.get("code", ""): s
+        for s in ai_report.get("stocks", [])
+    }
+    for stock in stocks_data:
+        rs = report_stocks_map.get(stock["code"], {})
+        stock["sentiment"]            = rs.get("sentiment", "")
+        stock["sentiment_reason"]     = rs.get("sentiment_reason", "")
+        stock["recommendation"]       = rs.get("recommendation", "")
+        stock["recommendation_reason"]= rs.get("recommendation_reason", "")
+        stock["target_price"]         = rs.get("target_price", 0)
+        stock["target_basis"]         = rs.get("target_basis", "")
+        stock["stop_loss"]            = rs.get("stop_loss", 0)
+        stock["risk_factors"]         = rs.get("risk_factors", "")
+        stock["technical_detail"]     = rs.get("technical_detail", "")
+        stock["news_impact"]          = rs.get("news_impact", "")
 
     # 各銘柄チャート生成
     for stock in stocks_data:
@@ -297,19 +327,34 @@ if __name__ == "__main__":
     if generate_portfolio_overview(stocks_data, overview_path):
         print("[生成完了] portfolio_overview.png")
 
-    # ダッシュボード用 data.json 生成
+    # ダッシュボード用 data.json 生成（AIレポートを包括）
     data_json = {
-        "updated_at":      datetime.now(JST).isoformat(),
-        "today":           today_str,
+        "updated_at":       datetime.now(JST).isoformat(),
+        "today":            today_str,
         "github_pages_url": github_pages,
-        "portfolio":       portfolio,
-        "stocks":          stocks_data,
-        "history":         history_data,
+        "portfolio":        portfolio,
+        "stocks":           stocks_data,
+        "history":          history_data,
+        # Gemini AIレポート全体（ダッシュボード用）
+        "ai_report": {
+            "title":              ai_report.get("title", ""),
+            "alerts":             ai_report.get("alerts", []),
+            "weather":            ai_report.get("weather", ""),
+            "benchmark":          ai_report.get("benchmark", ""),
+            "market_summary":     ai_report.get("market_summary", ""),
+            "tomorrow_outlook":   ai_report.get("tomorrow_outlook", ""),
+            "analysis_market":    ai_report.get("analysis_market", ""),
+            "analysis_technical": ai_report.get("analysis_technical", ""),
+            "analysis_portfolio": ai_report.get("analysis_portfolio", ""),
+            "strategy_short":     ai_report.get("strategy_short", ""),
+            "strategy_mid":       ai_report.get("strategy_mid", ""),
+        } if ai_report else None,
     }
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     data_path = os.path.join(OUTPUT_DIR, "data.json")
     with open(data_path, "w", encoding="utf-8") as f:
         json.dump(data_json, f, ensure_ascii=False, indent=2)
 
-    print(f"[生成完了] data.json ({len(stocks_data)}銘柄)")
+    print(f"[生成完了] data.json ({len(stocks_data)}銘柄 / AIレポート: {'OK' if ai_report else '未取得'})")  
     print(f"【チャート生成完了】出力先: {charts_dir}/")
+

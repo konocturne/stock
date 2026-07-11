@@ -6,7 +6,6 @@ on:
     - cron: '0 23,3,10 * * *'
   workflow_dispatch:
 
-# gh-pages への書き込み権限
 permissions:
   contents: write
 
@@ -15,23 +14,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # -------------------------------------------------------
-      # 1. ソース取得
-      # -------------------------------------------------------
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # -------------------------------------------------------
-      # 2. Python セットアップ
-      # -------------------------------------------------------
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # -------------------------------------------------------
-      # 3. pip キャッシュ + 依存関係インストール
-      # -------------------------------------------------------
       - name: Cache pip packages
         uses: actions/cache@v4
         with:
@@ -44,19 +34,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # -------------------------------------------------------
-      # 4. 日本語フォント（matplotlib 用）
-      # -------------------------------------------------------
       - name: Install Japanese fonts for matplotlib
         run: |
           sudo apt-get install -y --no-install-recommends fonts-noto-cjk
           fc-cache -fv
 
-      # -------------------------------------------------------
-      # 5. 環境変数を設定
-      #    - GITHUB_PAGES_URL : チャート画像 / ダッシュボードの URL
-      #    - REPORT_TIMING    : 朝 / 昼 / 夜
-      # -------------------------------------------------------
       - name: Set runtime environment variables
         run: |
           OWNER=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f1)
@@ -73,48 +55,11 @@ jobs:
           echo "実行タイミング: ${TIMING} / Pages URL: ${PAGES_URL}"
 
       # -------------------------------------------------------
-      # 6. チャート生成 + data.json 出力
-      #    → gh_pages_output/ ディレクトリに書き出す
+      # STEP 1: メインレポート生成・LINE 送信
+      #   ★ Gemini 呼び出しはここで 1回のみ ★
+      #   → last_report.json に保存
       # -------------------------------------------------------
-      - name: Generate Charts and data.json
-        env:
-          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
-          GITHUB_PAGES_URL: ${{ env.GITHUB_PAGES_URL }}
-        run: python generate_charts.py
-
-      # -------------------------------------------------------
-      # 7. ダッシュボード静的ファイルをデプロイ用ディレクトリにコピー
-      # -------------------------------------------------------
-      - name: Copy dashboard files to deploy directory
-        run: |
-          cp dashboard/index.html gh_pages_output/index.html
-          cp dashboard/style.css  gh_pages_output/style.css
-          cp dashboard/app.js     gh_pages_output/app.js
-
-      # -------------------------------------------------------
-      # 8. GitHub Pages へデプロイ
-      #    keep_files: true → 過去のチャート画像を保持
-      # -------------------------------------------------------
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./gh_pages_output
-          keep_files: true
-          commit_message: "chore: update charts and dashboard [skip ci]"
-
-      # -------------------------------------------------------
-      # 9. GitHub Pages の伝播を待つ
-      #    LINE に送る画像 URL が有効になってから main.py を呼ぶ
-      # -------------------------------------------------------
-      - name: Wait for GitHub Pages propagation
-        run: sleep 45
-
-      # -------------------------------------------------------
-      # 10. メインレポート生成・LINE 送信
-      #     ★ Gemini 呼び出しはここで 1回のみ ★
-      # -------------------------------------------------------
-      - name: Run Main Report Script
+      - name: Run Main Report Script (Gemini + LINE)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           LINE_ACCESS_TOKEN: ${{ secrets.LINE_ACCESS_TOKEN }}
@@ -125,8 +70,39 @@ jobs:
         run: python main.py
 
       # -------------------------------------------------------
-      # 11. アラートチェック（Gemini 不使用・価格/出来高の数値判定のみ）
-      #     アラートなしの場合は LINE 送信しない → 無料枠節約
+      # STEP 2: チャート生成 + data.json 出力
+      #   → last_report.json を読み込んで AI レポートも統合
+      #   → gh_pages_output/ に書き出す
+      # -------------------------------------------------------
+      - name: Generate Charts and data.json
+        env:
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+          GITHUB_PAGES_URL: ${{ env.GITHUB_PAGES_URL }}
+        run: python generate_charts.py
+
+      # -------------------------------------------------------
+      # STEP 3: ダッシュボード静的ファイルをデプロイ用ディレクトリにコピー
+      # -------------------------------------------------------
+      - name: Copy dashboard files to deploy directory
+        run: |
+          cp dashboard/index.html gh_pages_output/index.html
+          cp dashboard/style.css  gh_pages_output/style.css
+          cp dashboard/app.js     gh_pages_output/app.js
+
+      # -------------------------------------------------------
+      # STEP 4: GitHub Pages へデプロイ
+      #   keep_files: true → 過去のチャート画像を保持
+      # -------------------------------------------------------
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./gh_pages_output
+          keep_files: true
+          commit_message: "chore: update dashboard and charts [skip ci]"
+
+      # -------------------------------------------------------
+      # STEP 5: アラートチェック（Gemini 不使用・数値判定のみ）
       # -------------------------------------------------------
       - name: Run Alert Check
         env:
@@ -136,8 +112,7 @@ jobs:
         run: python alert.py
 
       # -------------------------------------------------------
-      # 12. レポートをスプレッドシートの「履歴」シートに追記
-      #     main.py が生成した last_report.json を読み込む
+      # STEP 6: レポートをスプレッドシートの「履歴」シートに追記
       # -------------------------------------------------------
       - name: Save Report History to Spreadsheet
         env:
