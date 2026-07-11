@@ -347,6 +347,23 @@ def update_stock_data(sheet):
 
                 recent_news = fetch_recent_news(code, name)
 
+                # アナリストコンセンサス取得
+                target_mean = info.get("targetMeanPrice")
+                target_high = info.get("targetHighPrice")
+                target_low  = info.get("targetLowPrice")
+                analysts_count = info.get("numberOfAnalystOpinions")
+                rec_key = info.get("recommendationKey")
+
+                analyst_text = ""
+                if target_mean and target_mean > 0:
+                    analyst_text = (
+                        f"【機関コンセンサス】平均目標: {format_currency(target_mean)}円 "
+                        f"(高値: {format_currency(target_high)}円 / 安値: {format_currency(target_low)}円)\n"
+                        f"　アナリスト数: {analysts_count}名 / 推奨: {rec_key}"
+                    )
+                else:
+                    analyst_text = "【機関コンセンサス】データなし"
+
                 # テクニカルコンテキスト文字列
                 if tech["rsi"]:
                     tech_text = (
@@ -362,7 +379,7 @@ def update_stock_data(sheet):
                     f"({pnl_sign}{pnl_pct:.2f}%) "
                     f"評価額:{format_currency(eval_total)}円"
                 )
-                technical_context[code] = f"{tech_text}\n{pnl_text}\n【ニュース】{recent_news}"
+                technical_context[code] = f"{tech_text}\n{analyst_text}\n{pnl_text}\n【ニュース】{recent_news}"
 
                 # スプレッドシート更新
                 update_row = [
@@ -462,6 +479,7 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
 
 以下の保有銘柄データから、ポートフォリオ全体をスキャンした詳細な投資戦略レポートをJSON形式のみで作成してください。Markdownは不要。
 専門的なアナリストとして、テクニカル・ファンダメンタル両面から徹底分析してください。
+目標株価はAIで独自算出せず、データ内にある「機関コンセンサス」の平均目標株価をそのまま使用し、現在の株価との乖離度について分析してください。
 
 【保有銘柄データ】
 {stocks_prompt_text}
@@ -483,8 +501,8 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
     "sentiment_reason": "感情判定の根拠（50字以内）",
     "recommendation": "強気買い/買い増し/保有/一部利確/利確/売却",
     "recommendation_reason": "推奨根拠（100字以内）",
-    "target_price": 0,
-    "target_basis": "目標株価の算出根拠（PER・BB・抵抗線など、80字以内）",
+    "consensus_target": 0,
+    "target_divergence_comment": "機関の平均目標株価と現在値との乖離度についての見解（80字以内）",
     "stop_loss": 0,
     "risk_factors": "主なリスク要因（80字以内）",
     "technical_detail": "RSI・MACD・BB・SMAを使った詳細テクニカル解説（150字以内）",
@@ -557,7 +575,7 @@ def send_to_line(data, today_str=None, dashboard_url=""):
         rec    = s.get("recommendation", "保有")
         c      = r_color.get(rec, "#94a3b8")
         liner  = s.get("one_liner") or s.get("info", "") or ""
-        tgt    = s.get("target_price")
+        tgt    = s.get("consensus_target")
         tgt_str = f" 目標:{int(tgt):,}円" if tgt and int(tgt) > 0 else ""
         stock_rows.append({
             "type": "box", "layout": "horizontal",

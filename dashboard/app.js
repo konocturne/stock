@@ -204,8 +204,8 @@ function escape(s) {
 
 function renderStockCard(stock, index) {
   const { pnl, pnl_pct, current_price, quantity, avg_cost,
-          change_pct_str, recommendation, target_price, stop_loss,
-          target_basis, risk_factors, technical_detail, news_impact } = stock;
+          change_pct_str, recommendation, consensus_target, stop_loss,
+          target_divergence_comment, risk_factors, technical_detail, news_impact } = stock;
 
   const cls       = pnlCls(pnl);
   const pnlSign   = (pnl ?? 0) >= 0 ? '+' : '';
@@ -216,8 +216,8 @@ function renderStockCard(stock, index) {
 
   // 目標株価乖離度
   let targetDevHTML = '';
-  if (target_price && target_price > 0 && current_price > 0) {
-    const dev = ((target_price - current_price) / current_price * 100).toFixed(1);
+  if (consensus_target && consensus_target > 0 && current_price > 0) {
+    const dev = ((consensus_target - current_price) / current_price * 100).toFixed(1);
     const devSign = dev >= 0 ? '+' : '';
     const devColor = dev >= 0 ? '#22c55e' : '#f43f5e';
     targetDevHTML = `<span style="font-size:.6rem;color:${devColor};font-weight:700;"> (現在比 ${devSign}${dev}%)</span>`;
@@ -259,12 +259,12 @@ function renderStockCard(stock, index) {
         </div>
       </div>
 
-      ${(target_price || stop_loss) ? `
+      ${(consensus_target || stop_loss) ? `
       <div class="stock-targets">
         <div class="target-item">
-          <div class="target-label">🎯 目標株価</div>
-          <div class="target-value positive">¥${target_price ? fmt(target_price) : '---'}${targetDevHTML}</div>
-          ${target_basis ? `<div class="target-basis">${target_basis}</div>` : ''}
+          <div class="target-label">🎯 機関コンセンサス目標</div>
+          <div class="target-value positive">¥${consensus_target ? fmt(consensus_target) : '---'}${targetDevHTML}</div>
+          ${target_divergence_comment ? `<div class="target-basis">${target_divergence_comment}</div>` : ''}
         </div>
         <div class="target-item">
           <div class="target-label">🛑 ストップロス</div>
