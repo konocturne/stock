@@ -263,6 +263,22 @@ def get_pts_price(code):
     return None
 
 # ========================
+# 銘柄名取得 (Yahoo!ファイナンス)
+# ========================
+
+def get_japanese_stock_name(code):
+    url = f"https://finance.yahoo.co.jp/quote/{code}.T"
+    try:
+        res = requests.get(url, timeout=5)
+        if res.status_code == 200:
+            m = re.search(r'<title>(.*?)【', res.text)
+            if m:
+                return m.group(1).strip()
+    except Exception:
+        pass
+    return None
+
+# ========================
 # フォーマットユーティリティ
 # ========================
 
@@ -299,7 +315,12 @@ def update_stock_data(sheet):
             try:
                 ticker = yf.Ticker(f"{code}.T")
                 info   = ticker.info
-                name   = info.get("longName") or info.get("shortName") or code
+                # スプレッドシートにある既存の銘柄名（日本語）を優先、無ければYahooファイナンスからスクレイピング、それでも無ければyfinance
+                name = row[1].strip() if len(row) > 1 and row[1].strip() else None
+                if not name:
+                    name = get_japanese_stock_name(code)
+                if not name:
+                    name = info.get("longName") or info.get("shortName") or code
                 hist   = ticker.history(period="6mo")
 
                 if not hist.empty:
@@ -503,6 +524,7 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
 以下の保有銘柄データから、ポートフォリオ全体をスキャンした詳細な投資戦略レポートをJSON形式のみで作成してください。Markdownは不要。
 専門的なアナリストとして、テクニカル・ファンダメンタル両面から徹底分析してください。
 目標株価、推奨度、損切りラインなどはAIで独自算出せず、データ内にある「機関コンセンサス」「52週安値」等の客観的な指標を優先して使用し、事実情報に基づいた分析をしてください。
+重要なルール：必ず全ての出力を自然な日本語で行うこと（英語が混ざらないように注意してください）。
 
 【保有銘柄データ】
 {stocks_prompt_text}
@@ -514,29 +536,30 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
   "alerts": ["🚨 XX銘柄で過熱感のサイン", "💡 XXセクターに好材料"],
   "weather": "半導体:☀️ / 銀行:☁️",
   "benchmark": "日経225({nikkei_change}) vs ポートフォリオ: ±X.XX%",
-  "market_summary": "市場全体の概況・地合いを200字程度で解説",
-  "tomorrow_outlook": "明日の見通しを100字程度で",
+  "market_summary": "市場全体の概況・地合いを400字程度で解説",
+  "tomorrow_outlook": "明日の見通しを200字程度で",
   "stocks": [{{
     "name": "銘柄名",
     "code": "コード",
     "price": "現在値（前日比%）",
     "sentiment": "ポジティブ/ネガティブ/ニュートラル",
-    "sentiment_reason": "感情判定の根拠（50字以内）",
+    "sentiment_reason": "感情判定の根拠",
     "analyst_rating": "データにある【推奨】(強気買い/買い等)をそのまま記載。無い場合は「データなし」",
     "consensus_target": 0,
-    "target_divergence_comment": "機関平均目標と現在値の乖離に対する見解（80字以内）",
+    "target_divergence_comment": "機関平均目標と現在値の乖離に対する見解",
     "stop_loss_guide": 0,
-    "risk_comment": "ベータ値や直近のボラティリティを踏まえた客観的なリスク解説（80字以内）",
-    "technical_detail": "RSI・MACD・BB・SMAを使った詳細テクニカル解説（150字以内）",
-    "news_impact": "直近ニュースの影響評価（50字以内）",
-    "personal_action": "保有数と取得単価(含み損益)を加味した個人へのアクション提案(一部利確/ホールド等、60字以内)",
+    "risk_comment": "ベータ値や直近のボラティリティを踏まえた客観的なリスク解説",
+    "technical_detail": "RSI・MACD・BB・SMAを使った詳細テクニカル解説",
+    "news_impact": "直近ニュースの影響評価",
+    "personal_action": "保有数と取得単価(含み損益)を加味した個人へのアクション提案",
+    "comprehensive_analysis": "PERなどのファンダメンタル指標、現在値と目標株価の乖離、テクニカル指標、および関連ニュースを総合し、AIアナリストとしての見解・意見を400〜600字程度の詳細なテキストで記述してください。",
     "one_liner": "LINEに送る超短い一言コメント（20字以内）"
   }}],
-  "analysis_market": "市場環境の詳細分析（300字以内）",
-  "analysis_technical": "テクニカル総合評価・セクターローテーション・特筆すべきパターン（300字以内）",
-  "analysis_portfolio": "ポートフォリオ全体のバランス・リスク分散状況の評価（200字以内）",
-  "strategy_short": "今日〜今週の短期アクションプラン（200字以内）",
-  "strategy_mid": "1〜3ヶ月の中期戦略・注目イベント（200字以内）"
+  "analysis_market": "市場環境の詳細分析（400〜600字程度で詳細に）",
+  "analysis_technical": "テクニカル総合評価・セクターローテーション・特筆すべきパターン（400〜600字程度で詳細に）",
+  "analysis_portfolio": "ポートフォリオ全体のバランス・リスク分散状況の評価（400字程度で詳細に）",
+  "strategy_short": "今日〜今週の短期アクションプラン（300字程度で詳細に）",
+  "strategy_mid": "1〜3ヶ月の中期戦略・注目イベント（300字程度で詳細に）"
 }}"""
 
     print(f"【2】Gemini ({GEMINI_MODEL}) で分析レポートを生成中 (本実行で1回のみ)...")
@@ -588,7 +611,7 @@ def send_to_line(data, today_str=None, dashboard_url=""):
     for a in data.get("alerts", [])[:2]:
         alert_contents.append({
             "type": "text", "text": a,
-            "size": "xxs", "wrap": True, "color": "#fca5a5",
+            "size": "sm", "wrap": True, "color": "#fca5a5",
         })
 
     # 銘柄サマリー行（1銘柄1行）
@@ -604,11 +627,11 @@ def send_to_line(data, today_str=None, dashboard_url=""):
             "type": "box", "layout": "horizontal",
             "contents": [
                 {"type": "text", "text": f"{emoji} {s.get('code','')}",
-                 "size": "xs", "weight": "bold", "flex": 2, "color": "#e2e8f0"},
+                 "size": "sm", "weight": "bold", "flex": 3, "color": "#e2e8f0"},
                 {"type": "text", "text": s.get("price", ""),
-                 "size": "xxs", "flex": 3, "align": "center", "color": "#94a3b8"},
+                 "size": "sm", "flex": 4, "align": "center", "wrap": True, "color": "#94a3b8"},
                 {"type": "text", "text": f"[{rec}]{tgt_str} {liner}",
-                 "size": "xxs", "flex": 5, "align": "end", "wrap": True, "color": c},
+                 "size": "sm", "flex": 5, "align": "end", "wrap": True, "color": c},
             ]
         })
 
@@ -628,7 +651,7 @@ def send_to_line(data, today_str=None, dashboard_url=""):
         body_contents.append({
             "type": "text",
             "text": f"📊 {data['benchmark']}",
-            "size": "xxs", "color": "#60a5fa", "wrap": True, "margin": "sm",
+            "size": "sm", "color": "#60a5fa", "wrap": True, "margin": "sm",
         })
     body_contents.append({"type": "separator", "margin": "sm"})
     body_contents += stock_rows
@@ -636,7 +659,7 @@ def send_to_line(data, today_str=None, dashboard_url=""):
     body_contents.append({
         "type": "text",
         "text": f"📌 {strategy_short}",
-        "size": "xxs", "wrap": True, "color": "#a5b4fc", "margin": "sm",
+        "size": "sm", "wrap": True, "color": "#a5b4fc", "margin": "sm",
     })
 
     # ダッシュボードリンクボタン
@@ -649,20 +672,20 @@ def send_to_line(data, today_str=None, dashboard_url=""):
         })
 
     bubble = {
-        "type": "bubble", "size": "kilo",
+        "type": "bubble", "size": "mega",
         "header": {
             "type": "box", "layout": "vertical",
             "backgroundColor": "#0f172a", "paddingAll": "md",
             "contents": [
                 {"type": "text", "text": data.get("title", "レポート"),
-                 "weight": "bold", "color": "#f1f5f9", "size": "sm"},
+                 "weight": "bold", "color": "#f1f5f9", "size": "md", "wrap": True},
                 {"type": "text", "text": data.get("weather", ""),
-                 "color": "#64748b", "size": "xxs", "margin": "xs"},
+                 "color": "#64748b", "size": "xs", "margin": "xs", "wrap": True},
             ],
         },
         "body": {
             "type": "box", "layout": "vertical",
-            "spacing": "xs", "paddingAll": "md",
+            "spacing": "sm", "paddingAll": "md",
             "contents": body_contents,
         },
     }

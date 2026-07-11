@@ -308,6 +308,7 @@ if __name__ == "__main__":
         stock["technical_detail"]     = rs.get("technical_detail", "")
         stock["news_impact"]          = rs.get("news_impact", "")
         stock["personal_action"]      = rs.get("personal_action", "")
+        stock["comprehensive_analysis"] = rs.get("comprehensive_analysis", "")
 
     # 各銘柄チャート生成
     for stock in stocks_data:

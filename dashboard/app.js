@@ -272,6 +272,12 @@ function renderStockCard(stock, index) {
         </div>
       </div>` : ''}
 
+      ${stock.comprehensive_analysis ? `
+      <div class="stock-analysis" style="background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.2);padding:12px;margin:8px 0;border-radius:6px;">
+        <div class="tech-title" style="color:#fcd34d;font-size:0.85rem;margin-bottom:6px;font-weight:bold;">📝 AIアナリスト詳細見解</div>
+        <div class="tech-body" style="font-size:0.8rem;line-height:1.6;color:#cbd5e1;">${stock.comprehensive_analysis}</div>
+      </div>` : ''}
+
       ${personal_action ? `
       <div class="stock-technical" style="background:rgba(59,130,246,0.05);border-bottom:1px solid rgba(59,130,246,0.15);">
         <div class="tech-title" style="color:#60a5fa;">👤 個人戦略提案</div>
