@@ -11,192 +11,105 @@
   <link rel="stylesheet" href="style.css?v=2" />
 </head>
 <body>
-  <div id="app">
+<div class="container" style="margin-top: 16px;">
 
     <!-- ===== ヘッダー ===== -->
-    <header class="header">
-      <div class="header-inner">
-        <div class="logo">
-          <span class="logo-icon">📊</span>
-          <div>
-            <h1>株式ポートフォリオ投資戦略ダッシュボード</h1>
-            <p class="header-sub">Gemini AI × GitHub Actions 自動株式管理システム</p>
-          </div>
-        </div>
-        <div class="header-right">
-          <div class="update-badge">
-            <span class="update-dot"></span>
-            <span id="updated-at">読み込み中...</span>
-          </div>
-          <nav class="header-nav">
-            <a href="#section-roadmap" class="nav-link">将来見通し</a>
-            <a href="#section-position" class="nav-link">需給マップ</a>
-            <a href="#section-report" class="nav-link">AI総括</a>
-            <a href="#section-summary" class="nav-link">概要サマリー</a>
-            <a href="#section-stocks" class="nav-link">銘柄詳細</a>
-            <a href="#section-history" class="nav-link">履歴</a>
-          </nav>
-        </div>
-      </div>
+    <header class="main-header">
+      <h1 class="main-title" id="display-header-title">ポートフォリオ投資戦略・日報 (朝版)</h1>
+      <p class="update-time" id="display-header-time">本日の寄り付き前シグナル ➔ JST 08:30配信</p>
     </header>
 
-    <!-- ===== ローディング ===== -->
-    <div id="loading" class="loading-screen">
-      <div class="loader"></div>
-      <p>データを読み込み中...</p>
-    </div>
+    <!-- ===== ① 最上部：ポートフォリオ将来見通し ＆ 上昇ロードマップ ===== -->
+    <div class="report-card">
+      <div class="card-headline">
+        <span>ポートフォリオ将来見通し ＆ 上昇ロードマップ</span>
+        <span>保有銘柄の未来展望</span>
+      </div>
+      
+      <div class="summary-grid-wrapper">
+        <!-- 左半分: ロードマップ・マイルストーン -->
+        <div>
+          <div class="summary-prime" style="text-align: left; padding-bottom: 12px;">
+            <span class="summary-label">想定ポートフォリオ期待期待リターン</span>
+            <div class="summary-amount-large" style="color:var(--color-positive);">+14.8%</div>
+            <p style="font-size:12px; color:var(--text-muted);">※保有ウェイトに基づく加重平均目標株価からの算出</p>
+          </div>
 
-    <!-- ===== メインコンテンツ ===== -->
-    <main id="main-content" class="main" style="display:none;">
-
-      <!-- ===== ヘッダー ===== -->
-      <header class="main-header" style="margin-bottom: 24px;">
-        <h1 class="main-title" id="display-header-title">ポートフォリオ投資戦略・日報</h1>
-        <p class="update-time" id="display-header-time">---</p>
-      </header>
-
-      <!-- ① ポートフォリオ将来見通し ＆ 上昇ロードマップ -->
-      <div class="report-card" id="section-roadmap">
-        <div class="card-headline">
-          <span>ポートフォリオ将来見通し ＆ 上昇ロードマップ</span>
-          <span>保有銘柄の未来展望</span>
+          <div class="stat-list-vertical" style="border-top: 2px solid var(--border-color); padding-top: 12px; font-size:13.5px;">
+            <div style="font-weight:700; color:var(--text-dark); margin-bottom:4px;">■ 主要ロードマップ ＆ マイルストーン</div>
+            <ul class="bullet-list" style="margin-left:14px; font-size:13px; line-height:1.6; color:var(--text-main);">
+              <li><strong>7月後半 (トヨタ決算発表)</strong>: 為替悪影響の織り込みプロセスが完了し、歴史的下限値（PBR 0.95倍）からの上昇トレンド回帰ロードへ。</li>
+              <li><strong>8月前半 (ソニーG決算発表)</strong>: 新型スマホ向け高付加価値センサー需要の強さが数字で確認され、上値抵抗線（14,800円）ブレイクから大天井ロードへ。</li>
+            </ul>
+          </div>
         </div>
-        
-        <div class="summary-grid-wrapper">
-          <!-- 左側: 主要マイルストーン timeline -->
-          <div>
-            <div class="summary-prime" style="text-align: left; padding-bottom: 12px;">
-              <span class="summary-label">想定ポートフォリオ期待リターン</span>
-              <div class="summary-amount-large" style="color:var(--color-positive);" id="expected-return-val">+14.8%</div>
-              <p style="font-size:12px; color:var(--text-muted);">※保有ウェイトに基づく加重平均目標株価からの算出</p>
-            </div>
 
-            <div class="stat-list-vertical" style="border-top: 2px solid var(--border-color); padding-top: 12px; font-size:13.5px;">
-              <div style="font-weight:700; color:var(--text-dark); margin-bottom:4px;">■ 主要ロードマップ ＆ マイルストーン</div>
-              <div id="portfolio-roadmap-text" style="font-size:13px; line-height:1.6; color:var(--text-main); white-space:pre-wrap;">
-                <!-- JSで動的挿入 -->
-              </div>
-            </div>
-          </div>
-          
-          <!-- 右側: 各銘柄の上値ポテンシャル棒グラフ -->
-          <div class="chart-card" style="padding: 16px;">
-            <div class="chart-card-title">目標株価までの上値ポテンシャル（％）</div>
-            <div class="portfolio-chart-wrapper">
-              <canvas id="portfolioChart"></canvas>
-            </div>
-          </div>
+        <!-- 右半分: 上値ポテンシャル比較グラフ (Chart.js横棒) -->
+        <div class="portfolio-chart-wrapper">
+          <canvas id="chart-portfolio-allocation"></canvas>
         </div>
       </div>
 
-      <!-- ② 需給 ＆ 乖離相関プロット（信用倍率 vs 25日線乖離率） -->
-      <div class="report-card" id="section-position" style="margin-top: 24px;">
-        <div class="card-headline">
-          <span>🎯 ポートフォリオ需給 ＆ 乖離相関マップ</span>
-          <span>(今後の反発・過熱度見極め)</span>
+      <!-- 需給(信用倍率) vs 乖離(25日移動平均) の相関プロットマップ -->
+      <div class="valuation-plot-card">
+        <div class="valuation-plot-title">🎯 ポートフォリオ需給 ＆ 乖離相関マップ (今後の反発・過熱度見極め)</div>
+        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px; line-height:1.6;">
+          横軸: <strong>信用倍率</strong>（右に行くほど信用買い残が多く上値が重い需給悪化）<br>
+          縦軸: <strong>25日線乖離率</strong>（上に行くほど乖離して買われすぎ、下に行くほど売られすぎ）<br>
+          <span style="color:#2563eb; font-weight:700;">■左下領域（底打ち反発良好）</span> / <span style="color:#dc2626; font-weight:700;">■右下領域（バリュートラップ・要ナンピン禁止）</span>
+        </p>
+        <div class="valuation-plot-frame">
+          <canvas id="chart-valuation-plot"></canvas>
         </div>
-        <div class="valuation-plot-card" style="margin-top:0;">
-          <div class="valuation-plot-title">信用需給ポジションマップ (信用倍率 vs 25日線乖離率)</div>
-          <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.4;">
-            ※縦軸は **25日線乖離率(%)**、横軸は **信用倍率(倍)** です。
-            左上＝好需給/割安（押し目狙い）、右上＝高信用/過熱、左下＝信用低調/弱気、右下＝高信用残/乖離マイナス（需給悪化警戒）の4象限で分析。
-          </p>
-          <div class="valuation-plot-frame">
-            <canvas id="valuationPlot"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <!-- ③ 市場全体の急所 ＆ 本日のAI総括 -->
-      <div class="report-card" id="section-report" style="display:none; margin-top: 24px;">
-        <div class="card-headline">
-          <span id="report-title">市場全体の急所 ＆ 本日のAI総括</span>
-          <span class="market-weather" id="report-badge">🌤 市場天気: 良好</span>
-        </div>
-
-        <!-- 警告バナー (重大トピック用) -->
-        <div id="alerts-banner" class="alert-banner" style="display:none;"></div>
-
-        <!-- 市況・ベンチマーク対比 -->
-        <div class="report-strip" id="report-strip" style="display:none; background-color:#ffffff; border:2px solid var(--border-color); border-radius:8px; color:var(--text-main); font-weight:700;"></div>
-
-        <!-- AIレポート・ナビゲーションタブ -->
-        <div class="tab-nav">
-          <button class="tab-btn active" data-tab="market">🌐 市場分析</button>
-          <button class="tab-btn" data-tab="technical">📉 テクニカル</button>
-          <button class="tab-btn" data-tab="portfolio">🗂️ PF評価</button>
-          <button class="tab-btn" data-tab="strategy">🎯 投資戦略</button>
-        </div>
-
-        <!-- 各種タブパネル -->
-        <div id="tab-market"    class="tab-panel active" class="report-block"></div>
-        <div id="tab-technical" class="tab-panel" class="report-block"></div>
-        <div id="tab-portfolio" class="tab-panel"></div>
-        <div id="tab-strategy"  class="tab-panel"></div>
-      </div>
-
-      <!-- ④ ポートフォリオ概要サマリー -->
-      <div class="report-card" id="section-summary" style="margin-top: 24px;">
-        <div class="card-headline">
-          <span>ポートフォリオ財務状況</span>
-          <span id="perf-date">---</span>
-        </div>
-        <div class="summary-grid">
-          <div class="summary-card" id="card-eval">
-            <div class="summary-label">評価額合計</div>
-            <div class="summary-value" id="total-eval">---</div>
-          </div>
-          <div class="summary-card" id="card-pnl">
-            <div class="summary-label">個別含み損益</div>
-            <div class="summary-value" id="total-pnl">---</div>
-            <div class="summary-sub" id="total-pnl-pct">---</div>
-          </div>
-          <div class="summary-card">
-            <div class="summary-label">取得金額合計</div>
-            <div class="summary-value" id="total-cost">---</div>
-          </div>
-          <div class="summary-card">
-            <div class="summary-label">監視・保有銘柄数</div>
-            <div class="summary-value" id="stock-count">---</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ⑤ 個別銘柄詳細 -->
-      <div class="section-title" id="section-stocks" style="margin-top: 32px;">📊 個別銘柄 詳細アナリストレポート</div>
-
-      <div class="stock-container">
-        <!-- AIレポートローディング等があればここに -->
-        <div id="ai-loading" style="display:none;"></div>
-        <!-- 銘柄カードがここに動的生成される -->
-        <div class="stocks-grid" id="stocks-grid" style="display:flex; flex-direction:column; gap:32px; margin-bottom:24px;"></div>
-      </div>
-
-      <!-- ⑥ AIレポート履歴 -->
-      <div class="report-card" id="section-history" style="margin-top: 24px;">
-        <div class="card-headline">
-          <span>AI レポート履歴</span>
-          <span>直近10件</span>
-        </div>
-        <div class="history-list" id="history-list"></div>
-      </div>
-
-    </main>
-
-    <!-- エラー画面 -->
-    <div id="error-screen" class="error-screen" style="display:none;">
-      <div class="error-inner">
-        <p class="error-icon">⚠️</p>
-        <p class="error-title">データを読み込めませんでした</p>
-        <p class="error-msg">GitHub Actions が実行されていないか、data.json が存在しない可能性があります。</p>
       </div>
     </div>
 
-    <!-- フッター -->
-    <footer class="footer">
-      <p>提供：Gemini AI &times; GitHub Actions &times; LINE Bot &times; Google Sheets</p>
-    </footer>
-  </div>
-  <script src="app.js?v=2"></script>
+    <!-- ===== ② 市場全体の急所 ＆ 本日のAI総括 ===== -->
+    <div class="report-card">
+      <div class="card-headline">
+        <span>市場全体の急所 ＆ 本日のAI総括</span>
+        <span class="market-weather">🌤 市場天気: 良好</span>
+      </div>
+
+      <div class="alert-banner" id="display-alert-banner">
+        ⚠️ <strong>朝のアラート:</strong> トヨタ[7203]が52週安値（2,780円）に接近しています。本日の寄り付きから下限防衛の取引判断を準備してください。
+      </div>
+
+      <div class="flash-box" id="display-flash-text">
+        前日の米国市場で半導体SOX指数が+1.8%反発したため、本日の日経平均は上昇して始まる見込みです。しかし為替が1ドル141円台まで急激に円高方向に進行中。これにより、当PFの66.8%を占めるトヨタには強烈な為替下押し圧力が予想されます。<br>
+        寄り付き直後の為替とトヨタの下限ラインの挙動に最大の注意を払ってください。
+      </div>
+
+      <div class="strategy-group">
+        <div id="display-strategy-short">
+          <div class="strategy-subblock-title">■ 寄り付きトレード・アクションプラン (朝)</div>
+          <div class="strategy-subblock-text">
+            <ul class="bullet-list">
+              <li><span class="highlight-marker-yellow">トヨタ：2,780円の安値サポートを割り込む場合、半分をロスカット。</span></li>
+              <li>ソニーG：SOX指数反発に伴い寄り付きから上昇予想。13,500円に利益保護用の逆指値を再設定。</li>
+            </ul>
+          </div>
+        </div>
+        <div id="display-strategy-long" class="night-only">
+          <div class="strategy-subblock-title">■ 中長期アロケーション再構築方針 (夜)</div>
+          <div class="strategy-subblock-text">
+            <ol class="numbered-list">
+              <li><strong>セクター集中リスクの排除</strong>：トヨタへの過度な資金集中（66.8%）を段階的に縮小し、最大でも単一セクター of 40%以下にします。</li>
+              <li><strong>低ベータディフェンシブの組み込み</strong>：売却資金をベータ値の低い「大手都市銀行」または「大手通信インフラ株（KDDI等）」にシフトし、ポートフォリオ全体の平均ベータ値を1.00以下に引き下げます。</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ③ 個別銘柄 詳細アナリストレポート ===== -->
+    <div class="section-title">📊 個別銘柄 詳細アナリストレポート</div>
+
+    <div class="stock-container">
+      <div id="ai-loading" style="display:none;"></div>
+      <div class="stocks-grid" id="stocks-grid" style="display:flex; flex-direction:column; gap:32px; margin-bottom:24px;"></div>
+    </div>
+
+<script src="app.js?v=2"></script>
 </body>
 </html>

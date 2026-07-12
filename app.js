@@ -64,25 +64,34 @@ async function loadData() {
 
 function renderSummary(portfolio, stockCount) {
   const { total_eval, total_pnl, total_pnl_pct, total_cost } = portfolio;
-  document.getElementById('total-eval').textContent  = `¥${fmt(total_eval)}`;
-  document.getElementById('total-cost').textContent  = `¥${fmt(total_cost)}`;
-  document.getElementById('stock-count').textContent = `${stockCount} 銘柄`;
+  const elTotalEval = document.getElementById('total-eval');
+  if (elTotalEval) elTotalEval.textContent  = `¥${fmt(total_eval)}`;
+  const elTotalCost = document.getElementById('total-cost');
+  if (elTotalCost) elTotalCost.textContent  = `¥${fmt(total_cost)}`;
+  const elStockCount = document.getElementById('stock-count');
+  if (elStockCount) elStockCount.textContent = `${stockCount} 銘柄`;
 
   const cls = pnlCls(total_pnl);
   const pnlEl    = document.getElementById('total-pnl');
   const pnlPctEl = document.getElementById('total-pnl-pct');
-  pnlEl.textContent    = `${total_pnl >= 0 ? '+' : ''}¥${fmt(Math.abs(total_pnl))}`;
-  pnlEl.className      = `summary-value ${cls}`;
-  pnlPctEl.textContent = fmtPct(total_pnl_pct);
-  pnlPctEl.className   = `summary-sub ${cls}`;
+  if (pnlEl) {
+    pnlEl.textContent    = `${total_pnl >= 0 ? '+' : ''}¥${fmt(Math.abs(total_pnl))}`;
+    pnlEl.className      = `summary-value ${cls}`;
+  }
+  if (pnlPctEl) {
+    pnlPctEl.textContent = fmtPct(total_pnl_pct);
+    pnlPctEl.className   = `summary-sub ${cls}`;
+  }
 
   const cardPnl = document.getElementById('card-pnl');
-  cardPnl.style.background = total_pnl >= 0
-    ? 'var(--color-positive-bg)'
-    : 'var(--color-negative-bg)';
-  cardPnl.style.borderColor = total_pnl >= 0
-    ? 'var(--color-positive)'
-    : 'var(--color-negative)';
+  if (cardPnl) {
+    cardPnl.style.background = total_pnl >= 0
+      ? 'var(--color-positive-bg)'
+      : 'var(--color-negative-bg)';
+    cardPnl.style.borderColor = total_pnl >= 0
+      ? 'var(--color-positive)'
+      : 'var(--color-negative)';
+  }
 }
 
 // ========================
@@ -91,7 +100,7 @@ function renderSummary(portfolio, stockCount) {
 
 function renderCharts(stocks) {
   // 1. 上値ポテンシャル横棒グラフ
-  const ctxPot = document.getElementById('portfolioChart').getContext('2d');
+  const ctxPot = document.getElementById('chart-portfolio-allocation').getContext('2d');
   const dataList = stocks.map(s => {
     const price = s.current_price || 0;
     const target = s.consensus_target || 0;
@@ -145,7 +154,7 @@ function renderCharts(stocks) {
   });
 
   // 2. 需給散布図 (信用倍率 vs 25日乖離率)
-  const ctxVal = document.getElementById('valuationPlot').getContext('2d');
+  const ctxVal = document.getElementById('chart-valuation-plot').getContext('2d');
   const scatterData = stocks.map(s => {
     const xVal = s.margin_ratio != null ? parseFloat(s.margin_ratio) : 3.0;
     const yVal = s.dev25 != null ? parseFloat(s.dev25) : 0.0;
@@ -211,76 +220,42 @@ function renderCharts(stocks) {
 // AI レポートセクション
 // ========================
 
+
 function renderAIReport(report, today) {
-  if (!report || !report.title) return;
+  if (!report) return;
 
-  const section = document.getElementById('section-report');
-  section.style.display = '';
-  document.getElementById('report-title').textContent = `🤖 ${report.title}`;
-  document.getElementById('perf-date').textContent    = today || '---';
+  const titleEl = document.getElementById('display-header-title');
+  if (titleEl && report.title) titleEl.textContent = `🤖 ${report.title}`;
 
-  // アラートバナー
-  const banner = document.getElementById('alerts-banner');
-  if (report.alerts && report.alerts.length) {
-    banner.style.display = '';
+  const banner = document.getElementById('display-alert-banner');
+  if (banner && report.alerts && report.alerts.length) {
+    banner.style.display = 'block';
     banner.innerHTML = report.alerts.map(a => `<div class="alert-item">${a}</div>`).join('');
+  } else if (banner) {
+    banner.style.display = 'none';
   }
 
-  // マーケットストリップ
-  const strip = document.getElementById('report-strip');
-  const stripItems = [];
-  if (report.benchmark) stripItems.push(`<span class="strip-item">📊 ${report.benchmark}</span>`);
-  if (report.weather)   stripItems.push(`<span class="strip-divider">|</span><span class="strip-item">🗓️ ${report.weather}</span>`);
-  if (stripItems.length) { strip.style.display = ''; strip.innerHTML = stripItems.join(''); }
-
-  // タブコンテンツ (重要: HTML装飾タグ highlight-marker-* を有効にするため escape せずに innerHTML に格納する)
-  setTabContent('tab-market', [
-    report.market_summary ? block('🌐 市場概況サマリー', report.market_summary) : '',
-    report.analysis_market ? block('🔍 アナリスト市場詳細分析', report.analysis_market) : '',
-  ]);
-
-  setTabContent('tab-technical', [
-    report.analysis_technical ? block('📉 テクニカル総合評価', report.analysis_technical) : '',
-  ]);
-
-  setTabContent('tab-portfolio', [
-    report.analysis_portfolio ? block('🗂️ ポートフォリオ全体評価', report.analysis_portfolio) : '',
-  ]);
-
-  // 戦略タブ
-  const strategyHTML = `
-    <div class="strategy-grid">
-      <div class="strategy-card short-term">
-        <div class="strategy-card-label">⚡ 短期戦略 (今日〜今週のアクションプラン)</div>
-        <div class="strategy-card-body">${report.strategy_short || '---'}</div>
-      </div>
-      <div class="strategy-card mid-term">
-        <div class="strategy-card-label">🗓 中期戦略 (1〜3ヶ月のイベント展望)</div>
-        <div class="strategy-card-body">${report.strategy_mid || '---'}</div>
-      </div>
-    </div>
-    ${report.tomorrow_outlook ? `
-    <div class="outlook-box">
-      <strong>明日の地合い見通し</strong>
-      ${report.tomorrow_outlook}
-    </div>` : ''}`;
-  document.getElementById('tab-strategy').innerHTML = strategyHTML;
-
-  // 将来見通しロードマップテキストの挿入
-  const roadmapTextEl = document.getElementById('portfolio-roadmap-text');
-  if (roadmapTextEl && report.analysis_portfolio) {
-    roadmapTextEl.innerHTML = report.analysis_portfolio;
+  const flashText = document.getElementById('display-flash-text');
+  if (flashText && report.market_summary) {
+    flashText.innerHTML = report.market_summary;
   }
 
-  // タブ切り替えイベント
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
-    });
-  });
+  const strategyShort = document.getElementById('display-strategy-short');
+  if (strategyShort && report.strategy_short) {
+    strategyShort.innerHTML = `
+      <div class="strategy-subblock-title">■ 寄り付きトレード・アクションプラン</div>
+      <div class="strategy-subblock-text">${report.strategy_short}</div>
+    `;
+  }
+
+  const strategyLong = document.getElementById('display-strategy-long');
+  if (strategyLong && report.strategy_mid) {
+    strategyLong.innerHTML = `
+      <div class="strategy-subblock-title">■ 中長期アロケーション再構築方針</div>
+      <div class="strategy-subblock-text">${report.strategy_mid}</div>
+    `;
+    strategyLong.classList.remove('night-only'); // Show it dynamically
+  }
 }
 
 function block(title, content) {
@@ -696,6 +671,7 @@ function animatePnlBars() {
 
 function renderHistory(history) {
   const sec = document.getElementById('section-history');
+  if (!sec) return;
   if (!history || !history.length) { sec.style.display = 'none'; return; }
   sec.style.display = '';
   document.getElementById('history-list').innerHTML = history.map((h, i) => {
@@ -723,12 +699,12 @@ async function init() {
     // タイムスタンプ
     if (data.updated_at) {
       const d = new Date(data.updated_at);
-      document.getElementById('updated-at').textContent =
+      const updEl = document.getElementById('updated-at'); if(updEl) updEl.textContent =
         `最終更新: ${d.toLocaleString('ja-JP', { timeZone:'Asia/Tokyo', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' })}`;
     }
 
     const today = data.today || '---';
-    document.getElementById('perf-date').textContent        = today;
+    const perfEl = document.getElementById('perf-date'); if(perfEl) perfEl.textContent = today;
 
 
     renderSummary(data.portfolio, data.stocks.length);
@@ -741,13 +717,15 @@ async function init() {
 
     renderHistory(data.history);
 
-    document.getElementById('loading').style.display      = 'none';
-    document.getElementById('main-content').style.display = '';
+    const loadEl = document.getElementById('loading'); if(loadEl) loadEl.style.display = 'none';
+    const mainEl = document.getElementById('main-content'); if(mainEl) mainEl.style.display = '';
   } catch (err) {
     console.error('Dashboard load error:', err);
-    document.getElementById('loading').style.display      = 'none';
-    document.getElementById('error-screen').style.display = '';
+    const loadEl = document.getElementById('loading'); if(loadEl) loadEl.style.display = 'none';
+    const errEl = document.getElementById('error-screen'); if(errEl) errEl.style.display = '';
   }
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+
