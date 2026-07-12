@@ -30,6 +30,14 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      /* 修正箇所：長いテキストの強制折り返し */
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    /* 修正箇所：グラフや画像が枠線を超えないように制御 */
+    canvas, img {
+      max-width: 100%;
     }
 
     body {
@@ -685,6 +693,11 @@
   .data-table {
     white-space: nowrap;
     font-size: 11.5px;
+    /* 修正箇所：HTMLを変えずにテーブル単体で横スクロールさせる */
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .data-table th, .data-table td {
     padding: 8px 10px;
