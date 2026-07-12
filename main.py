@@ -781,7 +781,7 @@ if __name__ == "__main__":
     sheet       = spreadsheet.worksheet("保有銘柄")
     initialize_headers(sheet)
 
-    dashboard_url = GITHUB_PAGES_URL if GITHUB_PAGES_URL else ""
+    dashboard_url = f"{GITHUB_PAGES_URL}?t={int(datetime.now().timestamp())}" if GITHUB_PAGES_URL else ""
     print(f"=== 実行開始: {today_str} {timing} (モデル: {GEMINI_MODEL}) ===")
 
     tech_context = update_stock_data(sheet)
