@@ -501,18 +501,18 @@ function renderStockCard(stock, index) {
             <div class="meter-bar-wrapper">
               <div class="meter-current-pin" style="left: ${currentPct}%;"></div>
               <div class="meter-current-label" style="left: ${currentPct}%;">現在: ¥${fmt(current)}</div>
-              ${stopLoss ? \`
+              ${stopLoss ? `
                 <div class="meter-line stop-loss" style="left: ${stopLossPct}%;"></div>
                 <div class="meter-line-label" style="left: ${stopLossPct}%;">損切: ¥${fmt(stopLoss)}</div>
-              \` : ''}
-              ${avgCost ? \`
+              ` : ''}
+              ${avgCost ? `
                 <div class="meter-line" style="left: ${avgCostPct}%; background-color:#3b82f6; width:2px;"></div>
                 <div class="meter-line-label" style="left: ${avgCostPct}%; color:#1e3a8a;">取得平均: ¥${fmt(avgCost)}</div>
-              \` : ''}
-              ${target ? \`
+              ` : ''}
+              ${target ? `
                 <div class="meter-line target" style="left: ${targetPct}%;"></div>
                 <div class="meter-line-label" style="left: ${targetPct}%;">目標: ¥${fmt(target)}</div>
-              \` : ''}
+              ` : ''}
             </div>
             <div class="meter-scale-extremes">
               <span>安値圏 (¥${fmt(minVal)})</span>
@@ -691,7 +691,7 @@ async function init() {
 
     const today = data.today || '---';
     document.getElementById('perf-date').textContent        = today;
-    document.getElementById('stocks-count-badge').textContent = `${data.stocks.length} 銘柄`;
+
 
     renderSummary(data.portfolio, data.stocks.length);
     renderCharts(data.stocks); // ポテンシャル横棒 ＆ 信用散布図を描画
