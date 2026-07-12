@@ -259,7 +259,7 @@ function renderAIReport(report, today) {
 
   const roadmap = document.getElementById('display-roadmap');
   if (roadmap && report.analysis_portfolio) {
-    roadmap.innerHTML = `<li>${report.analysis_portfolio}</li>`;
+    roadmap.innerHTML = report.analysis_portfolio;
   }
 }
 
@@ -321,6 +321,25 @@ function renderStockCard(stock, index) {
   const targetPct = target ? getPct(target) : null;
   const avgCostPct = avgCost ? getPct(avgCost) : null;
 
+  // ▼▼▼ 修正：メーターラベルのかぶり回避処理 ▼▼▼
+  let bottomLabels = [];
+  if (stopLossPct !== null) bottomLabels.push({ id: 'stop', pct: stopLossPct, html: `<div class="meter-line stop-loss" style="left: ${stopLossPct}%;"></div><div class="meter-line-label" style="left: ${stopLossPct}%; color: var(--color-negative);">損切 ¥${fmt(stopLoss)}</div>` });
+  if (avgCostPct !== null) bottomLabels.push({ id: 'avg', pct: avgCostPct, html: `<div class="meter-line" style="left: ${avgCostPct}%; background-color:#3b82f6; width:2px;"></div><div class="meter-line-label" style="left: ${avgCostPct}%; color:#1e3a8a;">取得 ¥${fmt(avgCost)}</div>` });
+  if (targetPct !== null) bottomLabels.push({ id: 'target', pct: targetPct, html: `<div class="meter-line target" style="left: ${targetPct}%;"></div><div class="meter-line-label" style="left: ${targetPct}%; color: var(--color-positive);">目標 ¥${fmt(target)}</div>` });
+
+  // 位置の近いラベルを下へずらす
+  bottomLabels.sort((a, b) => a.pct - b.pct);
+  for (let i = 1; i < bottomLabels.length; i++) {
+    if (bottomLabels[i].pct - bottomLabels[i-1].pct < 15) {
+      // 直前のラベルと近すぎる場合、下にずらすクラスを追加
+      if (!bottomLabels[i-1].html.includes('label-offset-down')) {
+        bottomLabels[i].html = bottomLabels[i].html.replace('meter-line-label', 'meter-line-label label-offset-down');
+      }
+    }
+  }
+  const bottomLabelsHTML = bottomLabels.map(l => l.html).join('');
+  // ▲▲▲ 修正ここまで ▲▲▲
+
   // PER/PBR のスケール座標
   const perVal = parseFloat(stock.per) || 0;
   const pbrVal = parseFloat(stock.pbr) || 0;
@@ -373,7 +392,6 @@ function renderStockCard(stock, index) {
 
   return `
     <div class="stock-card" style="animation-delay:${index * 0.04}s">
-      <!-- ==================== A. 結論・取引マニュアル・リスク (横幅100%全展開) ==================== -->
       <div class="decision-row">
         <span class="decision-label">総合投資判断</span>
         ${renderRatingBadge(stock.analyst_rating)}
@@ -390,15 +408,14 @@ function renderStockCard(stock, index) {
         </div>
       </div>
 
-      <!-- 具体的アクション指示 (イエローボックス) -->
       <div class="live-action-box">
         <div class="live-action-title">
-          <span>💡 本日の最適行動・指値水準 (トレーダーマニュアル)</span>
+          <span>💡 本日の最適行動・指値水準</span>
         </div>
         <div style="font-size:13.5px; line-height:1.65; color:var(--text-main);">
-          <p style="margin-bottom:8px;"><b>シナリオA (終値損切り目安割れ):</b> ${stock.execution_manual?.scenario_a || '---'}</p>
-          <p style="margin-bottom:8px;"><b>シナリオB (場中の節目割れ・反発):</b> ${stock.execution_manual?.scenario_b || '---'}</p>
-          <p><b>シナリオC (指値・逆指値設定):</b> ${stock.execution_manual?.scenario_c || '---'}</p>
+          <p style="margin-bottom:8px;"><b>シナリオA (損切り割れ):</b> ${stock.execution_manual?.scenario_a || '---'}</p>
+          <p style="margin-bottom:8px;"><b>シナリオB (反発):</b> ${stock.execution_manual?.scenario_b || '---'}</p>
+          <p><b>シナリオC (指値設定):</b> ${stock.execution_manual?.scenario_c || '---'}</p>
         </div>
         ${stock.personal_action ? `
         <div style="margin-top:12px; padding-top:10px; border-top:1px dashed #fde68a;">
@@ -408,35 +425,30 @@ function renderStockCard(stock, index) {
         ` : ''}
       </div>
 
-      <!-- 銘柄リスク＆カタリストプロファイル -->
       <div class="risk-catalyst-card">
         <div class="risk-cat-item">
-          <span class="risk-cat-lbl">直近決算予定日 (カタリスト警戒)</span>
+          <span class="risk-cat-lbl">直近決算予定日</span>
           <span class="risk-cat-val" style="color:var(--color-negative);">${profile.earnings_date || '---'}</span>
         </div>
         <div class="risk-cat-item">
-          <span class="risk-cat-lbl">1日最大想定損失額 (VaR 95%)</span>
+          <span class="risk-cat-lbl">想定最大損失(VaR)</span>
           <span class="risk-cat-val">${profile.max_loss_var || '---'}</span>
         </div>
         <div class="risk-cat-item">
-          <span class="risk-cat-lbl">ベータ値 (市場感応度)</span>
+          <span class="risk-cat-lbl">ベータ値</span>
           <span class="risk-cat-val">${profile.beta || '---'}</span>
         </div>
         <div class="risk-cat-item">
-          <span class="risk-cat-lbl">目標価格到達想定期間</span>
+          <span class="risk-cat-lbl">目標想定期間</span>
           <span class="risk-cat-val" style="color:var(--color-warning);">${profile.target_timeline || '---'}</span>
         </div>
       </div>
 
-      <!-- ==================== B. テーマ別レイアウトブロック (左図表・右解説) ==================== -->
-
-      <!-- 【評価軸1】割安性評価 ＆ 判断の客観的根拠 -->
       <div class="theme-block-title-bar">📊 【評価軸1】割安性評価 ＆ 判断の客観的根拠</div>
       <div class="theme-block-grid">
-        <!-- 左側: 3大評価根拠テーブル + PER/PBRバー -->
         <div>
           <div class="rating-justification-card" style="margin-bottom:16px;">
-            <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <div class="table-responsive">
             <table class="data-table" style="margin-bottom:0; font-size:11.5px;">
               <thead>
                 <tr>
@@ -498,35 +510,21 @@ function renderStockCard(stock, index) {
           </div>
         </div>
 
-        <!-- 右側: 財務×テクニカル複合分析解説 -->
         <div class="opinion-card analyst" style="margin-bottom:0;">
           <div class="opinion-card-title">🔍 財務 × テクニカル 複合分析（解説）</div>
           <div style="font-size:13.5px; line-height:1.75; color:var(--text-main);">${stock.valuation_commentary || '---'}</div>
         </div>
       </div>
 
-      <!-- 【評価軸2】チャート分析 ＆ 短期テクニカル変化 -->
       <div class="theme-block-title-bar">📈 【評価軸2】チャート分析 ＆ 短期テクニカル変化</div>
       <div class="theme-block-grid">
-        <!-- 左側: 株価位置メーター + トレンドテーブル -->
         <div>
           <div class="price-position-meter-card">
             <div class="meter-title">📏 株価位置インジケーター (重要節目との位置関係)</div>
             <div class="meter-bar-wrapper">
               <div class="meter-current-pin" style="left: ${currentPct}%;"></div>
               <div class="meter-current-label" style="left: ${currentPct}%;">現在 ¥${fmt(current)}</div>
-              ${stopLoss ? `
-                <div class="meter-line stop-loss" style="left: ${stopLossPct}%;"></div>
-                <div class="meter-line-label" style="left: ${stopLossPct}%; color: var(--color-negative);">損切 ¥${fmt(stopLoss)}</div>
-              ` : ''}
-              ${avgCost ? `
-                <div class="meter-line" style="left: ${avgCostPct}%; background-color:#3b82f6; width:2px;"></div>
-                <div class="meter-line-label" style="left: ${avgCostPct}%; color:#1e3a8a;">取得 ¥${fmt(avgCost)}</div>
-              ` : ''}
-              ${target ? `
-                <div class="meter-line target" style="left: ${targetPct}%;"></div>
-                <div class="meter-line-label" style="left: ${targetPct}%; color: var(--color-positive);">目標 ¥${fmt(target)}</div>
-              ` : ''}
+              ${bottomLabelsHTML}
             </div>
             <div class="meter-scale-extremes">
               <span>安値圏 (¥${fmt(minVal)})</span>
@@ -536,7 +534,7 @@ function renderStockCard(stock, index) {
 
           <div class="trend-table-card" style="margin-bottom:0;">
             <div class="trend-table-title">📊 主要指標の多期間トレンド比較</div>
-            <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <div class="table-responsive">
             <table class="data-table" style="margin-bottom:0;">
               <thead>
                 <tr>
@@ -582,7 +580,6 @@ function renderStockCard(stock, index) {
           </div>
         </div>
 
-        <!-- 右側: モメンタム分析 -->
         <div class="momentum-block-highlight" style="margin-bottom:0;">
           <p style="font-weight:700; font-size:14px; margin-bottom:8px;">
             出来高・RSIの変化から見るモメンタム分析：
@@ -593,12 +590,10 @@ function renderStockCard(stock, index) {
         </div>
       </div>
 
-      <!-- 【評価軸3】証券各社レーティング ＆ 目標株価 -->
       <div class="theme-block-title-bar">🎯 【評価軸3】証券各社レーティング ＆ 目標株価</div>
       <div class="theme-block-grid">
-        <!-- 左側: 証券会社テーブル -->
         <div>
-          <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+          <div class="table-responsive">
           <table class="data-table" style="margin-bottom:0; width:100%;">
             <thead>
               <tr>
@@ -615,42 +610,35 @@ function renderStockCard(stock, index) {
           </div>
         </div>
 
-        <!-- 右側: アナリスト目標価格の算出根拠 -->
         <div class="opinion-card analyst" style="margin-bottom:0;">
-          <div class="opinion-card-title" style="color:var(--text-dark);">⚖️ アナリスト目標価格の算出根拠</div>
+          <div class="opinion-card-title" style="color:var(--text-dark);">⚖️ 目標価格の算出根拠</div>
           <div style="font-size:13px; line-height:1.7; color: var(--text-dark);">${stock.broker_commentary || '---'}</div>
         </div>
       </div>
 
-      <!-- ==================== C. 横幅100%の大型テキスト・詳細分析カード ==================== -->
-
-      <!-- 過去チャート類似パターン分析 -->
       <div class="full-width-block">
         <div class="pattern-analogy-card">
-          <div class="pattern-title">🌀 過去のチャート類似パターン分析（確率推計）</div>
+          <div class="pattern-title">🌀 過去のチャート類似パターン分析</div>
           <div style="font-size:14px; line-height:1.8; color:var(--text-main);">${stock.chart_analogy_commentary || '---'}</div>
         </div>
       </div>
 
-      <!-- 関連ニュース ＆ 競合銘柄の相関分析 -->
       <div class="full-width-block">
         <div class="opinion-card risk" style="margin-bottom:0;">
-          <div class="opinion-card-title">🌐 関連ニュース ＆ 競合銘柄の相関分析（絶対参照）</div>
+          <div class="opinion-card-title">🌐 関連ニュース ＆ 競合銘柄の相関分析</div>
           <div style="font-size:14px; line-height:1.8; color:var(--text-main);">${stock.news_correlation_commentary || '---'}</div>
         </div>
       </div>
 
-      <!-- 外部参照リンク -->
       <div class="source-links-card">
         <div class="source-links-title">🔗 情報参照先リンク</div>
         <ul class="source-links-list">
-          <li><a href="https://kabutan.jp/stock/?code=${stock.code}" target="_blank" rel="noopener">株探: ${stock.name}(${stock.code})</a></li>
-          <li><a href="https://finance.yahoo.co.jp/quote/${stock.code}.T" target="_blank" rel="noopener">Yahoo!ファイナンス: ${stock.name}</a></li>
-          <li><a href="https://www.nikkei.com/nkd/company/?scode=${stock.code}" target="_blank" rel="noopener">日本経済新聞: ${stock.name}</a></li>
+          <li><a href="https://kabutan.jp/stock/?code=${stock.code}" target="_blank" rel="noopener">株探</a></li>
+          <li><a href="https://finance.yahoo.co.jp/quote/${stock.code}.T" target="_blank" rel="noopener">Yahoo!</a></li>
+          <li><a href="https://www.nikkei.com/nkd/company/?scode=${stock.code}" target="_blank" rel="noopener">日経</a></li>
         </ul>
       </div>
 
-      <!-- ポートフォリオP&L簡易表示 -->
       <div class="stock-pnl-bar" style="margin-top:16px; border-top:1.5px dashed var(--border-light); padding-top:12px;">
         <div class="pnl-label-row">
           <span>${quantity}株 × ¥${fmt(avgCost)}</span>
@@ -734,5 +722,3 @@ async function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
-
-

@@ -1,650 +1,659 @@
 /* ==========================================================================
        1. デザインシステム (高コントラスト・保持・罫線完全強化)
        ========================================================================== */
-    :root {
-      --bg-main: #f8fafc;
-      --card-bg: #ffffff;
-      --border-color: #334155;        /* 罫線用に極めて濃いグレー */
-      --border-light: #94a3b8;       /* 内枠線用 */
-      
-      --color-primary: #1e3a8a;      /* 濃いネイビー */
-      --color-primary-light: #eff6ff;
-      --color-primary-border: #3b82f6;
-      
-      --color-positive: #16a34a;     /* 濃い緑 */
-      --color-positive-bg: #f0fdf4;
-      --color-negative: #dc2626;     /* 濃い赤 */
-      --color-negative-bg: #fef2f2;
-      
-      --color-warning: #d97706;      /* 濃いオレンジ */
-      --color-warning-bg: #fffbeb;
-
-      --text-dark: #0f172a;          /* 漆黒 */
-      --text-main: #1e293b;          /* 本文 */
-      --text-muted: #334155;         /* 補助 */
-      
-      --font-family: 'Inter', 'Noto Sans JP', sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      /* 修正箇所：長いテキストの強制折り返し */
-      overflow-wrap: break-word;
-      word-break: break-word;
-    }
-
-    /* 修正箇所：グラフや画像が枠線を超えないように制御 */
-    canvas, img {
-      max-width: 100%;
-    }
-
-    body {
-      background-color: var(--bg-main);
-      color: var(--text-main);
-      font-family: var(--font-family);
-      line-height: 1.8;
-      font-size: 15px;
-      padding: 16px 16px 80px 16px;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    /* 時間帯切り替えスイッチ */
-    .timing-switch-panel {
-      background-color: #ffffff;
-      border: 3px solid var(--color-primary);
-      border-radius: 12px;
-      padding: 14px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    
-    .timing-switch-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--color-primary);
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .timing-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    .timing-btn {
-      background-color: #f1f5f9;
-      border: 1px solid #94a3b8;
-      padding: 10px 0;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-muted);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .timing-btn.active {
-      background-color: var(--color-primary);
-      color: #ffffff;
-      border-color: var(--color-primary);
-      box-shadow: 0 2px 8px rgba(30, 58, 138, 0.4);
-    }
-
-    /* ==========================================================================
-       共通パーツ
-       ========================================================================== */
-    .report-card {
-      background-color: var(--card-bg);
-      border: 2px solid var(--border-color);
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-    }
-
-    .summary-grid-wrapper {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-    
-    .summary-grid-wrapper > div {
-      min-width: 0;
-    }
-
-    @media (min-width: 768px) {
-      .summary-grid-wrapper {
-        grid-template-columns: 1.15fr 1.85fr;
-      }
-    }
-
-    .card-headline {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--color-primary);
-      margin-bottom: 16px;
-      border-bottom: 3px solid var(--color-primary);
-      padding-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .highlight-marker-yellow { background: linear-gradient(transparent 30%, #fef08a 30%); font-weight: 700; color: var(--text-dark); padding: 0 4px; }
-    .highlight-marker-green { background: linear-gradient(transparent 30%, #bbf7d0 30%); font-weight: 700; color: var(--text-dark); padding: 0 4px; }
-    .highlight-marker-red { background: linear-gradient(transparent 30%, #fecaca 30%); font-weight: 700; color: var(--text-dark); padding: 0 4px; }
-
-    .section-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin: 24px 0 8px 6px;
-      border-left: 6px solid var(--color-primary);
-      padding-left: 12px;
-    }
-
-    .text-paragraph {
-      margin-bottom: 12px;
-      text-align: justify;
-    }
-
-    .bullet-list {
-      margin-left: 20px;
-      margin-bottom: 12px;
-    }
-
-    .bullet-list li {
-      margin-bottom: 6px;
-    }
-
-    .numbered-list {
-      margin-left: 20px;
-      margin-bottom: 12px;
-    }
-
-    .numbered-list li {
-      margin-bottom: 8px;
-    }
-
-    /* ==========================================================================
-       【罫線完全強化】テーブルデザイン
-       ========================================================================== */
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12.5px;
-      margin-bottom: 16px;
-    }
-
-    .data-table th, .data-table td {
-      border: 2px solid var(--border-color);
-      padding: 10px 12px;
-      text-align: left;
-    }
-
-    .data-table th {
-      background-color: #cbd5e1;
-      color: var(--text-dark);
-      font-weight: 700;
-    }
-
-    .data-table td.num {
-      text-align: right;
-      font-family: 'Inter', monospace;
-      font-weight: 600;
-    }
-
-    .data-table td.broker-name-cell {
-      white-space: nowrap;
-      font-weight: 700;
-      color: var(--text-dark);
-    }
-
-    .trend-indicator {
-      display: inline-block;
-      font-weight: 700;
-      font-size: 11px;
-      padding: 1px 4px;
-      border-radius: 4px;
-      margin-left: 4px;
-    }
-    .trend-good { color: var(--color-positive); background-color: var(--color-positive-bg); }
-    .trend-bad { color: var(--color-negative); background-color: var(--color-negative-bg); }
-    .trend-neutral { color: var(--text-muted); background-color: #f1f5f9; }
-
-    /* ==========================================================================
-       アロケーション ➔ ポートフォリオ将来見通しへの刷新
-       ========================================================================== */
-    .summary-prime {
-      text-align: center;
-      padding-bottom: 16px;
-    }
-
-    .summary-label {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .summary-amount-large {
-      font-size: 38px;
-      font-weight: 700;
-      color: var(--text-dark);
-      line-height: 1.1;
-      margin: 6px 0;
-    }
-
-    .pnl-badge {
-      font-size: 14px;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 6px;
-      display: inline-block;
-    }
-    .pnl-badge.up { background-color: var(--color-positive-bg); color: var(--color-positive); border: 2px solid var(--color-positive); }
-
-    .stat-list-vertical {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      border-top: 2px solid var(--border-color);
-      padding-top: 16px;
-    }
-
-    .stat-row-item {
-      display: flex;
-      justify-content: space-between;
-      font-size: 15px;
-    }
-
-    .stat-row-item .label {
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .stat-row-item .value {
-      font-weight: 700;
-      color: var(--text-dark);
-    }
-
-    .portfolio-chart-wrapper {
-      position: relative;
-      width: 100%;
-      height: 220px;
-      margin-top: 16px;
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
-      padding: 12px;
-      background-color: #fafbfc;
-    }
-
-    /* ポートフォリオ需給・乖離プロット図 */
-    .valuation-plot-card {
-      margin-top: 24px;
-      border: 2px solid var(--border-color);
-      border-radius: 16px;
-      padding: 20px;
-      background-color: #ffffff;
-    }
-
-    .valuation-plot-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--color-primary);
-      margin-bottom: 8px;
-      border-bottom: 2px solid var(--color-primary);
-      padding-bottom: 6px;
-    }
-
-    .valuation-plot-frame {
-      position: relative;
-      width: 100%;
-      height: 250px;
-    }
-
-    /* ==========================================================================
-       ブロック単位レイアウト (PC 2カラム / スマホ 1カラム)
-       ========================================================================== */
-    .stock-card {
-      background-color: var(--card-bg);
-      border: 2.5px solid var(--border-color);
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-      margin-bottom: 32px;
-    }
-
-    .theme-block-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-      margin-bottom: 24px;
-      border-bottom: 2px dashed var(--border-light);
-      padding-bottom: 24px;
-    }
-
-    .theme-block-grid > div {
-      min-width: 0;
-    }
-
-    @media (min-width: 900px) {
-      .theme-block-grid {
-        grid-template-columns: 1fr 1.1fr;
-      }
-    }
-
-    .theme-block-title-bar {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--color-primary);
-      margin-bottom: 12px;
-      border-left: 5px solid var(--color-primary);
-      padding-left: 8px;
-      background-color: var(--color-primary-light);
-      padding-top: 4px;
-      padding-bottom: 4px;
-    }
-
-    .full-width-block {
-      width: 100%;
-      margin-bottom: 24px;
-    }
-
-    /* 意見・解説カード (パディングを確保して文字が縦線にくっつかないようにする) */
-    .opinion-card {
-      padding: 16px 20px;
-      border-radius: 12px;
-      background-color: #fafbfc;
-      border: 2px solid var(--border-color);
-      margin-bottom: 24px;
-    }
-    
-    .opinion-card.analyst {
-      border: none;
-      border-left: 5px solid var(--border-color);
-      border-radius: 0 12px 12px 0;
-      padding: 12px 20px 12px 20px; /* 左側パディングを20pxに広げる */
-      background-color: #fafbfc;
-    }
-
-    .opinion-card.risk {
-      border: 2px solid var(--border-color);
-      background-color: var(--color-negative-bg);
-      border-radius: 12px;
-      padding: 16px 20px;
-    }
-
-    /* 総合投資判断バッジ */
-    .decision-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #f8fafc;
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
-      padding: 12px 18px;
-      margin-bottom: 16px;
-    }
-
-    .decision-label {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 700;
-    }
-
-    .decision-badge {
-      font-size: 20px;
-      font-weight: 700;
-      padding: 4px 18px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .decision-badge.hold { background-color: #f1f5f9; color: var(--text-muted); border: 2.5px solid #64748b; }
-    .decision-badge.buy { background-color: var(--color-positive-bg); color: var(--color-positive); border: 2.5px solid var(--color-positive); }
-    .decision-badge.sell { background-color: var(--color-negative-bg); color: var(--color-negative); border: 2.5px solid var(--color-negative); }
-
-    .stock-meta-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      border-bottom: 3px solid var(--text-dark);
-      padding-bottom: 10px;
-      margin-bottom: 16px;
-    }
-
-    .stock-meta-name-code {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text-dark);
-      line-height: 1.2;
-    }
-
-    .stock-price-val-pro {
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--text-dark);
-    }
-
-    /* 最適行動・指値水準 */
-    .live-action-box {
-      background-color: #fffbeb;
-      border: 2.5px solid var(--color-warning);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-
-    .live-action-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--color-warning);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      border-bottom: 1px solid #fde68a;
-      padding-bottom: 6px;
-    }
-
-    /* 銘柄リスク＆カタリストプロファイル */
-    .risk-catalyst-card {
-      background-color: #f8fafc;
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
-      padding: 14px 18px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px 20px;
-      font-size: 13.5px;
-      margin-bottom: 16px;
-    }
-
-    .risk-cat-item {
-      display: flex;
-      flex-direction: column;
-      border-bottom: 1px dashed var(--border-light);
-      padding-bottom: 4px;
-    }
-
-    .risk-cat-lbl {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 700;
-    }
-
-    .risk-cat-val {
-      font-size: 14.5px;
-      font-weight: 700;
-      color: var(--text-dark);
-    }
-
-    /* 株価位置ビジュアルレンジメーター */
-    .price-position-meter-card {
-      background-color: #f8fafc;
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-
-    .meter-title { font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
-    .meter-bar-wrapper {
-      height: 16px;
-      background: linear-gradient(to right, #fca5a5 0%, #cbd5e1 15%, #cbd5e1 85%, #86efac 100%);
-      border-radius: 4px;
-      position: relative;
-      margin: 28px 0 24px 0;
-      border: 1px solid var(--border-color);
-    }
-    .meter-line { position: absolute; top: -6px; bottom: -6px; width: 2px; background-color: #475569; }
-    .meter-line.stop-loss { background-color: #ef4444; width: 3px; z-index: 10; }
-    .meter-line.target { background-color: #22c55e; width: 3px; z-index: 10; }
-    .meter-current-pin { position: absolute; top: -10px; width: 2px; height: 36px; background-color: #0f172a; z-index: 20; }
-    .meter-current-label { position: absolute; top: -26px; transform: translateX(-50%); font-size: 11px; font-weight: 700; background-color: #0f172a; color: #ffffff; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
-    .meter-line-label { position: absolute; bottom: -22px; transform: translateX(-50%); font-size: 10px; font-weight: 700; white-space: nowrap; color: var(--text-muted); }
-    .meter-scale-extremes { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-top: -12px; }
-
-    /* PBR/PER 業界平均・基準値との比較バー */
-    .valuation-visualizer {
-      background-color: #ffffff;
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
-    .valuation-bar-group { display: flex; flex-direction: column; gap: 4px; }
-    .valuation-bar-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; }
-    .valuation-scale-container { height: 10px; background-color: #e2e8f0; border-radius: 999px; position: relative; margin: 6px 0; border: 1px solid var(--border-light); }
-    .valuation-marker { width: 14px; height: 14px; background-color: var(--color-primary); border-radius: 50%; position: absolute; top: -2px; transform: translateX(-50%); }
-    .valuation-scale-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
-
-    /* 時系列テーブルコンテナ */
-    .trend-table-card {
-      background-color: #ffffff;
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 0;
-    }
-    .trend-table-title { font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; border-bottom: 2px solid var(--border-color); padding-bottom: 4px; }
-
-    /* 構造化評価根拠テーブル */
-    .rating-justification-card {
-      background-color: #f8fafc;
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 0;
-    }
-
-    .justification-title {
-      font-size: 13.5px;
-      font-weight: 700;
-      color: var(--color-primary);
-      margin-bottom: 8px;
-    }
-
-    /* 過去チャートパターン類似分析 */
-    .pattern-analogy-card {
-      background-color: var(--color-primary-light);
-      border: 2px solid var(--color-primary-border);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 0;
-    }
-
-    .pattern-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--color-primary);
-      margin-bottom: 8px;
-      border-bottom: 2px solid var(--color-primary-border);
-      padding-bottom: 4px;
-    }
-
-    /* 参照リンク一覧 */
-    .source-links-card {
-      background-color: #fafbfc;
-      border: 1px dashed var(--border-color);
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 16px;
-    }
-
-    .source-links-title {
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 4px;
-    }
-
-    .source-links-list {
-      list-style: none;
-      padding-left: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .source-links-list a {
-      color: var(--color-primary);
-      text-decoration: underline;
-      font-weight: 500;
-    }
-
-    /* 指標モメンタム表示の強調スタイル */
-    .momentum-block-highlight {
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
-      padding: 18px;
-      background-color: #ffffff;
-      margin-bottom: 0;
-    }
-
-    .momentum-item-header {
-      font-size: 14px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 4px;
-    }
-
-    .momentum-item-desc {
-      font-size: 13.5px;
-      line-height: 1.6;
-      margin-bottom: 12px;
-      padding-left: 20px;
-    }
-
-    .m-num {
-      font-family: 'Inter', monospace;
-      font-weight: 700;
-      font-size: 15px;
-    }
-
-    /* 夜モード専用 */
-    .night-only { display: none; }
-    .daytime-only { display: block; }
+:root {
+  --bg-main: #f8fafc;
+  --card-bg: #ffffff;
+  --border-color: #334155;        /* 罫線用に極めて濃いグレー */
+  --border-light: #94a3b8;       /* 内枠線用 */
+  
+  --color-primary: #1e3a8a;      /* 濃いネイビー */
+  --color-primary-light: #eff6ff;
+  --color-primary-border: #3b82f6;
+  
+  --color-positive: #16a34a;     /* 濃い緑 */
+  --color-positive-bg: #f0fdf4;
+  --color-negative: #dc2626;     /* 濃い赤 */
+  --color-negative-bg: #fef2f2;
+  
+  --color-warning: #d97706;      /* 濃いオレンジ */
+  --color-warning-bg: #fffbeb;
+
+  --text-dark: #0f172a;          /* 漆黒 */
+  --text-main: #1e293b;          /* 本文 */
+  --text-muted: #334155;         /* 補助 */
+  
+  --font-family: 'Inter', 'Noto Sans JP', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* 修正箇所：長いテキストの強制折り返し */
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* 修正箇所：グラフや画像が枠線を超えないように制御 */
+canvas, img {
+  max-width: 100%;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  line-height: 1.8;
+  font-size: 15px;
+  padding: 16px 16px 80px 16px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 時間帯切り替えスイッチ */
+.timing-switch-panel {
+  background-color: #ffffff;
+  border: 3px solid var(--color-primary);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.timing-switch-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.timing-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.timing-btn {
+  background-color: #f1f5f9;
+  border: 1px solid #94a3b8;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.timing-btn.active {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(30, 58, 138, 0.4);
+}
+
+/* ==========================================================================
+   共通パーツ
+   ========================================================================== */
+.report-card {
+  background-color: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.summary-grid-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.summary-grid-wrapper > div {
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .summary-grid-wrapper {
+    grid-template-columns: 1.15fr 1.85fr;
+  }
+}
+
+.card-headline {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+  border-bottom: 3px solid var(--color-primary);
+  padding-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.highlight-marker-yellow { background: linear-gradient(transparent 30%, #fef08a 30%); font-weight: 700; color: var(--text-dark); padding: 0 4px; }
+.highlight-marker-green { background: linear-gradient(transparent 30%, #bbf7d0 30%); font-weight: 700; color: var(--text-dark); padding: 0 4px; }
+.highlight-marker-red { background: linear-gradient(transparent 30%, #fecaca 30%); font-weight: 700; color: var(--text-dark); padding: 0 4px; }
+
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 24px 0 8px 6px;
+  border-left: 6px solid var(--color-primary);
+  padding-left: 12px;
+}
+
+.text-paragraph {
+  margin-bottom: 12px;
+  text-align: justify;
+}
+
+.bullet-list {
+  margin-left: 20px;
+  margin-bottom: 12px;
+}
+
+.bullet-list li {
+  margin-bottom: 6px;
+}
+
+.numbered-list {
+  margin-left: 20px;
+  margin-bottom: 12px;
+}
+
+.numbered-list li {
+  margin-bottom: 8px;
+}
+
+/* ==========================================================================
+   【罫線完全強化】テーブルデザイン
+   ========================================================================== */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  margin-bottom: 16px;
+}
+
+.data-table th, .data-table td {
+  border: 2px solid var(--border-color);
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.data-table th {
+  background-color: #cbd5e1;
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+.data-table td.num {
+  text-align: right;
+  font-family: 'Inter', monospace;
+  font-weight: 600;
+}
+
+.data-table td.broker-name-cell {
+  white-space: nowrap;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.trend-indicator {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 11px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+.trend-good { color: var(--color-positive); background-color: var(--color-positive-bg); }
+.trend-bad { color: var(--color-negative); background-color: var(--color-negative-bg); }
+.trend-neutral { color: var(--text-muted); background-color: #f1f5f9; }
+
+/* ==========================================================================
+   アロケーション ➔ ポートフォリオ将来見通しへの刷新
+   ========================================================================== */
+.summary-prime {
+  text-align: center;
+  padding-bottom: 16px;
+}
+
+.summary-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-amount-large {
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.1;
+  margin: 6px 0;
+}
+
+.pnl-badge {
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 6px;
+  display: inline-block;
+}
+.pnl-badge.up { background-color: var(--color-positive-bg); color: var(--color-positive); border: 2px solid var(--color-positive); }
+
+.stat-list-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 2px solid var(--border-color);
+  padding-top: 16px;
+}
+
+.stat-row-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+}
+
+.stat-row-item .label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.stat-row-item .value {
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.portfolio-chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  margin-top: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px;
+  background-color: #fafbfc;
+}
+
+/* ポートフォリオ需給・乖離プロット図 */
+.valuation-plot-card {
+  margin-top: 24px;
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+.valuation-plot-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: 6px;
+}
+
+.valuation-plot-frame {
+  position: relative;
+  width: 100%;
+  height: 250px;
+}
+
+/* ==========================================================================
+   ブロック単位レイアウト (PC 2カラム / スマホ 1カラム)
+   ========================================================================== */
+.stock-card {
+  background-color: var(--card-bg);
+  border: 2.5px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  margin-bottom: 32px;
+}
+
+.theme-block-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+  border-bottom: 2px dashed var(--border-light);
+  padding-bottom: 24px;
+}
+
+.theme-block-grid > div {
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .theme-block-grid {
+    grid-template-columns: 1fr 1.1fr;
+  }
+}
+
+.theme-block-title-bar {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 12px;
+  border-left: 5px solid var(--color-primary);
+  padding-left: 8px;
+  background-color: var(--color-primary-light);
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.full-width-block {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+/* 意見・解説カード (パディングを確保して文字が縦線にくっつかないようにする) */
+.opinion-card {
+  padding: 16px 20px;
+  border-radius: 12px;
+  background-color: #fafbfc;
+  border: 2px solid var(--border-color);
+  margin-bottom: 24px;
+}
+
+.opinion-card.analyst {
+  border: none;
+  border-left: 5px solid var(--border-color);
+  border-radius: 0 12px 12px 0;
+  padding: 12px 20px 12px 20px; /* 左側パディングを20pxに広げる */
+  background-color: #fafbfc;
+}
+
+.opinion-card.risk {
+  border: 2px solid var(--border-color);
+  background-color: var(--color-negative-bg);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+
+/* 総合投資判断バッジ */
+.decision-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8fafc;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 18px;
+  margin-bottom: 16px;
+}
+
+.decision-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.decision-badge {
+  font-size: 20px;
+  font-weight: 700;
+  padding: 4px 18px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.decision-badge.hold { background-color: #f1f5f9; color: var(--text-muted); border: 2.5px solid #64748b; }
+.decision-badge.buy { background-color: var(--color-positive-bg); color: var(--color-positive); border: 2.5px solid var(--color-positive); }
+.decision-badge.sell { background-color: var(--color-negative-bg); color: var(--color-negative); border: 2.5px solid var(--color-negative); }
+
+/* ▼▼▼ 修正：株価を銘柄名の下に配置 ▼▼▼ */
+.stock-meta-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  border-bottom: 3px solid var(--text-dark);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+
+.stock-meta-name-code {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+.stock-price-val-pro {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* 最適行動・指値水準 */
+.live-action-box {
+  background-color: #fffbeb;
+  border: 2.5px solid var(--color-warning);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.live-action-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-warning);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid #fde68a;
+  padding-bottom: 6px;
+}
+
+/* 銘柄リスク＆カタリストプロファイル */
+.risk-catalyst-card {
+  background-color: #f8fafc;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+  font-size: 13.5px;
+  margin-bottom: 16px;
+}
+
+.risk-cat-item {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px dashed var(--border-light);
+  padding-bottom: 4px;
+}
+
+.risk-cat-lbl {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.risk-cat-val {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* 株価位置ビジュアルレンジメーター */
+.price-position-meter-card {
+  background-color: #f8fafc;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  padding-bottom: 32px; /* メーターラベル用にはみ出し防止 */
+  margin-bottom: 16px;
+}
+
+.meter-title { font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+.meter-bar-wrapper {
+  height: 16px;
+  background: linear-gradient(to right, #fca5a5 0%, #cbd5e1 15%, #cbd5e1 85%, #86efac 100%);
+  border-radius: 4px;
+  position: relative;
+  margin: 28px 0 24px 0;
+  border: 1px solid var(--border-color);
+}
+.meter-line { position: absolute; top: -6px; bottom: -6px; width: 2px; background-color: #475569; }
+.meter-line.stop-loss { background-color: #ef4444; width: 3px; z-index: 10; }
+.meter-line.target { background-color: #22c55e; width: 3px; z-index: 10; }
+.meter-current-pin { position: absolute; top: -10px; width: 2px; height: 36px; background-color: #0f172a; z-index: 20; }
+.meter-current-label { position: absolute; top: -26px; transform: translateX(-50%); font-size: 11px; font-weight: 700; background-color: #0f172a; color: #ffffff; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+.meter-line-label { position: absolute; bottom: -22px; transform: translateX(-50%); font-size: 10px; font-weight: 700; white-space: nowrap; color: var(--text-muted); }
+
+/* ▼▼▼ メーターラベル重なり回避用クラス ▼▼▼ */
+.meter-line-label.label-offset-down {
+  bottom: -38px;
+}
+
+.meter-scale-extremes { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-top: -12px; }
+
+/* PBR/PER 業界平均・基準値との比較バー */
+.valuation-visualizer {
+  background-color: #ffffff;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.valuation-bar-group { display: flex; flex-direction: column; gap: 4px; }
+.valuation-bar-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; }
+.valuation-scale-container { height: 10px; background-color: #e2e8f0; border-radius: 999px; position: relative; margin: 6px 0; border: 1px solid var(--border-light); }
+.valuation-marker { width: 14px; height: 14px; background-color: var(--color-primary); border-radius: 50%; position: absolute; top: -2px; transform: translateX(-50%); }
+.valuation-scale-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
+
+/* 時系列テーブルコンテナ */
+.trend-table-card {
+  background-color: #ffffff;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 0;
+}
+.trend-table-title { font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; border-bottom: 2px solid var(--border-color); padding-bottom: 4px; }
+
+/* 構造化評価根拠テーブル */
+.rating-justification-card {
+  background-color: #f8fafc;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 0;
+}
+
+.justification-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+/* 過去チャートパターン類似分析 */
+.pattern-analogy-card {
+  background-color: var(--color-primary-light);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 0;
+}
+
+.pattern-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+  border-bottom: 2px solid var(--color-primary-border);
+  padding-bottom: 4px;
+}
+
+/* 参照リンク一覧 */
+.source-links-card {
+  background-color: #fafbfc;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 16px;
+}
+
+.source-links-title {
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.source-links-list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.source-links-list a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+/* 指標モメンタム表示の強調スタイル */
+.momentum-block-highlight {
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 18px;
+  background-color: #ffffff;
+  margin-bottom: 0;
+}
+
+.momentum-item-header {
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.momentum-item-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  padding-left: 20px;
+}
+
+.m-num {
+  font-family: 'Inter', monospace;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* 夜モード専用 */
+.night-only { display: none; }
+.daytime-only { display: block; }
 
 /* ==========================================================================
    【モバイル最適化】レスポンシブデザイン (max-width: 768px)
@@ -684,23 +693,22 @@
     padding: 3px 6px;
   }
 
-  /* ③ 横はみ出し（テーブル）のスクロール対応 */
+  /* ③ 修正箇所：横はみ出し（テーブル）を全体縮小で表示するように変更 */
   .table-responsive {
     width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
   }
   .data-table {
-    white-space: nowrap;
-    font-size: 11.5px;
-    /* 修正箇所：HTMLを変えずにテーブル単体で横スクロールさせる */
-    display: block;
+    display: table;
     width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    table-layout: fixed;
+    font-size: 10px;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-all;
   }
   .data-table th, .data-table td {
-    padding: 8px 10px;
+    padding: 6px 4px;
   }
 
   /* ④ 各種ブロックの縦積み化（スマホでの視認性向上） */
