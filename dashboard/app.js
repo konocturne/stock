@@ -357,12 +357,6 @@ function renderStockCard(stock, index) {
     brokerRowsHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">証券会社目標のデータはありません。</td></tr>`;
   }
 
-  // チャート画像
-  const imgHtml = stock.chart_url
-    ? `<img class="stock-chart-img" src="${stock.chart_url}" alt="${stock.code} chart" loading="lazy"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-      + `<div class="stock-chart-placeholder" style="display:none;">📊 チャートデータなし</div>`
-    : `<div class="stock-chart-placeholder">📊 チャートデータなし</div>`;
 
   // リスクプロファイル
   const profile = stock.risk_catalyst_profile || {};
@@ -419,10 +413,6 @@ function renderStockCard(stock, index) {
         
         <!-- 左カラム: テクニカル指標・出来高・感情・パーソナル提案 -->
         <div>
-          <!-- 価格チャート画像 -->
-          <div class="stock-chart-wrap" style="border: 2px solid var(--border-color); border-radius:12px; margin-bottom:16px;">
-            ${imgHtml}
-          </div>
 
           <!-- テクニカル分析詳細 -->
           <div class="opinion-card">
@@ -527,6 +517,7 @@ function renderStockCard(stock, index) {
           <!-- 指標トレンド比較テーブル -->
           <div class="trend-table-card" style="margin-bottom:16px;">
             <div class="trend-table-title">📊 主要指標の多期間トレンド比較</div>
+            <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
             <table class="data-table">
               <thead>
                 <tr>
@@ -568,11 +559,13 @@ function renderStockCard(stock, index) {
                 </tr>
               </tbody>
             </table>
+            </div>
           </div>
 
           <!-- 証券会社目標株価テーブル -->
           <div class="trend-table-card" style="margin-bottom:16px;">
             <div class="trend-table-title">🏢 証券会社別の最新レーティング ＆ 目標株価</div>
+            <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
             <table class="data-table">
               <thead>
                 <tr>
@@ -586,6 +579,7 @@ function renderStockCard(stock, index) {
                 ${brokerRowsHTML}
               </tbody>
             </table>
+            </div>
           </div>
 
           <!-- アナリスト目標価格の算出根拠 (左線・十分なパディング) -->

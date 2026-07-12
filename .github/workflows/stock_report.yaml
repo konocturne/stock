@@ -33,10 +33,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install Japanese fonts for matplotlib
-        run: |
-          sudo apt-get install -y --no-install-recommends fonts-noto-cjk
-          fc-cache -fv
+
 
       - name: Set runtime environment variables
         run: |
@@ -83,12 +80,8 @@ jobs:
           GEMINI_MODEL: gemini-2.5-flash
         run: python main.py
 
-      # -------------------------------------------------------
-      # STEP 2: チャート生成 + data.json 出力
-      #   → last_report.json を読み込んで AI レポートも統合
-      #   → gh_pages_output/ に書き出す
-      # -------------------------------------------------------
-      - name: Generate Charts and data.json
+      # STEP 2: data.json 出力
+      - name: Generate data.json
         if: steps.check_skip.outputs.skip != 'true'
         env:
           GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}

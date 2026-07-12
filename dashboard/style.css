@@ -649,4 +649,14 @@ body {
   .summary-grid   { grid-template-columns: 1fr 1fr; }
   .main { padding: 12px; }
   .logo h1        { font-size: 16px; }
+  .stock-meta-header { flex-direction: column; gap: 8px; align-items: flex-start; }
+  .stock-price-block-pro { text-align: left; }
+  .stock-card { padding: 16px; }
+  .theme-block-title-bar { font-size: 14.5px; }
+  .risk-catalyst-card { grid-template-columns: 1fr; gap: 8px; }
+  .data-table th, .data-table td { padding: 8px 6px; font-size: 11.5px; }
+  .valuation-visualizer { padding: 12px; }
+  .decision-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .opinion-card.analyst { padding-left: 20px; border-radius: 12px; border: 2px solid var(--color-primary-border); }
+  .meter-scale-extremes { flex-direction: column; gap: 4px; }
 }
