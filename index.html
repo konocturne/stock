@@ -49,21 +49,33 @@
     <!-- ===== メインコンテンツ ===== -->
     <main id="main-content" class="main" style="display:none;">
 
+      <!-- ===== ヘッダー ===== -->
+      <header class="main-header" style="margin-bottom: 24px;">
+        <h1 class="main-title" id="display-header-title">ポートフォリオ投資戦略・日報</h1>
+        <p class="update-time" id="display-header-time">---</p>
+      </header>
+
       <!-- ① ポートフォリオ将来見通し ＆ 上昇ロードマップ -->
-      <section class="section" id="section-roadmap">
-        <div class="section-header">
-          <h2>ポートフォリオ将来見通し ＆ 上昇ロードマップ</h2>
-          <span class="section-badge">ファーストビュー</span>
+      <div class="report-card" id="section-roadmap">
+        <div class="card-headline">
+          <span>ポートフォリオ将来見通し ＆ 上昇ロードマップ</span>
+          <span>保有銘柄の未来展望</span>
         </div>
         
         <div class="summary-grid-wrapper">
           <!-- 左側: 主要マイルストーン timeline -->
-          <div class="flash-box" style="margin-bottom:0;">
-            <div style="font-weight:700; color:var(--color-primary); border-bottom:2px solid var(--border-color); padding-bottom:6px; margin-bottom:12px; font-size:15px;">
-              📊 ポートフォリオ全体のマイルストーン ＆ カタリスト日程
+          <div>
+            <div class="summary-prime" style="text-align: left; padding-bottom: 12px;">
+              <span class="summary-label">想定ポートフォリオ期待リターン</span>
+              <div class="summary-amount-large" style="color:var(--color-positive);" id="expected-return-val">+14.8%</div>
+              <p style="font-size:12px; color:var(--text-muted);">※保有ウェイトに基づく加重平均目標株価からの算出</p>
             </div>
-            <div id="portfolio-roadmap-text" style="font-size:14.5px; line-height:1.75; color:var(--text-main); white-space:pre-wrap;">
-              <!-- JSで動的挿入 -->
+
+            <div class="stat-list-vertical" style="border-top: 2px solid var(--border-color); padding-top: 12px; font-size:13.5px;">
+              <div style="font-weight:700; color:var(--text-dark); margin-bottom:4px;">■ 主要ロードマップ ＆ マイルストーン</div>
+              <div id="portfolio-roadmap-text" style="font-size:13px; line-height:1.6; color:var(--text-main); white-space:pre-wrap;">
+                <!-- JSで動的挿入 -->
+              </div>
             </div>
           </div>
           
@@ -75,13 +87,13 @@
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
       <!-- ② 需給 ＆ 乖離相関プロット（信用倍率 vs 25日線乖離率） -->
-      <section class="section" id="section-position">
-        <div class="section-header">
-          <h2>需給 ＆ 乖離相関プロット</h2>
-          <span class="section-badge">ポジションマップ</span>
+      <div class="report-card" id="section-position" style="margin-top: 24px;">
+        <div class="card-headline">
+          <span>🎯 ポートフォリオ需給 ＆ 乖離相関マップ</span>
+          <span>(今後の反発・過熱度見極め)</span>
         </div>
         <div class="valuation-plot-card" style="margin-top:0;">
           <div class="valuation-plot-title">信用需給ポジションマップ (信用倍率 vs 25日線乖離率)</div>
@@ -93,13 +105,13 @@
             <canvas id="valuationPlot"></canvas>
           </div>
         </div>
-      </section>
+      </div>
 
       <!-- ③ 市場全体の急所 ＆ 本日のAI総括 -->
-      <section class="section" id="section-report" style="display:none;">
-        <div class="section-header">
-          <h2 id="report-title">市場全体の急所 ＆ 本日のAI総括</h2>
-          <span class="section-badge" id="report-badge">Gemini 2.5 Flash</span>
+      <div class="report-card" id="section-report" style="display:none; margin-top: 24px;">
+        <div class="card-headline">
+          <span id="report-title">市場全体の急所 ＆ 本日のAI総括</span>
+          <span class="market-weather" id="report-badge">🌤 市場天気: 良好</span>
         </div>
 
         <!-- 警告バナー (重大トピック用) -->
@@ -119,15 +131,15 @@
         <!-- 各種タブパネル -->
         <div id="tab-market"    class="tab-panel active" class="report-block"></div>
         <div id="tab-technical" class="tab-panel" class="report-block"></div>
-        <div id="tab-portfolio" class="tab-panel" class="report-block"></div>
-        <div id="tab-strategy"  class="tab-panel" class="report-block"></div>
-      </section>
+        <div id="tab-portfolio" class="tab-panel"></div>
+        <div id="tab-strategy"  class="tab-panel"></div>
+      </div>
 
       <!-- ④ ポートフォリオ概要サマリー -->
-      <section class="section" id="section-summary">
-        <div class="section-header">
-          <h2>ポートフォリオ財務状況</h2>
-          <span class="section-badge" id="perf-date">---</span>
+      <div class="report-card" id="section-summary" style="margin-top: 24px;">
+        <div class="card-headline">
+          <span>ポートフォリオ財務状況</span>
+          <span id="perf-date">---</span>
         </div>
         <div class="summary-grid">
           <div class="summary-card" id="card-eval">
@@ -148,25 +160,26 @@
             <div class="summary-value" id="stock-count">---</div>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- ⑤ 保有銘柄 詳細投資レポート -->
-      <section class="section" id="section-stocks">
-        <div class="section-header">
-          <h2>保有銘柄 詳細投資レポート</h2>
-          <span class="section-badge" id="stocks-count-badge">---</span>
-        </div>
-        <div class="stocks-grid" id="stocks-grid"></div>
-      </section>
+      <!-- ⑤ 個別銘柄詳細 -->
+      <div class="section-title" id="section-stocks" style="margin-top: 32px;">📊 個別銘柄 詳細アナリストレポート</div>
+
+      <div class="stock-container">
+        <!-- AIレポートローディング等があればここに -->
+        <div id="ai-loading" style="display:none;"></div>
+        <!-- 銘柄カードがここに動的生成される -->
+        <div class="stocks-grid" id="stocks-grid" style="display:flex; flex-direction:column; gap:32px; margin-bottom:24px;"></div>
+      </div>
 
       <!-- ⑥ AIレポート履歴 -->
-      <section class="section" id="section-history" style="display:none;">
-        <div class="section-header">
-          <h2>AI レポート履歴</h2>
-          <span class="section-badge">直近10件</span>
+      <div class="report-card" id="section-history" style="margin-top: 24px;">
+        <div class="card-headline">
+          <span>AI レポート履歴</span>
+          <span>直近10件</span>
         </div>
         <div class="history-list" id="history-list"></div>
-      </section>
+      </div>
 
     </main>
 
