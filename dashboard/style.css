@@ -626,3 +626,83 @@
     /* 夜モード専用 */
     .night-only { display: none; }
     .daytime-only { display: block; }
+
+/* ==========================================================================
+   【モバイル最適化】レスポンシブデザイン (max-width: 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* ① 情報過多を防ぐためのカード内余白（パディング）削減 */
+  .report-card, .stock-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  /* ② 文字サイズの最適化 */
+  .main-title {
+    font-size: 18px;
+  }
+  .section-title {
+    font-size: 16px;
+    margin-top: 24px;
+    margin-bottom: 16px;
+  }
+  .stock-meta-name-code {
+    font-size: 18px;
+  }
+  .stock-meta-price {
+    font-size: 22px;
+  }
+  .card-headline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .card-headline span:first-child {
+    font-size: 14px;
+  }
+  .card-headline span:last-child {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+
+  /* ③ 横はみ出し（テーブル）のスクロール対応 */
+  .data-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    font-size: 11.5px;
+    border: none;
+    border-top: 2px solid var(--border-color);
+  }
+  .data-table th, .data-table td {
+    padding: 8px 10px;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid var(--border-color);
+  }
+
+  /* ④ 各種ブロックの縦積み化（スマホでの視認性向上） */
+  .theme-block-grid, .risk-catalyst-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .stock-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .execution-instruction-card {
+    padding: 12px;
+  }
+
+  /* リスト類の見やすさ向上 */
+  .bullet-list, .numbered-list {
+    margin-left: 0;
+    padding-left: 18px;
+    font-size: 12.5px;
+  }
+}
