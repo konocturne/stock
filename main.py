@@ -701,8 +701,7 @@ def send_to_line(data, today_str=None, dashboard_url=""):
 
     body_contents.append({
         "type": "text",
-        "text": f"📌 アクションプラン:
-{strategy_short}",
+        "text": f"📌 アクションプラン:\n{strategy_short}",
         "size": "sm", "wrap": True, "color": "#a5b4fc", "margin": "md",
     })
 
