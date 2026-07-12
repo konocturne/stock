@@ -24,12 +24,28 @@ function pnlCls(val) {
 }
 
 function recClass(rec) {
-  if (!rec) return 'rec-hold';
-  if (rec.includes('強気')) return 'rec-strong-buy';
-  if (rec.includes('買い')) return 'rec-buy';
-  if (rec.includes('利確') || rec.includes('一部')) return 'rec-partial';
-  if (rec.includes('売却')) return 'rec-sell';
-  return 'rec-hold';
+  if (!rec) return 'hold';
+  if (rec.includes('強気') || rec.includes('買い増し') || rec.includes('BUY')) return 'buy';
+  if (rec.includes('売り') || rec.includes('SELL')) return 'sell';
+  return 'hold';
+}
+
+// 投資判断バッジの表示調整
+function renderRatingBadge(rating) {
+  if (!rating) return '';
+  const cleanRating = rating.split(" ")[0]; // "買い増し" 等を取得
+  let cls = 'hold';
+  if (cleanRating.includes('買い') || cleanRating.includes('強気買い') || cleanRating.includes('買い増し')) cls = 'buy';
+  if (cleanRating.includes('売り') || cleanRating.includes('強気売り') || cleanRating.includes('売却')) cls = 'sell';
+  
+  return `<span class="decision-badge ${cls}">${cleanRating}</span>`;
+}
+
+// トレンド比較用矢印アイコン
+function getTrendIcon(nowVal, prevVal) {
+  if (nowVal > prevVal) return '<span style="color:var(--color-negative); font-weight:700;">▲ (上昇)</span>'; // 日本株は赤が上昇
+  if (nowVal < prevVal) return '<span style="color:var(--color-positive); font-weight:700;">▼ (下落)</span>'; // 日本株は緑が下落
+  return '<span style="color:var(--text-muted);">▶ (横ばい)</span>';
 }
 
 // ========================
@@ -62,50 +78,131 @@ function renderSummary(portfolio, stockCount) {
 
   const cardPnl = document.getElementById('card-pnl');
   cardPnl.style.background = total_pnl >= 0
-    ? 'linear-gradient(135deg,#111d2e,#0d2218)'
-    : 'linear-gradient(135deg,#111d2e,#221218)';
+    ? 'var(--color-positive-bg)'
+    : 'var(--color-negative-bg)';
+  cardPnl.style.borderColor = total_pnl >= 0
+    ? 'var(--color-positive)'
+    : 'var(--color-negative)';
 }
 
 // ========================
-// Chart.js
+// Chart.js 描画 (上値期待ポテンシャル横棒 & 需給散布図)
 // ========================
 
-function renderChart(stocks) {
-  const ctx   = document.getElementById('portfolioChart').getContext('2d');
-  const valid = stocks.filter(s => s.pnl_pct != null);
-  const labels = valid.map(s => s.code);
-  const values = valid.map(s => s.pnl_pct);
-  const bg     = values.map(v => v >= 0 ? 'rgba(34,197,94,.65)' : 'rgba(244,63,94,.65)');
-  const border = values.map(v => v >= 0 ? '#22c55e' : '#f43f5e');
+function renderCharts(stocks) {
+  // 1. 上値ポテンシャル横棒グラフ
+  const ctxPot = document.getElementById('portfolioChart').getContext('2d');
+  const dataList = stocks.map(s => {
+    const price = s.current_price || 0;
+    const target = s.consensus_target || 0;
+    const pot = (price > 0 && target > 0) ? ((target - price) / price * 100) : 0;
+    return {
+      code: s.code,
+      name: s.name,
+      pot: Math.max(0, pot)
+    };
+  });
 
-  new Chart(ctx, {
+  new Chart(ctxPot, {
     type: 'bar',
     data: {
-      labels,
-      datasets: [{ label:'含み損益(%)', data:values, backgroundColor:bg, borderColor:border, borderWidth:1, borderRadius:4, borderSkipped:false }]
+      labels: dataList.map(d => `${d.code} ${d.name}`),
+      datasets: [{
+        label: '上値ポテンシャル (%)',
+        data: dataList.map(d => d.pot),
+        backgroundColor: 'rgba(30, 58, 138, 0.75)', // ネイビー
+        borderColor: 'var(--color-primary)',
+        borderWidth: 2,
+        borderRadius: 4
+      }]
     },
     options: {
-      responsive:true, maintainAspectRatio:false,
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: {
-        legend: { display:false },
+        legend: { display: false },
         tooltip: {
-          backgroundColor:'#111d2e', borderColor:'#1e3050', borderWidth:1,
-          titleColor:'#e8f0fe', bodyColor:'#8fabc7',
+          backgroundColor: '#1e293b',
+          titleColor: '#ffffff',
+          bodyColor: '#e2e8f0',
           callbacks: {
-            title: ctx => `${ctx[0].label} — ${valid[ctx[0].dataIndex]?.name ?? ''}`,
-            label: item => ` ${fmtPct(item.parsed.y)}`,
+            label: (ctx) => ` 上値ポテンシャル: +${ctx.parsed.x.toFixed(1)}%`
           }
         }
       },
       scales: {
-        x: { grid:{ color:'rgba(30,48,80,.8)' }, ticks:{ color:'#8fabc7', font:{ size:10 } } },
+        x: {
+          grid: { color: '#e2e8f0' },
+          ticks: { color: '#334155', font: { weight: 'bold' }, callback: v => `+${v}%` }
+        },
         y: {
-          grid:{ color:'rgba(30,48,80,.8)' },
-          ticks:{ color:'#8fabc7', callback: v => `${v>=0?'+':''}${v.toFixed(1)}%` },
-          border:{ dash:[4,4] }
+          grid: { display: false },
+          ticks: { color: '#0f172a', font: { weight: 'bold', size: 11 } }
+        }
+      }
+    }
+  });
+
+  // 2. 需給散布図 (信用倍率 vs 25日乖離率)
+  const ctxVal = document.getElementById('valuationPlot').getContext('2d');
+  const scatterData = stocks.map(s => {
+    const xVal = s.margin_ratio != null ? parseFloat(s.margin_ratio) : 3.0;
+    const yVal = s.dev25 != null ? parseFloat(s.dev25) : 0.0;
+    return {
+      x: xVal,
+      y: yVal,
+      code: s.code,
+      name: s.name
+    };
+  });
+
+  new Chart(ctxVal, {
+    type: 'scatter',
+    data: {
+      datasets: [{
+        label: '保有銘柄',
+        data: scatterData,
+        backgroundColor: 'var(--color-negative)',
+        borderColor: '#0f172a',
+        borderWidth: 2,
+        pointRadius: 10,
+        pointHoverRadius: 12
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1e293b',
+          titleColor: '#ffffff',
+          bodyColor: '#e2e8f0',
+          callbacks: {
+            label: (ctx) => {
+              const p = ctx.raw;
+              return ` ${p.code} ${p.name}: 信用倍率 ${p.x.toFixed(2)}倍 / 25日線乖離率 ${p.y.toFixed(2)}%`;
+            }
+          }
         }
       },
-      animation: { duration:700, easing:'easeOutQuart' }
+      scales: {
+        x: {
+          title: { display: true, text: '信用倍率 (倍)', color: '#0f172a', font: { weight: 'bold', size: 12 } },
+          grid: { color: '#e2e8f0' },
+          ticks: { color: '#334155', font: { weight: 'bold' } },
+          min: 0,
+          max: 10
+        },
+        y: {
+          title: { display: true, text: '25日線乖離率 (%)', color: '#0f172a', font: { weight: 'bold', size: 12 } },
+          grid: { color: '#e2e8f0' },
+          ticks: { color: '#334155', font: { weight: 'bold' }, callback: v => `${v}%` },
+          min: -15,
+          max: 15
+        }
+      }
     }
   });
 }
@@ -126,10 +223,7 @@ function renderAIReport(report, today) {
   const banner = document.getElementById('alerts-banner');
   if (report.alerts && report.alerts.length) {
     banner.style.display = '';
-    banner.innerHTML = report.alerts.map(a => {
-      const isInfo = a.startsWith('💡') || a.startsWith('ℹ️');
-      return `<div class="alert-item ${isInfo ? 'info' : ''}">${a}</div>`;
-    }).join('');
+    banner.innerHTML = report.alerts.map(a => `<div class="alert-item">${a}</div>`).join('');
   }
 
   // マーケットストリップ
@@ -139,40 +233,46 @@ function renderAIReport(report, today) {
   if (report.weather)   stripItems.push(`<span class="strip-divider">|</span><span class="strip-item">🗓️ ${report.weather}</span>`);
   if (stripItems.length) { strip.style.display = ''; strip.innerHTML = stripItems.join(''); }
 
-  // タブコンテンツ
+  // タブコンテンツ (重要: HTML装飾タグ highlight-marker-* を有効にするため escape せずに innerHTML に格納する)
   setTabContent('tab-market', [
-    report.market_summary ? block('🌐 市場概況', report.market_summary) : '',
-    report.analysis_market ? block('🔍 詳細分析', report.analysis_market) : '',
+    report.market_summary ? block('🌐 市場概況サマリー', report.market_summary) : '',
+    report.analysis_market ? block('🔍 アナリスト市場詳細分析', report.analysis_market) : '',
   ]);
 
   setTabContent('tab-technical', [
-    report.analysis_technical ? block('📉 テクニカル総合', report.analysis_technical) : '',
+    report.analysis_technical ? block('📉 テクニカル総合評価', report.analysis_technical) : '',
   ]);
 
   setTabContent('tab-portfolio', [
-    report.analysis_portfolio ? block('🗂️ ポートフォリオ評価', report.analysis_portfolio) : '',
+    report.analysis_portfolio ? block('🗂️ ポートフォリオ全体評価', report.analysis_portfolio) : '',
   ]);
 
-  // 戦略タブ — カード2列 + 明日見通し
+  // 戦略タブ
   const strategyHTML = `
     <div class="strategy-grid">
       <div class="strategy-card short-term">
-        <div class="strategy-card-label">⚡ 短期 (今日〜今週)</div>
-        <div class="strategy-card-body">${escape(report.strategy_short || '---')}</div>
+        <div class="strategy-card-label">⚡ 短期戦略 (今日〜今週のアクションプラン)</div>
+        <div class="strategy-card-body">${report.strategy_short || '---'}</div>
       </div>
       <div class="strategy-card mid-term">
-        <div class="strategy-card-label">🗓 中期 (1〜3ヶ月)</div>
-        <div class="strategy-card-body">${escape(report.strategy_mid || '---')}</div>
+        <div class="strategy-card-label">🗓 中期戦略 (1〜3ヶ月のイベント展望)</div>
+        <div class="strategy-card-body">${report.strategy_mid || '---'}</div>
       </div>
     </div>
     ${report.tomorrow_outlook ? `
     <div class="outlook-box">
-      <strong>明日の見通し</strong>
-      ${escape(report.tomorrow_outlook)}
+      <strong>明日の地合い見通し</strong>
+      ${report.tomorrow_outlook}
     </div>` : ''}`;
   document.getElementById('tab-strategy').innerHTML = strategyHTML;
 
-  // タブ切り替え
+  // 将来見通しロードマップテキストの挿入
+  const roadmapTextEl = document.getElementById('portfolio-roadmap-text');
+  if (roadmapTextEl && report.analysis_portfolio) {
+    roadmapTextEl.innerHTML = report.analysis_portfolio;
+  }
+
+  // タブ切り替えイベント
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -186,7 +286,7 @@ function renderAIReport(report, today) {
 function block(title, content) {
   return `<div class="report-block">
     <div class="report-block-title">${title}</div>
-    <div class="report-block-body">${escape(content)}</div>
+    <div class="report-block-body">${content}</div>
   </div>`;
 }
 
@@ -194,33 +294,67 @@ function setTabContent(id, parts) {
   document.getElementById(id).innerHTML = parts.join('');
 }
 
-function escape(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
 // ========================
-// 銘柄カード
+// 銘柄詳細カードレンダリング (プロトタイプ完全移植)
 // ========================
 
 function renderStockCard(stock, index) {
-  const { pnl, pnl_pct, current_price, quantity, avg_cost,
-          change_pct_str, analyst_rating, consensus_target, stop_loss_guide,
-          target_divergence_comment, risk_comment, technical_detail, news_impact, personal_action } = stock;
+  const { pnl, pnl_pct, current_price, quantity, avg_cost, change_pct_str } = stock;
 
   const cls       = pnlCls(pnl);
   const pnlSign   = (pnl ?? 0) >= 0 ? '+' : '';
   const barPct    = pnl_pct != null ? Math.min(Math.abs(pnl_pct) / 30 * 100, 100) : 0;
-  const barColor  = (pnl ?? 0) >= 0 ? '#22c55e' : '#f43f5e';
+  const barColor  = (pnl ?? 0) >= 0 ? 'var(--color-positive)' : 'var(--color-negative)';
   const chgCls    = pnlCls(parseFloat((change_pct_str || '0').replace(/[+%]/g,'')));
-  const recCls    = recClass(analyst_rating);
 
-  // 目標株価乖離度
-  let targetDevHTML = '';
-  if (consensus_target && consensus_target > 0 && current_price > 0) {
-    const dev = ((consensus_target - current_price) / current_price * 100).toFixed(1);
-    const devSign = dev >= 0 ? '+' : '';
-    const devColor = dev >= 0 ? '#22c55e' : '#f43f5e';
-    targetDevHTML = `<span style="font-size:.6rem;color:${devColor};font-weight:700;"> (現在比 ${devSign}${dev}%)</span>`;
+  // 各種価格指標
+  const stopLoss = stock.stop_loss_guide || 0;
+  const target = stock.consensus_target || 0;
+  const avgCost = stock.avg_cost || 0;
+  const current = stock.current_price || 0;
+
+  // 節目メーターの座標計算
+  const minVal = Math.min(stopLoss || current, avgCost || current, current) * 0.95;
+  const maxVal = Math.max(target || current, current) * 1.05;
+  const range = maxVal - minVal;
+  const getPct = (val) => range > 0 ? ((val - minVal) / range * 100) : 50;
+
+  const currentPct = getPct(current);
+  const stopLossPct = stopLoss ? getPct(stopLoss) : null;
+  const targetPct = target ? getPct(target) : null;
+  const avgCostPct = avgCost ? getPct(avgCost) : null;
+
+  // PER/PBR のスケール座標
+  const perVal = parseFloat(stock.per) || 0;
+  const pbrVal = parseFloat(stock.pbr) || 0;
+  const perPct = Math.min(Math.max(perVal / 30 * 100, 0), 100);
+  const pbrPct = Math.min(Math.max(pbrVal / 3.0 * 100, 0), 100);
+
+  // 指標トレンドテーブルデータ取得
+  const pt = stock.price_trend || [0, 0, 0, 0, 0];
+  const vt = stock.volume_trend || [0, 0, 0, 0, 0];
+  const rt = stock.rsi_trend || [0, 0, 0, 0, 0];
+  const bt = stock.bb_width_trend || [0, 0, 0, 0, 0];
+
+  const priceIcon = getTrendIcon(pt[0], pt[1]);
+  const volIcon = getTrendIcon(vt[0], vt[1]);
+  const rsiIcon = getTrendIcon(rt[0], rt[1]);
+  const bbIcon = getTrendIcon(bt[0], bt[1]);
+
+  // 証券会社目標テーブル
+  const brokers = stock.broker_targets || [];
+  let brokerRowsHTML = '';
+  if (brokers.length > 0) {
+    brokerRowsHTML = brokers.map(b => `
+      <tr>
+        <td class="broker-name-cell">${b.broker}</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥${fmt(b.target)}</td>
+        <td>${b.rating || '---'}</td>
+        <td>${b.date || '---'}</td>
+      </tr>
+    `).join('');
+  } else {
+    brokerRowsHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">証券会社目標のデータはありません。</td></tr>`;
   }
 
   // チャート画像
@@ -230,69 +364,274 @@ function renderStockCard(stock, index) {
       + `<div class="stock-chart-placeholder" style="display:none;">📊 チャートデータなし</div>`
     : `<div class="stock-chart-placeholder">📊 チャートデータなし</div>`;
 
+  // リスクプロファイル
+  const profile = stock.risk_catalyst_profile || {};
+
   return `
     <div class="stock-card" style="animation-delay:${index * 0.04}s">
-      <div class="stock-card-header">
+      <!-- 銘柄ヘッダー -->
+      <div class="stock-meta-header">
         <div>
           <span class="stock-code">${stock.code}</span>
-          <div class="stock-name">${stock.name}</div>
+          <div class="stock-meta-name-code">${stock.name}</div>
           <span class="stock-sector">${stock.sector || '---'}</span>
-          ${analyst_rating ? `<div><span class="rec-badge ${recCls}">${analyst_rating.split(" ")[0]}</span></div>` : ''}
         </div>
-        <div class="stock-price-block">
-          <div class="stock-price">¥${fmt(current_price)}</div>
-          <div class="stock-change ${chgCls}">${change_pct_str || '---'}</div>
+        <div class="stock-price-block-pro">
+          <div class="stock-price-val-pro">¥${fmt(current_price)}</div>
+          <div class="stock-price-chg-pro ${chgCls}">${change_pct_str || '---'}</div>
         </div>
       </div>
 
-      <div class="stock-chart-wrap">${imgHtml}</div>
+      <!-- 取引マニュアル（最上部） -->
+      <div class="live-action-box">
+        <div class="live-action-title">
+          <span>⚠️ 最適行動・指値水準（本日執行マニュアル）</span>
+        </div>
+        <div style="font-size:13.5px; line-height:1.65; color:var(--text-main);">
+          <p style="margin-bottom:8px;"><b>シナリオA (終値損切り目安割れ):</b> ${stock.execution_manual?.scenario_a || '---'}</p>
+          <p style="margin-bottom:8px;"><b>シナリオB (場中の節目割れ・反発):</b> ${stock.execution_manual?.scenario_b || '---'}</p>
+          <p><b>シナリオC (指値・逆指値設定):</b> ${stock.execution_manual?.scenario_c || '---'}</p>
+        </div>
+      </div>
 
-      <div class="stock-metrics">
-        <div class="metric"><div class="metric-label">PER</div><div class="metric-value">${stock.per || '---'}</div></div>
-        <div class="metric"><div class="metric-label">PBR</div><div class="metric-value">${stock.pbr || '---'}</div></div>
-        <div class="metric"><div class="metric-label">配当</div><div class="metric-value">${stock.div_yield || '---'}</div></div>
-        <div class="metric">
-          <div class="metric-label">感情</div>
-          <div class="metric-value" style="color:${stock.sentiment==='ポジティブ'?'#4ade80':stock.sentiment==='ネガティブ'?'#f87171':'#94a3b8'}">
-            ${stock.sentiment==='ポジティブ'?'📈':stock.sentiment==='ネガティブ'?'📉':'➡️'} ${stock.sentiment||'---'}
+      <!-- リスク・カタリストプロファイル -->
+      <div class="risk-catalyst-card">
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">直近決算予定日</span>
+          <span class="risk-cat-val" style="color:var(--color-negative);">${profile.earnings_date || '---'}</span>
+        </div>
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">1日最大想定損失額 (VaR 95%)</span>
+          <span class="risk-cat-val">${profile.max_loss_var || '---'}</span>
+        </div>
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">ベータ値 (対日経225感度)</span>
+          <span class="risk-cat-val">${profile.beta || '---'}</span>
+        </div>
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">目標価格到達想定期間</span>
+          <span class="risk-cat-val" style="color:var(--color-positive);">${profile.target_timeline || '---'}</span>
+        </div>
+      </div>
+
+      <!-- 2カラムブロックレイアウト -->
+      <div class="theme-block-grid">
+        
+        <!-- 左カラム: テクニカル指標・出来高・感情・パーソナル提案 -->
+        <div>
+          <!-- 価格チャート画像 -->
+          <div class="stock-chart-wrap" style="border: 2px solid var(--border-color); border-radius:12px; margin-bottom:16px;">
+            ${imgHtml}
+          </div>
+
+          <!-- テクニカル分析詳細 -->
+          <div class="opinion-card">
+            <div class="opinion-card-title">📈 テクニカル分析・モメンタム</div>
+            <div style="font-size:13.5px; line-height:1.75; color:var(--text-main);">
+              <p style="margin-bottom:10px;">${stock.technical_detail || '---'}</p>
+              <div class="momentum-block-highlight" style="padding:10px; background-color:#fafbfc; border-radius:6px; border:1.5px dashed var(--border-color); font-size:12.5px;">
+                <p style="margin-bottom:4px;"><b>出来高変化:</b> ${stock.momentum_analysis_list?.[0] || '---'}</p>
+                <p style="margin-bottom:4px;"><b>RSI乖離:</b> ${stock.momentum_analysis_list?.[1] || '---'}</p>
+                <p><b>ボリバン幅:</b> ${stock.momentum_analysis_list?.[2] || '---'}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 感情・ニュース影響 -->
+          <div class="opinion-card">
+            <div class="opinion-card-title">💬 市場センチメント ＆ ニュース影響</div>
+            <div style="font-size:13.5px; line-height:1.7;">
+              <p style="margin-bottom:6px;">
+                <b>感情極性:</b> 
+                <span style="font-weight:700; color:${stock.sentiment==='ポジティブ'?'var(--color-positive)':'var(--color-negative)'}">
+                  ${stock.sentiment==='ポジティブ'?'📈':'📉'} ${stock.sentiment||'ニュートラル'}
+                </span>
+                (${stock.sentiment_reason || ''})
+              </p>
+              <p><b>材料・ニュース影響:</b> ${stock.news_impact || '---'}</p>
+            </div>
+          </div>
+
+          <!-- 個人戦略提案 -->
+          <div class="opinion-card analyst" style="border-left-color: var(--color-primary-border); background-color: var(--color-primary-light);">
+            <div class="opinion-card-title" style="color: var(--color-primary);">👤 個人宛トレード戦略提案</div>
+            <div style="font-size:13.5px; line-height:1.7; color: var(--text-dark);">${stock.personal_action || '---'}</div>
           </div>
         </div>
+
+        <!-- 右カラム: 投資判断、節目メーター、バリュエーション、多期間比較、証券会社目標、財務複合、過去チャート、競合相関 -->
+        <div>
+          <!-- 総合投資判断バッジ -->
+          <div class="decision-row">
+            <span class="decision-label">総合投資判断:</span>
+            ${renderRatingBadge(stock.analyst_rating)}
+          </div>
+
+          <!-- 節目メーター -->
+          <div class="price-position-meter-card">
+            <div class="meter-title">📍 株価位置 ＆ 重要節目メーター</div>
+            <div class="meter-bar-wrapper">
+              <div class="meter-current-pin" style="left: ${currentPct}%;"></div>
+              <div class="meter-current-label" style="left: ${currentPct}%;">現在: ¥${fmt(current)}</div>
+              ${stopLoss ? `
+                <div class="meter-line stop-loss" style="left: ${stopLossPct}%;"></div>
+                <div class="meter-line-label" style="left: ${stopLossPct}%;">損切: ¥${fmt(stopLoss)}</div>
+              ` : ''}
+              ${avgCost ? `
+                <div class="meter-line" style="left: ${avgCostPct}%; background-color:#3b82f6; width:2px;"></div>
+                <div class="meter-line-label" style="left: ${avgCostPct}%; color:#1e3a8a;">取得平均: ¥${fmt(avgCost)}</div>
+              ` : ''}
+              ${target ? `
+                <div class="meter-line target" style="left: ${targetPct}%;"></div>
+                <div class="meter-line-label" style="left: ${targetPct}%;">目標: ¥${fmt(target)}</div>
+              ` : ''}
+            </div>
+            <div class="meter-scale-extremes">
+              <span>安値圏 (¥${fmt(minVal)})</span>
+              <span>高値圏 (¥${fmt(maxVal)})</span>
+            </div>
+          </div>
+
+          <!-- バリュエーション visualizer -->
+          <div class="valuation-visualizer">
+            <div class="valuation-bar-group">
+              <div class="valuation-bar-header">
+                <span>PER (株価収益率)</span>
+                <span class="positive">${stock.per || '---'}</span>
+              </div>
+              <div class="valuation-scale-container">
+                <div class="valuation-marker" style="left: ${perPct}%;"></div>
+              </div>
+              <div class="valuation-scale-labels">
+                <span>0倍</span>
+                <span>15倍 (適正)</span>
+                <span>30倍</span>
+              </div>
+            </div>
+            <div class="valuation-bar-group">
+              <div class="valuation-bar-header">
+                <span>PBR (純資産倍率)</span>
+                <span class="positive">${stock.pbr || '---'}</span>
+              </div>
+              <div class="valuation-scale-container">
+                <div class="valuation-marker" style="left: ${pbrPct}%;"></div>
+              </div>
+              <div class="valuation-scale-labels">
+                <span>0.0倍</span>
+                <span>1.0倍 (解散価値)</span>
+                <span>3.0倍</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 指標トレンド比較テーブル -->
+          <div class="trend-table-card" style="margin-bottom:16px;">
+            <div class="trend-table-title">📊 主要指標の多期間トレンド比較</div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>指標項目</th>
+                  <th>現在値</th>
+                  <th>前日比</th>
+                  <th>5日平均 (1週)</th>
+                  <th>25日平均 (1月)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>株価 (円)</b></td>
+                  <td class="num">¥${fmt(pt[0])}</td>
+                  <td class="num">${priceIcon}</td>
+                  <td class="num">¥${fmt(pt[2])}</td>
+                  <td class="num">¥${fmt(pt[3])}</td>
+                </tr>
+                <tr>
+                  <td><b>出来高 (万株)</b></td>
+                  <td class="num">${fmtF(vt[0], 1)}</td>
+                  <td class="num">${volIcon}</td>
+                  <td class="num">${fmtF(vt[2], 1)}</td>
+                  <td class="num">${fmtF(vt[3], 1)}</td>
+                </tr>
+                <tr>
+                  <td><b>RSI (14日)</b></td>
+                  <td class="num">${fmtF(rt[0], 1)}</td>
+                  <td class="num">${rsiIcon}</td>
+                  <td class="num">${fmtF(rt[2], 1)}</td>
+                  <td class="num">${fmtF(rt[3], 1)}</td>
+                </tr>
+                <tr>
+                  <td><b>ボリバン幅 (%)</b></td>
+                  <td class="num">${fmtF(bt[0], 1)}%</td>
+                  <td class="num">${bbIcon}</td>
+                  <td class="num">${fmtF(bt[2], 1)}%</td>
+                  <td class="num">${fmtF(bt[3], 1)}%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 証券会社目標株価テーブル -->
+          <div class="trend-table-card" style="margin-bottom:16px;">
+            <div class="trend-table-title">🏢 証券会社別の最新レーティング ＆ 目標株価</div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>証券会社</th>
+                  <th>目標価格</th>
+                  <th>格付け</th>
+                  <th>発表日</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${brokerRowsHTML}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- アナリスト目標価格の算出根拠 (左線・十分なパディング) -->
+          <div class="opinion-card analyst" style="margin-bottom:16px;">
+            <div class="opinion-card-title">📝 アナリスト目標価格の算出根拠</div>
+            <div style="font-size:13.5px; line-height:1.7; color: var(--text-dark);">${stock.broker_commentary || '---'}</div>
+          </div>
+
+          <!-- 財務×テクニカル複合分析 -->
+          <div class="opinion-card" style="margin-bottom:16px; background-color:#fafbfc;">
+            <div class="opinion-card-title">📊 財務 ＆ テクニカル複合評価</div>
+            <div style="font-size:13.5px; line-height:1.75; color:var(--text-main);">${stock.valuation_commentary || '---'}</div>
+          </div>
+        </div>
+
       </div>
 
-      ${(consensus_target || stop_loss_guide) ? `
-      <div class="stock-targets">
-        <div class="target-item">
-          <div class="target-label">🎯 機関コンセンサス目標</div>
-          <div class="target-value positive">¥${consensus_target ? fmt(consensus_target) : '---'}${targetDevHTML}</div>
-          ${target_divergence_comment ? `<div class="target-basis">${target_divergence_comment}</div>` : ''}
+      <!-- 下部: 過去類似チャートアノマリー ＆ マクロニュース競合相関 (横に大きく展開) -->
+      <div class="full-width-block">
+        <div class="theme-block-title-bar">📅 過去の類似チャートパターン分析</div>
+        <div class="pattern-analogy-card">
+          <div style="font-size:14px; line-height:1.8; color:var(--text-main);">${stock.chart_analogy_commentary || '---'}</div>
         </div>
-        <div class="target-item">
-          <div class="target-label">🛑 ストップロス目安 (52週安値)</div>
-          <div class="target-value negative">¥${stop_loss_guide ? fmt(stop_loss_guide) : '---'}</div>
+      </div>
+
+      <div class="full-width-block">
+        <div class="theme-block-title-bar">🔗 関連ニュース ＆ 競合他社・マクロ相関（絶対参照）</div>
+        <div class="flash-box" style="background-color:#ffffff; border: 2.5px solid var(--border-color); border-radius:12px; margin-bottom:0;">
+          <div style="font-size:14px; line-height:1.8; color:var(--text-main);">${stock.news_correlation_commentary || '---'}</div>
         </div>
-      </div>` : ''}
+      </div>
 
-      ${personal_action ? `
-      <div class="stock-technical" style="background:rgba(59,130,246,0.05);border-bottom:1px solid rgba(59,130,246,0.15);">
-        <div class="tech-title" style="color:#60a5fa;">👤 個人戦略提案</div>
-        <div class="tech-body">${personal_action}</div>
-      </div>` : ''}
+      <!-- 外部リンク -->
+      <div class="source-links-card">
+        <div class="source-links-title">🔍 外部参考ソースリンク</div>
+        <ul class="source-links-list">
+          <li><a href="https://finance.yahoo.co.jp/quote/${stock.code}.T" target="_blank" rel="noopener">Yahoo!ファイナンス (${stock.code}.T)</a></li>
+          <li><a href="https://kabutan.jp/stock/?code=${stock.code}" target="_blank" rel="noopener">株探 (kabutan)</a></li>
+          <li><a href="https://minkabu.jp/stock/${stock.code}" target="_blank" rel="noopener">みんかぶ (${stock.code})</a></li>
+        </ul>
+      </div>
 
-      ${technical_detail ? `
-      <div class="stock-technical">
-        <div class="tech-title">📉 テクニカル詳細</div>
-        <div class="tech-body">${technical_detail}</div>
-      </div>` : ''}
-
-      ${(risk_comment || news_impact) ? `
-      <div class="stock-risk">
-        ${risk_comment ? `<div class="risk-label">⚠️ リスク要因</div>${risk_comment}<br>` : ''}
-        ${news_impact  ? `<span style="color:#60a5fa;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">📰 ニュース影響</span> ${news_impact}` : ''}
-      </div>` : ''}
-
-      <div class="stock-pnl-bar">
+      <!-- ポートフォリオP&L簡易表示 -->
+      <div class="stock-pnl-bar" style="margin-top:16px; border-top:1.5px dashed var(--border-light); padding-top:12px;">
         <div class="pnl-label-row">
-          <span>${quantity}株 × ¥${fmt(avg_cost)}</span>
+          <span>${quantity}株 × ¥${fmt(avgCost)}</span>
           <span class="pnl-amount ${cls}">
             ${pnlSign}¥${fmt(Math.abs(pnl ?? 0))} (${fmtPct(pnl_pct)})
           </span>
@@ -353,7 +692,7 @@ async function init() {
     document.getElementById('stocks-count-badge').textContent = `${data.stocks.length} 銘柄`;
 
     renderSummary(data.portfolio, data.stocks.length);
-    renderChart(data.stocks);
+    renderCharts(data.stocks); // ポテンシャル横棒 ＆ 信用散布図を描画
     renderAIReport(data.ai_report, today);
 
     document.getElementById('stocks-grid').innerHTML =

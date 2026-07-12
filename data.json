@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-12T20:14:53.628363+09:00",
+  "updated_at": "2026-07-12T22:41:52.863054+09:00",
   "today": "2026-07-12",
   "github_pages_url": "https://konocturne.github.io/stock",
   "portfolio": {
@@ -26,16 +26,67 @@
       "eval_total": 721000.0,
       "cost_total": 722960.0,
       "chart_url": "charts/2026-07-12/5803.png",
-      "sentiment": "ポジティブ",
-      "sentiment_reason": "市場の好調に乗り、大きく上昇。出来高も伴い堅調。",
-      "analyst_rating": "買い",
-      "consensus_target": 6968.3,
-      "target_divergence_comment": "現在値は機関コンセンサス平均目標に対して約26%低い水準であり、上昇余地は大きいと見られます。",
-      "stop_loss_guide": 4077.5,
-      "risk_comment": "ベータ値0.778と市場連動性はやや低いものの、市場全体のセンチメントに影響を受けやすい銘柄です。",
-      "technical_detail": "RSIは34.5と中立ながらも売られすぎを示唆。MACDはデッドクロス継続中で、短期的な下落圧力は残存。BB圏内で安定していますが、上値追いは慎重に。",
-      "news_impact": "特段のニュースはありません。夜間PTS情報も取得不可です。",
-      "personal_action": "含み損益はほぼ解消されており、市場の勢いに乗りホールド継続を推奨。トレンド転換に注意。"
+      "sentiment": "",
+      "sentiment_reason": "",
+      "analyst_rating": "",
+      "consensus_target": 0,
+      "target_divergence_comment": "",
+      "stop_loss_guide": 0,
+      "risk_comment": "",
+      "technical_detail": "",
+      "news_impact": "",
+      "personal_action": "",
+      "comprehensive_analysis": "",
+      "execution_manual": {},
+      "valuation_rationale": {},
+      "valuation_commentary": "",
+      "momentum_analysis_list": [],
+      "broker_targets": [],
+      "broker_commentary": "",
+      "chart_analogy_commentary": "",
+      "news_correlation_commentary": "",
+      "risk_catalyst_profile": {},
+      "sma5": 5067.6,
+      "sma25": 5218.7,
+      "sma75": 5318.8,
+      "dev25": -1.32,
+      "price_trend": [
+        5150.0,
+        4938.0,
+        5067.6,
+        5218.72,
+        5318.83
+      ],
+      "volume_trend": [
+        4264,
+        4509,
+        3923,
+        4863,
+        5855
+      ],
+      "value_trend": [
+        21961145,
+        22266676,
+        19823164,
+        25921218,
+        31183326
+      ],
+      "rsi_trend": [
+        34.53,
+        47.25,
+        49.28,
+        54.22,
+        55.11
+      ],
+      "bb_width_trend": [
+        50.33,
+        54.3,
+        57.38,
+        52.38,
+        47.13
+      ],
+      "margin_ratio": 3.0,
+      "margin_buy_man": 50.0
     },
     {
       "code": "285A",
@@ -54,16 +105,67 @@
       "eval_total": 539000.0,
       "cost_total": 535262.0,
       "chart_url": "charts/2026-07-12/285A.png",
-      "sentiment": "ネガティブ",
-      "sentiment_reason": "市場の好調に逆行し下落。MACDデッドクロスが継続中。",
-      "analyst_rating": "買い",
-      "consensus_target": 113300.0,
-      "target_divergence_comment": "機関コンセンサス平均目標は現在値より約47%高い水準で、長期的な成長期待は依然として高いです。",
-      "stop_loss_guide": 67339.4,
-      "risk_comment": "ベータ値はNoneと記載があるものの、高PERでボラティリティが高い銘柄であり、リスク管理が重要です。",
-      "technical_detail": "RSIは31.0と売られすぎを示唆。MACDはデッドクロス継続中で下落基調。BB圏内だが、SMA50を大幅に上回っている点はポジティブ。短期は調整局面か。",
-      "news_impact": "特段のニュースはありません。夜間PTS情報も取得不可です。",
-      "personal_action": "含み益は小さいものの、テクニカル悪化は懸念材料。下値サポートを確認しつつホールド。下限BBを損切り目安に。"
+      "sentiment": "",
+      "sentiment_reason": "",
+      "analyst_rating": "",
+      "consensus_target": 0,
+      "target_divergence_comment": "",
+      "stop_loss_guide": 0,
+      "risk_comment": "",
+      "technical_detail": "",
+      "news_impact": "",
+      "personal_action": "",
+      "comprehensive_analysis": "",
+      "execution_manual": {},
+      "valuation_rationale": {},
+      "valuation_commentary": "",
+      "momentum_analysis_list": [],
+      "broker_targets": [],
+      "broker_commentary": "",
+      "chart_analogy_commentary": "",
+      "news_correlation_commentary": "",
+      "risk_catalyst_profile": {},
+      "sma5": 76144.0,
+      "sma25": 86346.4,
+      "sma75": 56576.2,
+      "dev25": -10.82,
+      "price_trend": [
+        77000.0,
+        77860.0,
+        76144.0,
+        86346.4,
+        56576.2
+      ],
+      "volume_trend": [
+        3997,
+        4004,
+        4300,
+        3955,
+        3729
+      ],
+      "value_trend": [
+        307792870,
+        311788813,
+        326258647,
+        336411128,
+        212717611
+      ],
+      "rsi_trend": [
+        30.98,
+        31.39,
+        35.35,
+        60.04,
+        66.75
+      ],
+      "bb_width_trend": [
+        48.95,
+        47.9,
+        48.5,
+        59.82,
+        59.8
+      ],
+      "margin_ratio": 2.0,
+      "margin_buy_man": 50.0
     },
     {
       "code": "6752",
@@ -82,19 +184,79 @@
       "eval_total": 89600.0,
       "cost_total": 88640.0,
       "chart_url": "charts/2026-07-12/6752.png",
-      "sentiment": "ニュートラル",
-      "sentiment_reason": "市場全体の好調に合わせて小幅上昇。特段の材料はなし。",
-      "analyst_rating": "買い",
-      "consensus_target": 4327.2,
-      "target_divergence_comment": "機関コンセンサス平均目標は現在値よりやや低い水準にあり、目標達成には更なる材料が必要かもしれません。",
-      "stop_loss_guide": 4048.5,
-      "risk_comment": "ベータ値0.852と市場連動性は平均的。安定感はあるものの、大きなモメンタムには欠ける傾向です。",
-      "technical_detail": "RSIは52.4と中立圏。MACDはデッドクロス継続中で弱気シグナル。BB圏内で安定推移。SMA50を大幅に上回っており、中長期トレンドは維持。",
-      "news_impact": "特段のニュースはありません。夜間PTS情報も取得不可です。",
-      "personal_action": "含み益は小幅だが、テクニカルはやや弱気。コンセンサス目標を下回る可能性も考慮し、ホールド継続しつつ動向を注視。"
+      "sentiment": "",
+      "sentiment_reason": "",
+      "analyst_rating": "",
+      "consensus_target": 0,
+      "target_divergence_comment": "",
+      "stop_loss_guide": 0,
+      "risk_comment": "",
+      "technical_detail": "",
+      "news_impact": "",
+      "personal_action": "",
+      "comprehensive_analysis": "",
+      "execution_manual": {},
+      "valuation_rationale": {},
+      "valuation_commentary": "",
+      "momentum_analysis_list": [],
+      "broker_targets": [],
+      "broker_commentary": "",
+      "chart_analogy_commentary": "",
+      "news_correlation_commentary": "",
+      "risk_catalyst_profile": {},
+      "sma5": 4445.0,
+      "sma25": 4280.8,
+      "sma75": 3522.3,
+      "dev25": 4.65,
+      "price_trend": [
+        4480.0,
+        4455.0,
+        4445.0,
+        4280.8,
+        3522.29
+      ],
+      "volume_trend": [
+        934,
+        1048,
+        1189,
+        1449,
+        1180
+      ],
+      "value_trend": [
+        4182842,
+        4667682,
+        5277540,
+        6220803,
+        4300250
+      ],
+      "rsi_trend": [
+        52.43,
+        51.0,
+        54.62,
+        64.16,
+        64.9
+      ],
+      "bb_width_trend": [
+        16.39,
+        20.6,
+        23.35,
+        26.45,
+        21.55
+      ],
+      "margin_ratio": 3.0,
+      "margin_buy_man": 50.0
     }
   ],
   "history": [
+    {
+      "date": "2026-07-12",
+      "timing": "夜",
+      "ts": "2026-07-12 20:14",
+      "alerts": "🚨 複数銘柄でMACDデッドクロス継続",
+      "weather": "Technology:☁️ / Industrials:☀️",
+      "benchmark": "日経225(+1.20%) vs ポートフォリオ: +1.82%",
+      "strategy": ""
+    },
     {
       "date": "2026-07-12",
       "timing": "昼",
@@ -141,19 +303,5 @@
       "strategy": "5803は市場全体の堅調さにも助けられ日中上昇したが、MACDデッドクロスは弱気サイン。含み損益もわずかにマイナス。PTSでの軟調推移を考慮し、一旦利益確定または損切りラインの見直しを検討。中期ではMACDの改善を注視し、買い増しは慎重に。"
     }
   ],
-  "ai_report": {
-    "title": "夜のアナリスト・レポート",
-    "alerts": [
-      "🚨 複数銘柄でMACDデッドクロス継続"
-    ],
-    "weather": "Technology:☁️ / Industrials:☀️",
-    "benchmark": "日経225(+1.20%) vs ポートフォリオ: +1.82%",
-    "market_summary": "本日の日本市場は、米国市場の堅調な動きを引き継ぎ、日経平均株価が+1.20%と大幅に上昇しました。米S&P 500、NASDAQも続伸し、地合いは好転しています。ただし、夜間PTSは情報が取得できておらず、時間外取引の動向は不明です。",
-    "tomorrow_outlook": "米市場のポジティブな流れと円安基調が続く限り、明日も日本株は堅調な推移が期待されます。ただし、テクニカル指標の過熱感には注意が必要です。",
-    "analysis_market": "本日の市場は、堅調な米国市場を背景にリスクオンムードが広がり、日本株は日経平均が+1.20%と力強い上昇を見せました。特に、産業機械や一部のハイテク株が市場を牽引しました。米S&P 500、NASDAQ、SOX指数も軒並みプラスで引け、グローバルな株高の傾向が見られます。しかし、個別銘柄ではMACDのデッドクロス継続など、短期的な調整を示唆するテクニカルサインも見られ、全面的な強気相場入りと判断するのは時期尚早です。PTS情報が取得できなかったため、時間外取引の詳細は不明ですが、市場の勢いはまだ続く可能性を秘めています。",
-    "analysis_technical": "ポートフォリオ内の複数銘柄でMACDデッドクロスが継続しており、短期的な上値の重さが懸念されます。一方で、RSIが売られすぎ水準に接近している銘柄もあり、押し目買いのチャンスを伺う局面とも言えます。ボリンジャーバンド内での推移が多いため、大きなトレンド転換には至っていませんが、方向感に欠ける動きも散見されます。セクターローテーションとしては、本日堅調だったインダストリアルが引き続き注目されますが、テクノロジーセクターは米国SOX指数の堅調さに対し、個別株が下落するなど強弱感が混在しています。",
-    "analysis_portfolio": "ポートフォリオ全体では、本日の日本市場を上回る+1.82%のパフォーマンスを達成し、比較的良好な一日となりました。しかし、KIOXIAが下落するなど、個別の銘柄には弱点も存在します。全体としてテクノロジーセクターへの比重が高く、リスクが集中している可能性があります。今後は、セクター間の分散や、テクニカル指標の改善が見られる銘柄への集中投資も検討の余地があります。含み損益は概ねプラス圏に転換しており、精神的な余裕も出てきたと考えられます。",
-    "strategy_short": "短期戦略としては、市場全体の堅調な地合いを活かしつつも、MACDデッドクロス継続中の銘柄については、深追いを避け、下値サポート（BB下限等）を意識した慎重な運用を推奨します。RSIが低水準の銘柄は押し目買いの機会を伺いつつ、好業績銘柄はホールドを継続。急騰銘柄の一部利確も視野に入れ、利益確定の機会を逃さないようにします。",
-    "strategy_mid": "中期戦略としては、来週以降発表される企業決算や経済指標を注視し、ファンダメンタルズの変化に対応できる準備が必要です。テクノロジーセクターは成長期待が高いものの、高PER銘柄のリスク許容度を見直す時期かもしれません。ポートフォリオ全体のベータ値を考慮し、市場のボラティリティ上昇に備えたバランス調整も視野に入れます。機関コンセンサス平均目標値と乖離が大きい銘柄の動向に注目し、長期的な視点で保有を検討しつつ、割安な高配当銘柄への分散投資も一考です。"
-  }
+  "ai_report": null
 }
