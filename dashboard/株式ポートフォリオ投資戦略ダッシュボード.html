@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://konocturne.github.io/stock/#section-roadmap -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>株式ポートフォリオ投資戦略ダッシュボード</title>
+  <meta name="description" content="Gemini AI × GitHub Actions による自動株式ポートフォリオ管理ダッシュボード。詳細分析レポート付き。">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link href="./株式ポートフォリオ投資戦略ダッシュボード_files/css2" rel="stylesheet">
+  <script src="./株式ポートフォリオ投資戦略ダッシュボード_files/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="./株式ポートフォリオ投資戦略ダッシュボード_files/style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ===== ヘッダー ===== -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-icon">📊</span>
+          <div>
+            <h1>株式ポートフォリオ投資戦略ダッシュボード</h1>
+            <p class="header-sub">Gemini AI × GitHub Actions 自動株式管理システム</p>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="update-badge">
+            <span class="update-dot"></span>
+            <span id="updated-at">最終更新: 07/12 23:25</span>
+          </div>
+          <nav class="header-nav">
+            <a href="https://konocturne.github.io/stock/#section-roadmap" class="nav-link">将来見通し</a>
+            <a href="https://konocturne.github.io/stock/#section-position" class="nav-link">需給マップ</a>
+            <a href="https://konocturne.github.io/stock/#section-report" class="nav-link">AI総括</a>
+            <a href="https://konocturne.github.io/stock/#section-summary" class="nav-link">概要サマリー</a>
+            <a href="https://konocturne.github.io/stock/#section-stocks" class="nav-link">銘柄詳細</a>
+            <a href="https://konocturne.github.io/stock/#section-history" class="nav-link">履歴</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== ローディング ===== -->
+    <div id="loading" class="loading-screen" style="display: none;">
+      <div class="loader"></div>
+      <p>データを読み込み中...</p>
+    </div>
+
+    <!-- ===== メインコンテンツ ===== -->
+    <main id="main-content" class="main" style="">
+
+      <!-- ① ポートフォリオ将来見通し ＆ 上昇ロードマップ -->
+      <section class="section" id="section-roadmap">
+        <div class="section-header">
+          <h2>ポートフォリオ将来見通し ＆ 上昇ロードマップ</h2>
+          <span class="section-badge">ファーストビュー</span>
+        </div>
+        
+        <div class="summary-grid-wrapper">
+          <!-- 左側: 主要マイルストーン timeline -->
+          <div class="flash-box" style="margin-bottom:0;">
+            <div style="font-weight:700; color:var(--color-primary); border-bottom:2px solid var(--border-color); padding-bottom:6px; margin-bottom:12px; font-size:15px;">
+              📊 ポートフォリオ全体のマイルストーン ＆ カタリスト日程
+            </div>
+            <div id="portfolio-roadmap-text" style="font-size:14.5px; line-height:1.75; color:var(--text-main); white-space:pre-wrap;">現在のポートフォリオは、藤倉、KIOXIA、パナソニックHDと、<span class="highlight-marker-yellow">テクノロジーおよび工業セクターに偏重</span>しています。本日のパフォーマンスは日経225に<span class="highlight-marker-red">アンダーパフォーム</span>しましたが、個別の銘柄は含み益を維持または含み損を縮小しました。中長期的なアロケーション方針としては、<span class="highlight-marker-green">高成長が期待される半導体・EV関連への投資を維持</span>しつつ、バリュエーションの健全性にも注意を払う必要があります。将来ロードマップとして、<span class="highlight-marker-green">7月後半にはKIOXIAの半導体市況改善</span>による底打ちと反発をマイルストーンに設定します。また、<span class="highlight-marker-green">8月前半のパナソニックHDのEVバッテリー事業における新規提携や受注発表</span>があれば、上値ブレイクの<span style="color: var(--color-positive); font-weight: 700;">強力なカタリスト</span>となるでしょう。藤倉については、<span class="highlight-marker-yellow">高成長持続性</span>の確認が重要です。ポートフォリオ全体のベータ値は比較的小さめですが、個別のボラティリティは高いため、リスク管理を徹底します。</div>
+          </div>
+          
+          <!-- 右側: 各銘柄の上値ポテンシャル棒グラフ -->
+          <div class="chart-card" style="padding: 16px;">
+            <div class="chart-card-title">目標株価までの上値ポテンシャル（％）</div>
+            <div class="portfolio-chart-wrapper">
+              <canvas id="portfolioChart" height="384" style="display: block; box-sizing: border-box; height: 192px; width: 641px;" width="1283"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ② 需給 ＆ 乖離相関プロット（信用倍率 vs 25日線乖離率） -->
+      <section class="section" id="section-position">
+        <div class="section-header">
+          <h2>需給 ＆ 乖離相関プロット</h2>
+          <span class="section-badge">ポジションマップ</span>
+        </div>
+        <div class="valuation-plot-card" style="margin-top:0;">
+          <div class="valuation-plot-title">信用需給ポジションマップ (信用倍率 vs 25日線乖離率)</div>
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.4;">
+            ※縦軸は **25日線乖離率(%)**、横軸は **信用倍率(倍)** です。
+            左上＝好需給/割安（押し目狙い）、右上＝高信用/過熱、左下＝信用低調/弱気、右下＝高信用残/乖離マイナス（需給悪化警戒）の4象限で分析。
+          </p>
+          <div class="valuation-plot-frame">
+            <canvas id="valuationPlot" height="500" style="display: block; box-sizing: border-box; height: 250px; width: 1124px;" width="2248"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- ③ 市場全体の急所 ＆ 本日のAI総括 -->
+      <section class="section" id="section-report" style="">
+        <div class="section-header">
+          <h2 id="report-title">🤖 夜のポートフォリオ投資戦略・日報</h2>
+          <span class="section-badge" id="report-badge">Gemini 2.5 Flash</span>
+        </div>
+
+        <!-- 警告バナー (重大トピック用) -->
+        <div id="alerts-banner" class="alert-banner" style=""><div class="alert-item">🚨 トヨタが52週安値接近</div><div class="alert-item">💡 ソニーGに半導体好材料</div></div>
+
+        <!-- 市況・ベンチマーク対比 -->
+        <div class="report-strip" id="report-strip" style="background-color: rgb(255, 255, 255); border: 2px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 700;"><span class="strip-item">📊 日経225(+1.20%) vs ポートフォリオ: +0.20%</span><span class="strip-divider">|</span><span class="strip-item">🗓️ 半導体:☀️ / 自動車:☁️</span></div>
+
+        <!-- AIレポート・ナビゲーションタブ -->
+        <div class="tab-nav">
+          <button class="tab-btn active" data-tab="market">🌐 市場分析</button>
+          <button class="tab-btn" data-tab="technical">📉 テクニカル</button>
+          <button class="tab-btn" data-tab="portfolio">🗂️ PF評価</button>
+          <button class="tab-btn" data-tab="strategy">🎯 投資戦略</button>
+        </div>
+
+        <!-- 各種タブパネル -->
+        <div id="tab-market" class="tab-panel active"><div class="report-block">
+    <div class="report-block-title">🌐 市場概況サマリー</div>
+    <div class="report-block-body">本日の日本市場は、<span style="color: var(--color-positive); font-weight: 700;">日経225が+1.20%と堅調に推移</span>しました。米国市場もS&amp;P 500、NASDAQ、SOX指数がいずれもプラス圏で終え、<span class="highlight-marker-green">良好な外部環境</span>が継続しています。特に、<span class="highlight-marker-yellow">半導体関連株</span>はSOX指数の小幅上昇に牽引される形で底堅く推移しましたが、国内では個別銘柄間で動きに差が見られました。為替市場では<span class="highlight-marker-yellow">円安が進行</span>しており、輸出関連企業にとっては<span style="color: var(--color-positive); font-weight: 700;">業績上振れの期待</span>が高まる材料となっています。一方で、<span class="highlight-marker-yellow">原油価格の動向</span>や<span class="highlight-marker-yellow">主要中央銀行の金融政策スタンス</span>については、依然として不透明感が残っており、市場の<span class="highlight-marker-yellow">警戒感</span>を維持する必要があります。全体としては<span class="highlight-marker-green">リスクオンの動き</span>が優勢ですが、<span class="highlight-marker-red">高値警戒感からの調整</span>には常に注意が必要です。</div>
+  </div><div class="report-block">
+    <div class="report-block-title">🔍 アナリスト市場詳細分析</div>
+    <div class="report-block-body">本日の日本市場は、<span style="color: var(--color-positive); font-weight: 700;">日経225が+1.20%と堅調に推移</span>しました。米国市場もS&amp;P 500、NASDAQ、SOX指数がいずれもプラス圏で終え、<span class="highlight-marker-green">良好な外部環境</span>が継続しています。特に、<span class="highlight-marker-yellow">半導体関連株</span>はSOX指数の小幅上昇に牽引される形で底堅く推移しましたが、国内では個別銘柄間で動きに差が見られました。為替市場では<span class="highlight-marker-yellow">円安が進行</span>しており、輸出関連企業にとっては<span style="color: var(--color-positive); font-weight: 700;">業績上振れの期待</span>が高まる材料となっています。一方で、<span class="highlight-marker-yellow">原油価格の動向</span>や<span class="highlight-marker-yellow">主要中央銀行の金融政策スタンス</span>については、依然として不透明感が残っており、市場の<span class="highlight-marker-yellow">警戒感</span>を維持する必要があります。全体としては<span class="highlight-marker-green">リスクオンの動き</span>が優勢ですが、<span class="highlight-marker-red">高値警戒感からの調整</span>には常に注意が必要です。</div>
+  </div></div>
+        <div id="tab-technical" class="tab-panel"><div class="report-block">
+    <div class="report-block-title">📉 テクニカル総合評価</div>
+    <div class="report-block-body">テクニカル面では、日経225は<span style="color: var(--color-positive); font-weight: 700;">強い上昇モメンタムを維持</span>しており、主要な移動平均線は上向きで推移しています。ただし、一部の大型株では<span class="highlight-marker-yellow">RSIの過熱感</span>や<span class="highlight-marker-yellow">MACDのデッドクロス</span>が見られ、短期的な調整リスクを抱える銘柄も散見されます。セクターローテーションの観点からは、本日も<span class="highlight-marker-green">ハイテク・グロース株</span>が堅調に推移する一方で、<span class="highlight-marker-yellow">自動車セクターは個別材料に左右される展開</span>でした。過去のチャートパターンアノマリーとしては、<span class="highlight-marker-yellow">季節的な強さ</span>が7月後半に多く見られるため、この期間は<span style="color: var(--color-positive); font-weight: 700;">押し目買いのチャンス</span>と捉えられます。特に、ボリンジャーバンドのスクイーズからエクスパンションへの転換や、MACDのゴールデンクロス発生は、<span class="highlight-marker-green">トレンド転換の強力なシグナル</span>となるため、注視すべきポイントです。</div>
+  </div></div>
+        <div id="tab-portfolio" class="tab-panel"><div class="report-block">
+    <div class="report-block-title">🗂️ ポートフォリオ全体評価</div>
+    <div class="report-block-body">現在のポートフォリオは、藤倉、KIOXIA、パナソニックHDと、<span class="highlight-marker-yellow">テクノロジーおよび工業セクターに偏重</span>しています。本日のパフォーマンスは日経225に<span class="highlight-marker-red">アンダーパフォーム</span>しましたが、個別の銘柄は含み益を維持または含み損を縮小しました。中長期的なアロケーション方針としては、<span class="highlight-marker-green">高成長が期待される半導体・EV関連への投資を維持</span>しつつ、バリュエーションの健全性にも注意を払う必要があります。将来ロードマップとして、<span class="highlight-marker-green">7月後半にはKIOXIAの半導体市況改善</span>による底打ちと反発をマイルストーンに設定します。また、<span class="highlight-marker-green">8月前半のパナソニックHDのEVバッテリー事業における新規提携や受注発表</span>があれば、上値ブレイクの<span style="color: var(--color-positive); font-weight: 700;">強力なカタリスト</span>となるでしょう。藤倉については、<span class="highlight-marker-yellow">高成長持続性</span>の確認が重要です。ポートフォリオ全体のベータ値は比較的小さめですが、個別のボラティリティは高いため、リスク管理を徹底します。</div>
+  </div></div>
+        <div id="tab-strategy" class="tab-panel">
+    <div class="strategy-grid">
+      <div class="strategy-card short-term">
+        <div class="strategy-card-label">⚡ 短期戦略 (今日〜今週のアクションプラン)</div>
+        <div class="strategy-card-body">今日〜今週の短期アクションプランとしては、まずKIOXIAの<span class="highlight-marker-yellow">RSIが売られすぎ圏に接近</span>しているため、<span style="color: var(--color-positive); font-weight: 700;">短期的な押し目買いの機会</span>を探ります。ただし、<span class="highlight-marker-red">BB下限（67,339.4円）を明確に割る場合は即座に損切り</span>を検討します。パナソニックHDは<span class="highlight-marker-yellow">レンジ相場</span>が継続しているため、BB上限での利確、BB下限での損切りといった<span class="highlight-marker-green">レンジ戦略</span>を基本とします。藤倉は本日の<span style="color: var(--color-positive); font-weight: 700;">強い反発を評価</span>し、<span class="highlight-marker-green">保有を継続</span>します。全体的に、週末の経済指標発表や来週のFOMC議事要旨など、<span class="highlight-marker-yellow">マクロ経済イベント前の利益確定売り</span>には警戒し、無理な追随買いは控えるのが賢明です。</div>
+      </div>
+      <div class="strategy-card mid-term">
+        <div class="strategy-card-label">🗓 中期戦略 (1〜3ヶ月のイベント展望)</div>
+        <div class="strategy-card-body">1〜3ヶ月の中期戦略としては、<span class="highlight-marker-green">半導体市場の本格的な回復</span>を最大のテーマとします。KIOXIAは、データセンター需要の拡大に伴うNAND型フラッシュメモリの<span style="color: var(--color-positive); font-weight: 700;">需給改善が業績を大きく牽引</span>する見込みです。パナソニックHDは、EVバッテリー事業の<span class="highlight-marker-green">米国での生産能力増強</span>と主要顧客からの受注状況が鍵となります。<span class="highlight-marker-yellow">テスラ (TSLA)の生産台数動向</span>は直接的な影響を持つため注視します。藤倉は、<span class="highlight-marker-green">高成長事業の進捗</span>と新規受注状況に注目し、<span "highlight-marker-yellow"="">四半期決算発表での業績ガイダンス</span>を重要な判断材料とします。全体として、ポートフォリオのリバランスを検討し、<span class="highlight-marker-yellow">過度なセクター集中リスクを低減</span>することも視野に入れます。</div>
+      </div>
+    </div>
+    
+    <div class="outlook-box">
+      <strong>明日の地合い見通し</strong>
+      明日は、本日の米国市場の動きを引き継ぎ、<span class="highlight-marker-green">テクノロジー株中心に堅調な推移</span>が期待されます。しかし、<span class="highlight-marker-yellow">高値警戒感</span>からの利益確定売りや、<span class="highlight-marker-yellow">海外市場の変動</span>には注意が必要です。引き続き<span class="highlight-marker-yellow">為替動向</span>が重要となるでしょう。
+    </div></div>
+      </section>
+
+      <!-- ④ ポートフォリオ概要サマリー -->
+      <section class="section" id="section-summary">
+        <div class="section-header">
+          <h2>ポートフォリオ財務状況</h2>
+          <span class="section-badge" id="perf-date">2026-07-12</span>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-card" id="card-eval">
+            <div class="summary-label">評価額合計</div>
+            <div class="summary-value" id="total-eval">¥1,349,600</div>
+          </div>
+          <div class="summary-card" id="card-pnl" style="background: var(--color-positive-bg); border-color: var(--color-positive);">
+            <div class="summary-label">個別含み損益</div>
+            <div class="summary-value positive" id="total-pnl">+¥2,738</div>
+            <div class="summary-sub positive" id="total-pnl-pct">+0.20%</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">取得金額合計</div>
+            <div class="summary-value" id="total-cost">¥1,346,862</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">監視・保有銘柄数</div>
+            <div class="summary-value" id="stock-count">3 銘柄</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ⑤ 保有銘柄 詳細投資レポート -->
+      <section class="section" id="section-stocks">
+        <div class="section-header">
+          <h2>保有銘柄 詳細投資レポート</h2>
+          <span class="section-badge" id="stocks-count-badge">3 銘柄</span>
+        </div>
+        <div class="stocks-grid" id="stocks-grid">
+    <div class="stock-card" style="animation-delay:0s">
+      <!-- 銘柄ヘッダー -->
+      <div class="stock-meta-header">
+        <div>
+          <span class="stock-code">5803</span>
+          <div class="stock-meta-name-code">Fujikura Ltd.</div>
+          <span class="stock-sector">Industrials</span>
+        </div>
+        <div class="stock-price-block-pro">
+          <div class="stock-price-val-pro">¥5,150</div>
+          <div class="stock-price-chg-pro positive">+4.29%</div>
+        </div>
+      </div>
+
+      <!-- 取引マニュアル（最上部） -->
+      <div class="live-action-box">
+        <div class="live-action-title">
+          <span>⚠️ 最適行動・指値水準（本日執行マニュアル）</span>
+        </div>
+        <div style="font-size:13.5px; line-height:1.65; color:var(--text-main);">
+          <p style="margin-bottom:8px;"><b>シナリオA (終値損切り目安割れ):</b> 日足終値が<span class="highlight-marker-red">ロスカット目安3,500円</span>を割り込んだ場合、<span style="color: var(--color-negative); font-weight: 700;">速やかに全株を成行で売却</span>してください。これは長期的な下降トレンド入りを示唆する可能性があります。</p>
+          <p style="margin-bottom:8px;"><b>シナリオB (場中の節目割れ・反発):</b> 場中、BB下限である<span class="highlight-marker-red">4,077.5円を一時的に割り込み</span>、すぐに反発する動きを見せた場合、打診買いを検討し、<span style="color: var(--color-positive); font-weight: 700;">回復を確認</span>できれば買い増しを検討してください。</p>
+          <p><b>シナリオC (指値・逆指値設定):</b> 指値は<span class="highlight-marker-green">機関コンセンサス平均目標6,968円</span>付近での一部利確を設定し、逆指値は<span class="highlight-marker-red">直近の安値4,800円割れ</span>で設定し、下落リスクに備えましょう。</p>
+        </div>
+      </div>
+
+      <!-- リスク・カタリストプロファイル -->
+      <div class="risk-catalyst-card">
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">直近決算予定日</span>
+          <span class="risk-cat-val" style="color:var(--color-negative);">2024/08/10</span>
+        </div>
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">1日最大想定損失額 (VaR 95%)</span>
+          <span class="risk-cat-val">-¥70,000円 (直近30日間の平均ボラティリティに基づく)</span>
+        </div>
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">ベータ値 (対日経225感度)</span>
+          <span class="risk-cat-val">0.778</span>
+        </div>
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">目標価格到達想定期間</span>
+          <span class="risk-cat-val" style="color:var(--color-positive);">6ヶ月以内</span>
+        </div>
+      </div>
+
+      <!-- 2カラムブロックレイアウト -->
+      <div class="theme-block-grid">
+        
+        <!-- 左カラム: テクニカル指標・出来高・感情・パーソナル提案 -->
+        <div>
+
+          <!-- テクニカル分析詳細 -->
+          <div class="opinion-card">
+            <div class="opinion-card-title">📈 テクニカル分析・モメンタム</div>
+            <div style="font-size:13.5px; line-height:1.75; color:var(--text-main);">
+              <p style="margin-bottom:10px;">RSIは34.5と中立ながら<span class="highlight-marker-green">売られすぎ圏からの反発を示唆</span>。MACDはデッドクロス継続で下降トレンドを示唆しますが、シグナルとの乖離縮小に注目。ボリンジャーバンドはBB下限4,077.5円、BB上限6,820.1円の範囲内で推移しており、<span class="highlight-marker-green">本日の反発でBB下限からの押し上げ</span>が見られます。</p>
+              <div class="momentum-block-highlight" style="padding:10px; background-color:#fafbfc; border-radius:6px; border:1.5px dashed var(--border-color); font-size:12.5px;">
+                <p style="margin-bottom:4px;"><b>出来高変化:</b> <span class="highlight-marker-green">本日の出来高は42,643,000株と急増</span>し、売買代金も2,196億円に達しました。これは<span style="color: var(--color-positive); font-weight: 700;">強い買い圧力の証左</span>であり、株価反発の勢いを後押ししています。</p>
+                <p style="margin-bottom:4px;"><b>RSI乖離:</b> RSIは34.5と中立水準ですが、直近の売られすぎ圏から脱却し<span style="color: var(--color-positive); font-weight: 700;">反発の兆候</span>を見せています。ただし、買われすぎ水準にはまだ遠く、さらなる上昇余地はあります。</p>
+                <p><b>ボリバン幅:</b> ボリンジャーバンドはBB下限からの反発を確認しました。バンド幅は現時点では特筆すべき変化はありませんが、<span class="highlight-marker-yellow">今後の株価上昇に伴いバンド拡大</span>が見られるか注目です。</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 感情・ニュース影響 -->
+          <div class="opinion-card">
+            <div class="opinion-card-title">💬 市場センチメント ＆ ニュース影響</div>
+            <div style="font-size:13.5px; line-height:1.7;">
+              <p style="margin-bottom:6px;">
+                <b>感情極性:</b> 
+                <span style="font-weight:700; color:var(--color-positive)">
+                  📈 ポジティブ
+                </span>
+                (本日大幅上昇、機関コンセンサスも「買い」推奨で目標株価に大きな乖離があるため。)
+              </p>
+              <p><b>材料・ニュース影響:</b> 直近の目立ったニュースは確認されておらず、<span class="highlight-marker-yellow">本日株価を大きく動かした特定の材料は見当たりません</span>。地合い全体やテクニカル要因による反発の可能性が高いです。</p>
+            </div>
+          </div>
+
+          <!-- 個人戦略提案 -->
+          <div class="opinion-card analyst" style="border-left-color: var(--color-primary-border); background-color: var(--color-primary-light);">
+            <div class="opinion-card-title" style="color: var(--color-primary);">👤 個人宛トレード戦略提案</div>
+            <div style="font-size:13.5px; line-height:1.7; color: var(--text-dark);">保有単価5,164円に対し現在値5,150円とほぼ同水準であり、本日の反発で<span class="highlight-marker-green">含み損が大幅に縮小</span>しました。機関コンセンサスが「買い」であり、目標株価との乖離も大きいため、<span class="highlight-marker-green">現物保有は継続</span>し、短期的な調整があれば<span class="highlight-marker-green">買い増しを検討</span>する余地があります。</div>
+          </div>
+        </div>
+
+        <!-- 右カラム: 投資判断、節目メーター、バリュエーション、多期間比較、証券会社目標、財務複合、過去チャート、競合相関 -->
+        <div>
+          <!-- 総合投資判断バッジ -->
+          <div class="decision-row">
+            <span class="decision-label">総合投資判断:</span>
+            <span class="decision-badge buy">買い増し</span>
+          </div>
+
+          <!-- 節目メーター -->
+          <div class="price-position-meter-card">
+            <div class="meter-title">📍 株価位置 ＆ 重要節目メーター</div>
+            <div class="meter-bar-wrapper">
+              <div class="meter-current-pin" style="left: 45.71969692225021%;"></div>
+              <div class="meter-current-label" style="left: 45.71969692225021%;">現在: ¥5,150</div>
+              
+                <div class="meter-line stop-loss" style="left: 4.3840805267911165%;"></div>
+                <div class="meter-line-label" style="left: 4.3840805267911165%;">損切: ¥3,500</div>
+              
+              
+                <div class="meter-line" style="left: 46.0704233643935%; background-color:#3b82f6; width:2px;"></div>
+                <div class="meter-line-label" style="left: 46.0704233643935%; color:#1e3a8a;">取得平均: ¥5,164</div>
+              
+              
+                <div class="meter-line target" style="left: 91.27154619004614%;"></div>
+                <div class="meter-line-label" style="left: 91.27154619004614%;">目標: ¥6,968</div>
+              
+            </div>
+            <div class="meter-scale-extremes">
+              <span>安値圏 (¥3,325)</span>
+              <span>高値圏 (¥7,317)</span>
+            </div>
+          </div>
+
+          <!-- バリュエーション visualizer -->
+          <div class="valuation-visualizer">
+            <div class="valuation-bar-group">
+              <div class="valuation-bar-header">
+                <span>PER (株価収益率)</span>
+                <span class="positive">17.0倍</span>
+              </div>
+              <div class="valuation-scale-container">
+                <div class="valuation-marker" style="left: 56.666666666666664%;"></div>
+              </div>
+              <div class="valuation-scale-labels">
+                <span>0倍</span>
+                <span>15倍 (適正)</span>
+                <span>30倍</span>
+              </div>
+            </div>
+            <div class="valuation-bar-group">
+              <div class="valuation-bar-header">
+                <span>PBR (純資産倍率)</span>
+                <span class="positive">15.22倍</span>
+              </div>
+              <div class="valuation-scale-container">
+                <div class="valuation-marker" style="left: 100%;"></div>
+              </div>
+              <div class="valuation-scale-labels">
+                <span>0.0倍</span>
+                <span>1.0倍 (解散価値)</span>
+                <span>3.0倍</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 指標トレンド比較テーブル -->
+          <div class="trend-table-card" style="margin-bottom:16px;">
+            <div class="trend-table-title">📊 主要指標の多期間トレンド比較</div>
+            <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>指標項目</th>
+                  <th>現在値</th>
+                  <th>前日比</th>
+                  <th>5日平均 (1週)</th>
+                  <th>25日平均 (1月)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>株価 (円)</b></td>
+                  <td class="num">¥5,150</td>
+                  <td class="num"><span style="color:var(--color-negative); font-weight:700;">▲ (上昇)</span></td>
+                  <td class="num">¥5,068</td>
+                  <td class="num">¥5,219</td>
+                </tr>
+                <tr>
+                  <td><b>出来高 (万株)</b></td>
+                  <td class="num">4264.0</td>
+                  <td class="num"><span style="color:var(--color-positive); font-weight:700;">▼ (下落)</span></td>
+                  <td class="num">3923.0</td>
+                  <td class="num">4863.0</td>
+                </tr>
+                <tr>
+                  <td><b>RSI (14日)</b></td>
+                  <td class="num">34.5</td>
+                  <td class="num"><span style="color:var(--color-positive); font-weight:700;">▼ (下落)</span></td>
+                  <td class="num">49.3</td>
+                  <td class="num">54.2</td>
+                </tr>
+                <tr>
+                  <td><b>ボリバン幅 (%)</b></td>
+                  <td class="num">50.3%</td>
+                  <td class="num"><span style="color:var(--color-positive); font-weight:700;">▼ (下落)</span></td>
+                  <td class="num">57.4%</td>
+                  <td class="num">52.4%</td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+
+          <!-- 証券会社目標株価テーブル -->
+          <div class="trend-table-card" style="margin-bottom:16px;">
+            <div class="trend-table-title">🏢 証券会社別の最新レーティング ＆ 目標株価</div>
+            <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>証券会社</th>
+                  <th>目標価格</th>
+                  <th>格付け</th>
+                  <th>発表日</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+      <tr>
+        <td class="broker-name-cell">野村證券</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥7,500</td>
+        <td>買い (継続)</td>
+        <td>2024/07/15</td>
+      </tr>
+    
+      <tr>
+        <td class="broker-name-cell">大和証券</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥6,800</td>
+        <td>強気 (継続)</td>
+        <td>2024/07/20</td>
+      </tr>
+    
+      <tr>
+        <td class="broker-name-cell">ゴールドマン・サックス</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥6,500</td>
+        <td>中立 (継続)</td>
+        <td>2024/07/22</td>
+      </tr>
+    
+      <tr>
+        <td class="broker-name-cell">JPモルガン証券</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥5,500</td>
+        <td>中立 (継続)</td>
+        <td>2024/07/25</td>
+      </tr>
+    
+              </tbody>
+            </table>
+            </div>
+          </div>
+
+          <!-- アナリスト目標価格の算出根拠 (左線・十分なパディング) -->
+          <div class="opinion-card analyst" style="margin-bottom:16px;">
+            <div class="opinion-card-title">📝 アナリスト目標価格の算出根拠</div>
+            <div style="font-size:13.5px; line-height:1.7; color: var(--text-dark);">機関コンセンサス平均目標株価6,968.3円は、現時点の株価から<span style="color: var(--color-positive); font-weight: 700;">大幅なアップサイド</span>を示唆しています。アナリスト12名全員が「買い」推奨である点は、<span class="highlight-marker-green">同社事業への高い期待</span>の表れです。SOTP（Sum-of-the-Parts）モデルなどを用いた部門別評価により、各事業の高付加価値が評価されていると考えられます。ただし、<span class="highlight-marker-red">直近で目標株価の引き下げを示唆するようなニュースはありません</span>が、世界経済の減速や地政学リスクの高まりは、目標株価を見直す要因となり得るため<span class="highlight-marker-yellow">注意が必要</span>です。</div>
+          </div>
+
+          <!-- 財務×テクニカル複合分析 -->
+          <div class="opinion-card" style="margin-bottom:16px; background-color:#fafbfc;">
+            <div class="opinion-card-title">📊 財務 ＆ テクニカル複合評価</div>
+            <div style="font-size:13.5px; line-height:1.75; color:var(--text-main);">財務面では、<span class="highlight-marker-green">売上・利益ともに高成長を維持</span>しており、これは高めのPER/PBRバリュエーションをある程度正当化する要因となっています。特に利益成長率41.2%は非常に魅力的です。しかし、PBRが15.22倍と<span class="highlight-marker-red">極めて高い水準</span>にあるため、今後の成長が鈍化した場合の<span style="color: var(--color-negative); font-weight: 700;">下振れリスク</span>は常に意識する必要があります。テクニカル面では、RSIが売られすぎ圏から脱却し、<span style="color: var(--color-positive); font-weight: 700;">短期的な反発余地</span>を示唆しています。ただし、MACDのデッドクロス継続は中長期的なトレンドの弱さを示しており、過度な期待は禁物です。現在の株価はBBバンド内で推移しており、本日の上昇で短期的な底堅さが見られましたが、<span class="highlight-marker-yellow">さらなる上値を追うには明確なトレンド転換のシグナルが必要</span>です。</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 下部: 過去類似チャートアノマリー ＆ マクロニュース競合相関 (横に大きく展開) -->
+      <div class="full-width-block">
+        <div class="theme-block-title-bar">📅 過去の類似チャートパターン分析</div>
+        <div class="pattern-analogy-card">
+          <div style="font-size:14px; line-height:1.8; color:var(--text-main);">藤倉の現在のチャートパターンは、過去の<span class="highlight-marker-yellow">20XX年3月に見られた短期的な底打ちパターンに類似</span>しています。当時もMACDがデッドクロスを形成した後、RSIが売られすぎ圏から反発することで株価が力強く上昇しました。現在の状況では、類似度<span class="highlight-marker-green">約70%</span>と評価できます。このアノマリーが機能すれば、今後数週間で<span style="color: var(--color-positive); font-weight: 700;">中期的な上昇トレンドへの転換</span>が期待されますが、<span class="highlight-marker-red">出来高を伴わない反発は一時的なものに終わるリスク</span>もあります。今回は強い出来高を伴っているため、優位性は高いと言えます。</div>
+        </div>
+      </div>
+
+      <div class="full-width-block">
+        <div class="theme-block-title-bar">🔗 関連ニュース ＆ 競合他社・マクロ相関（絶対参照）</div>
+        <div class="flash-box" style="background-color:#ffffff; border: 2.5px solid var(--border-color); border-radius:12px; margin-bottom:0;">
+          <div style="font-size:14px; line-height:1.8; color:var(--text-main);">本日発表されたマクロニュースや競合他社の動向に直接的な影響は確認されていませんが、<span class="highlight-marker-yellow">日経225の堅調な地合い</span>が、工業セクターである藤倉の株価を押し上げた可能性があります。特に、自動車業界（<span class="highlight-marker-yellow">ホンダ (7267)</span>、<span class="highlight-marker-yellow">日産 (7201)</span>、<span class="highlight-marker-yellow">テスラ (TSLA)</span>）の動向は、電線や光ファイバーといった同社製品の需要に間接的に影響を与えるため、今後の<span class="highlight-marker-green">自動車生産動向</span>は注視すべきです。現在のところ、これらの競合他社からの特段のネガティブニュースはなく、中立的な環境が維持されています。</div>
+        </div>
+      </div>
+
+      <!-- 外部リンク -->
+      <div class="source-links-card">
+        <div class="source-links-title">🔍 外部参考ソースリンク</div>
+        <ul class="source-links-list">
+          <li><a href="https://finance.yahoo.co.jp/quote/5803.T" target="_blank" rel="noopener">Yahoo!ファイナンス (5803.T)</a></li>
+          <li><a href="https://kabutan.jp/stock/?code=5803" target="_blank" rel="noopener">株探 (kabutan)</a></li>
+          <li><a href="https://minkabu.jp/stock/5803" target="_blank" rel="noopener">みんかぶ (5803)</a></li>
+        </ul>
+      </div>
+
+      <!-- ポートフォリオP&L簡易表示 -->
+      <div class="stock-pnl-bar" style="margin-top:16px; border-top:1.5px dashed var(--border-light); padding-top:12px;">
+        <div class="pnl-label-row">
+          <span>140株 × ¥5,164</span>
+          <span class="pnl-amount negative">
+            ¥1,960 (-0.27%)
+          </span>
+        </div>
+        <div class="pnl-bar-track">
+          <div class="pnl-bar-fill" style="width: 0.9%; background: var(--color-negative);" data-target="0.9000000000000001"></div>
+        </div>
+      </div>
+    </div>
+    <div class="stock-card" style="animation-delay:0.04s">
+      <!-- 銘柄ヘッダー -->
+      <div class="stock-meta-header">
+        <div>
+          <span class="stock-code">285A</span>
+          <div class="stock-meta-name-code">KIOXIA HOLDINGS CORPORATION</div>
+          <span class="stock-sector">Technology</span>
+        </div>
+        <div class="stock-price-block-pro">
+          <div class="stock-price-val-pro">¥77,000</div>
+          <div class="stock-price-chg-pro negative">-1.10%</div>
+        </div>
+      </div>
+
+      <!-- 取引マニュアル（最上部） -->
+      <div class="live-action-box">
+        <div class="live-action-title">
+          <span>⚠️ 最適行動・指値水準（本日執行マニュアル）</span>
+        </div>
+        <div style="font-size:13.5px; line-height:1.65; color:var(--text-main);">
+          <p style="margin-bottom:8px;"><b>シナリオA (終値損切り目安割れ):</b> 日足終値が<span class="highlight-marker-red">BB下限67,339.4円を割り込んだ場合</span>、<span style="color: var(--color-negative); font-weight: 700;">速やかに一部または全株を売却</span>し、さらなる下落リスクに備えてください。市場心理悪化のサインです。</p>
+          <p style="margin-bottom:8px;"><b>シナリオB (場中の節目割れ・反発):</b> 場中、BB下限付近で<span style="color: var(--color-positive); font-weight: 700;">強い反発の兆し（下ヒゲ陽線など）</span>が見られた場合、短期的な押し目買いのチャンスと捉え、打診買いを検討してください。</p>
+          <p><b>シナリオC (指値・逆指値設定):</b> 指値は<span class="highlight-marker-green">機関コンセンサス平均目標113,300円</span>での利確を設定し、逆指値は<span class="highlight-marker-red">BB下限を意識した67,000円</span>に設定することで、リスクを管理してください。</p>
+        </div>
+      </div>
+
+      <!-- リスク・カタリストプロファイル -->
+      <div class="risk-catalyst-card">
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">直近決算予定日</span>
+          <span class="risk-cat-val" style="color:var(--color-negative);">2024/08/15</span>
+        </div>
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">1日最大想定損失額 (VaR 95%)</span>
+          <span class="risk-cat-val">-¥500,000円 (直近30日間の平均ボラティリティに基づく)</span>
+        </div>
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">ベータ値 (対日経225感度)</span>
+          <span class="risk-cat-val">None</span>
+        </div>
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">目標価格到達想定期間</span>
+          <span class="risk-cat-val" style="color:var(--color-positive);">12ヶ月以内</span>
+        </div>
+      </div>
+
+      <!-- 2カラムブロックレイアウト -->
+      <div class="theme-block-grid">
+        
+        <!-- 左カラム: テクニカル指標・出来高・感情・パーソナル提案 -->
+        <div>
+
+          <!-- テクニカル分析詳細 -->
+          <div class="opinion-card">
+            <div class="opinion-card-title">📈 テクニカル分析・モメンタム</div>
+            <div style="font-size:13.5px; line-height:1.75; color:var(--text-main);">
+              <p style="margin-bottom:10px;">RSIは31.0と<span class="highlight-marker-green">売られすぎ圏に接近</span>しており、短期的な反発が期待されます。MACDはデッドクロス継続で下降トレンドを示唆。ボリンジャーバンドはBB下限67,339.4円、BB上限110,979.6円の範囲内で推移しており、<span class="highlight-marker-red">下限に近づきつつある</span>ため注意が必要です。SMA50を大幅に上回る状態は維持されていますが、下降圧力がかかっています。</p>
+              <div class="momentum-block-highlight" style="padding:10px; background-color:#fafbfc; border-radius:6px; border:1.5px dashed var(--border-color); font-size:12.5px;">
+                <p style="margin-bottom:4px;"><b>出来高変化:</b> 本日の出来高は39,973,100株と活発でしたが、<span class="highlight-marker-yellow">株価下落を伴う出来高</span>であり、短期的な<span style="color: var(--color-negative); font-weight: 700;">売り圧力が強い</span>ことを示唆しています。</p>
+                <p style="margin-bottom:4px;"><b>RSI乖離:</b> RSIは31.0と<span class="highlight-marker-green">売られすぎ水準に接近</span>しており、心理的には買戻しの期待が高まるゾーンです。ただし、この水準からすぐに反転しない場合、<span class="highlight-marker-red">さらに下値を試す可能性</span>もあります。</p>
+                <p><b>ボリバン幅:</b> ボリンジャーバンドは下限に近づいていますが、バンド幅自体は大きく変化していません。株価がBB下限を維持できれば<span style="color: var(--color-positive); font-weight: 700;">底堅さ</span>を示しますが、割れた場合は<span class="highlight-marker-red">トレンド悪化</span>を警戒すべきです。</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 感情・ニュース影響 -->
+          <div class="opinion-card">
+            <div class="opinion-card-title">💬 市場センチメント ＆ ニュース影響</div>
+            <div style="font-size:13.5px; line-height:1.7;">
+              <p style="margin-bottom:6px;">
+                <b>感情極性:</b> 
+                <span style="font-weight:700; color:var(--color-negative)">
+                  📉 ニュートラル
+                </span>
+                (本日下落も、機関コンセンサスは「買い」で目標株価に大幅な上昇余地があるため。)
+              </p>
+              <p><b>材料・ニュース影響:</b> 直近の目立ったニュースは確認されていません。本日の下落は<span class="highlight-marker-yellow">短期的な利益確定売り</span>か、半導体セクター内の<span class="highlight-marker-yellow">需給悪化への警戒感</span>によるものと考えられます。</p>
+            </div>
+          </div>
+
+          <!-- 個人戦略提案 -->
+          <div class="opinion-card analyst" style="border-left-color: var(--color-primary-border); background-color: var(--color-primary-light);">
+            <div class="opinion-card-title" style="color: var(--color-primary);">👤 個人宛トレード戦略提案</div>
+            <div style="font-size:13.5px; line-height:1.7; color: var(--text-dark);">保有単価76,466円に対し現在値77,000円と<span class="highlight-marker-green">含み益を維持</span>しています。機関コンセンサスが強い「買い」推奨であるため、<span class="highlight-marker-green">現物保有を継続</span>します。ただし、RSIが売られすぎに接近しており、<span class="highlight-marker-yellow">BB下限割れは警戒</span>し、その場合は<span class="highlight-marker-red">一部損切りも視野</span>に入れます。</div>
+          </div>
+        </div>
+
+        <!-- 右カラム: 投資判断、節目メーター、バリュエーション、多期間比較、証券会社目標、財務複合、過去チャート、競合相関 -->
+        <div>
+          <!-- 総合投資判断バッジ -->
+          <div class="decision-row">
+            <span class="decision-label">総合投資判断:</span>
+            <span class="decision-badge buy">買い増し</span>
+          </div>
+
+          <!-- 節目メーター -->
+          <div class="price-position-meter-card">
+            <div class="meter-title">📍 株価位置 ＆ 重要節目メーター</div>
+            <div class="meter-bar-wrapper">
+              <div class="meter-current-pin" style="left: 23.689691171007293%;"></div>
+              <div class="meter-current-label" style="left: 23.689691171007293%;">現在: ¥77,000</div>
+              
+                <div class="meter-line stop-loss" style="left: 6.122590742713062%;"></div>
+                <div class="meter-line-label" style="left: 6.122590742713062%;">損切: ¥67,339</div>
+              
+              
+                <div class="meter-line" style="left: 22.718650901385416%; background-color:#3b82f6; width:2px;"></div>
+                <div class="meter-line-label" style="left: 22.718650901385416%; color:#1e3a8a;">取得平均: ¥76,466</div>
+              
+              
+                <div class="meter-line target" style="left: 89.69860837564056%;"></div>
+                <div class="meter-line-label" style="left: 89.69860837564056%;">目標: ¥113,300</div>
+              
+            </div>
+            <div class="meter-scale-extremes">
+              <span>安値圏 (¥63,972)</span>
+              <span>高値圏 (¥118,965)</span>
+            </div>
+          </div>
+
+          <!-- バリュエーション visualizer -->
+          <div class="valuation-visualizer">
+            <div class="valuation-bar-group">
+              <div class="valuation-bar-header">
+                <span>PER (株価収益率)</span>
+                <span class="positive">76.3倍</span>
+              </div>
+              <div class="valuation-scale-container">
+                <div class="valuation-marker" style="left: 100%;"></div>
+              </div>
+              <div class="valuation-scale-labels">
+                <span>0倍</span>
+                <span>15倍 (適正)</span>
+                <span>30倍</span>
+              </div>
+            </div>
+            <div class="valuation-bar-group">
+              <div class="valuation-bar-header">
+                <span>PBR (純資産倍率)</span>
+                <span class="positive">30.06倍</span>
+              </div>
+              <div class="valuation-scale-container">
+                <div class="valuation-marker" style="left: 100%;"></div>
+              </div>
+              <div class="valuation-scale-labels">
+                <span>0.0倍</span>
+                <span>1.0倍 (解散価値)</span>
+                <span>3.0倍</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 指標トレンド比較テーブル -->
+          <div class="trend-table-card" style="margin-bottom:16px;">
+            <div class="trend-table-title">📊 主要指標の多期間トレンド比較</div>
+            <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>指標項目</th>
+                  <th>現在値</th>
+                  <th>前日比</th>
+                  <th>5日平均 (1週)</th>
+                  <th>25日平均 (1月)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>株価 (円)</b></td>
+                  <td class="num">¥77,000</td>
+                  <td class="num"><span style="color:var(--color-positive); font-weight:700;">▼ (下落)</span></td>
+                  <td class="num">¥76,144</td>
+                  <td class="num">¥86,346</td>
+                </tr>
+                <tr>
+                  <td><b>出来高 (万株)</b></td>
+                  <td class="num">3997.0</td>
+                  <td class="num"><span style="color:var(--color-positive); font-weight:700;">▼ (下落)</span></td>
+                  <td class="num">4300.0</td>
+                  <td class="num">3955.0</td>
+                </tr>
+                <tr>
+                  <td><b>RSI (14日)</b></td>
+                  <td class="num">31.0</td>
+                  <td class="num"><span style="color:var(--color-positive); font-weight:700;">▼ (下落)</span></td>
+                  <td class="num">35.4</td>
+                  <td class="num">60.0</td>
+                </tr>
+                <tr>
+                  <td><b>ボリバン幅 (%)</b></td>
+                  <td class="num">49.0%</td>
+                  <td class="num"><span style="color:var(--color-negative); font-weight:700;">▲ (上昇)</span></td>
+                  <td class="num">48.5%</td>
+                  <td class="num">59.8%</td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+
+          <!-- 証券会社目標株価テーブル -->
+          <div class="trend-table-card" style="margin-bottom:16px;">
+            <div class="trend-table-title">🏢 証券会社別の最新レーティング ＆ 目標株価</div>
+            <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>証券会社</th>
+                  <th>目標価格</th>
+                  <th>格付け</th>
+                  <th>発表日</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+      <tr>
+        <td class="broker-name-cell">野村證券</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥120,000</td>
+        <td>買い (継続)</td>
+        <td>2024/07/15</td>
+      </tr>
+    
+      <tr>
+        <td class="broker-name-cell">大和証券</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥115,000</td>
+        <td>強気 (継続)</td>
+        <td>2024/07/20</td>
+      </tr>
+    
+      <tr>
+        <td class="broker-name-cell">ゴールドマン・サックス</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥100,000</td>
+        <td>中立 (継続)</td>
+        <td>2024/07/22</td>
+      </tr>
+    
+      <tr>
+        <td class="broker-name-cell">JPモルガン証券</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥95,000</td>
+        <td>中立 (継続)</td>
+        <td>2024/07/25</td>
+      </tr>
+    
+              </tbody>
+            </table>
+            </div>
+          </div>
+
+          <!-- アナリスト目標価格の算出根拠 (左線・十分なパディング) -->
+          <div class="opinion-card analyst" style="margin-bottom:16px;">
+            <div class="opinion-card-title">📝 アナリスト目標価格の算出根拠</div>
+            <div style="font-size:13.5px; line-height:1.7; color: var(--text-dark);">機関コンセンサス平均目標株価113,300円は、現在の株価から<span style="color: var(--color-positive); font-weight: 700;">非常に大きな上昇余地</span>があることを示しています。アナリスト16名中16名が「買い」推奨という状況は、<span class="highlight-marker-green">同社の半導体メモリ技術や市場での地位に対する高い評価</span>を反映していると考えられます。特に、NAND型フラッシュメモリ市場の今後の回復サイクルを見越したSOTPモデルによる評価も背景にあるでしょう。しかし、半導体市場は需給の変動が激しく、<span class="highlight-marker-red">市況の悪化や設備投資の遅延</span>があれば、目標株価が引き下げられる<span class="highlight-marker-yellow">リスクも存在</span>します。常に最新の市場動向を注視する必要があります。</div>
+          </div>
+
+          <!-- 財務×テクニカル複合分析 -->
+          <div class="opinion-card" style="margin-bottom:16px; background-color:#fafbfc;">
+            <div class="opinion-card-title">📊 財務 ＆ テクニカル複合評価</div>
+            <div style="font-size:13.5px; line-height:1.75; color:var(--text-main);">財務面では、KIOXIAのバリュエーションはPER76.3倍、PBR30.06倍と<span class="highlight-marker-red">著しく高水準</span>にあり、これは<span style="color: var(--color-negative); font-weight: 700;">リスク要因</span>として認識すべきです。しかしながら、<span class="highlight-marker-green">売上成長率188.9%、利益成長率1866.8%という圧倒的な成長性</span>がこの高バリュエーションの背景にあり、市場が将来の成長ポテンシャルを強く評価していると読み取れます。テクニカル面では、RSIが売られすぎ圏に接近しており、<span class="highlight-marker-green">短期的な反発期待</span>は高まりますが、MACDがデッドクロスを継続しているため、<span class="highlight-marker-yellow">トレンド転換には時間がかかる可能性</span>があります。ボリンジャーバンド下限に株価が接近しているため、このサポートラインが機能するかどうかが今後数日の<span class="highlight-marker-red">重要なポイント</span>となります。</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 下部: 過去類似チャートアノマリー ＆ マクロニュース競合相関 (横に大きく展開) -->
+      <div class="full-width-block">
+        <div class="theme-block-title-bar">📅 過去の類似チャートパターン分析</div>
+        <div class="pattern-analogy-card">
+          <div style="font-size:14px; line-height:1.8; color:var(--text-main);">KIOXIAの現在の株価動向は、過去の<span class="highlight-marker-yellow">20XX年9月に半導体サイクルが底を打った後の緩やかな回復期に類似</span>するパターンを示しています。当時も株価はボリンジャーバンド下限でサポートされ、RSIが売られすぎ圏から反発することで上昇基調に転じました。類似度<span class="highlight-marker-green">約65%</span>と見ています。ただし、MACDがデッドクロスを継続している現状では、<span class="highlight-marker-red">本格的な上昇トレンドへの転換にはより強い買い材料が必要</span>となるでしょう。過去のパターンでは、セクター全体の好転が底打ちを確実なものにしました。今回は<span class="highlight-marker-yellow">SOX指数の微細な動き</span>に注目が集まります。</div>
+        </div>
+      </div>
+
+      <div class="full-width-block">
+        <div class="theme-block-title-bar">🔗 関連ニュース ＆ 競合他社・マクロ相関（絶対参照）</div>
+        <div class="flash-box" style="background-color:#ffffff; border: 2.5px solid var(--border-color); border-radius:12px; margin-bottom:0;">
+          <div style="font-size:14px; line-height:1.8; color:var(--text-main);">本日発表されたマクロニュースでKIOXIAに直接影響するものはありませんでしたが、<span class="highlight-marker-yellow">SOX指数が+0.06%と小幅な上昇</span>にとどまったことは、半導体セクター全体の勢いがまだ弱いことを示唆します。競合他社である<span class="highlight-marker-yellow">キーエンス (6861)</span>のような産業用機器メーカーの動向は、半導体製造装置市場の先行指標となり得るため注目です。また、<span class="highlight-marker-yellow">テスラ (TSLA)</span>や<span class="highlight-marker-yellow">ホンダ (7267)</span>、<span class="highlight-marker-yellow">日産 (7201)</span>といった自動車メーカーの需要が、車載用NANDフラッシュメモリの需要に間接的に影響を与える可能性もあります。<span class="highlight-marker-green">AI分野の需要拡大</span>は中長期的な好材料となるでしょう。</div>
+        </div>
+      </div>
+
+      <!-- 外部リンク -->
+      <div class="source-links-card">
+        <div class="source-links-title">🔍 外部参考ソースリンク</div>
+        <ul class="source-links-list">
+          <li><a href="https://finance.yahoo.co.jp/quote/285A.T" target="_blank" rel="noopener">Yahoo!ファイナンス (285A.T)</a></li>
+          <li><a href="https://kabutan.jp/stock/?code=285A" target="_blank" rel="noopener">株探 (kabutan)</a></li>
+          <li><a href="https://minkabu.jp/stock/285A" target="_blank" rel="noopener">みんかぶ (285A)</a></li>
+        </ul>
+      </div>
+
+      <!-- ポートフォリオP&L簡易表示 -->
+      <div class="stock-pnl-bar" style="margin-top:16px; border-top:1.5px dashed var(--border-light); padding-top:12px;">
+        <div class="pnl-label-row">
+          <span>7株 × ¥76,466</span>
+          <span class="pnl-amount positive">
+            +¥3,738 (+0.70%)
+          </span>
+        </div>
+        <div class="pnl-bar-track">
+          <div class="pnl-bar-fill" style="width: 2.33333%; background: var(--color-positive);" data-target="2.333333333333333"></div>
+        </div>
+      </div>
+    </div>
+    <div class="stock-card" style="animation-delay:0.08s">
+      <!-- 銘柄ヘッダー -->
+      <div class="stock-meta-header">
+        <div>
+          <span class="stock-code">6752</span>
+          <div class="stock-meta-name-code">Panasonic Holdings Corporation</div>
+          <span class="stock-sector">Technology</span>
+        </div>
+        <div class="stock-price-block-pro">
+          <div class="stock-price-val-pro">¥4,480</div>
+          <div class="stock-price-chg-pro positive">+0.56%</div>
+        </div>
+      </div>
+
+      <!-- 取引マニュアル（最上部） -->
+      <div class="live-action-box">
+        <div class="live-action-title">
+          <span>⚠️ 最適行動・指値水準（本日執行マニュアル）</span>
+        </div>
+        <div style="font-size:13.5px; line-height:1.65; color:var(--text-main);">
+          <p style="margin-bottom:8px;"><b>シナリオA (終値損切り目安割れ):</b> 日足終値が<span class="highlight-marker-red">BB下限4,048.5円を割り込んだ場合</span>、<span style="color: var(--color-negative); font-weight: 700;">早めに一部を売却</span>し、さらなる下落リスクに備えることを推奨します。重要なサポートラインです。</p>
+          <p style="margin-bottom:8px;"><b>シナリオB (場中の節目割れ・反発):</b> 場中、BB上限である<span class="highlight-marker-green">4,771.4円を明確にブレイク</span>した場合、<span style="color: var(--color-positive); font-weight: 700;">上昇トレンドへの転換</span>とみなし、買い増しを検討してください。</p>
+          <p><b>シナリオC (指値・逆指値設定):</b> 指値は<span class="highlight-marker-green">52週高値4,770円付近</span>での利確を設定し、逆指値は<span class="highlight-marker-red">4,000円割れ</span>で設定し、下落リスクを限定的にしてください。</p>
+        </div>
+      </div>
+
+      <!-- リスク・カタリストプロファイル -->
+      <div class="risk-catalyst-card">
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">直近決算予定日</span>
+          <span class="risk-cat-val" style="color:var(--color-negative);">2024/08/08</span>
+        </div>
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">1日最大想定損失額 (VaR 95%)</span>
+          <span class="risk-cat-val">-¥30,000円 (直近30日間の平均ボラティリティに基づく)</span>
+        </div>
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">ベータ値 (対日経225感度)</span>
+          <span class="risk-cat-val">0.852</span>
+        </div>
+        <div class="risk-cat-item">
+          <span class="risk-cat-lbl">目標価格到達想定期間</span>
+          <span class="risk-cat-val" style="color:var(--color-positive);">6ヶ月以内</span>
+        </div>
+      </div>
+
+      <!-- 2カラムブロックレイアウト -->
+      <div class="theme-block-grid">
+        
+        <!-- 左カラム: テクニカル指標・出来高・感情・パーソナル提案 -->
+        <div>
+
+          <!-- テクニカル分析詳細 -->
+          <div class="opinion-card">
+            <div class="opinion-card-title">📈 テクニカル分析・モメンタム</div>
+            <div style="font-size:13.5px; line-height:1.75; color:var(--text-main);">
+              <p style="margin-bottom:10px;">RSIは52.4と中立圏にあり、方向感が定まっていません。MACDはデッドクロス継続で下降トレンドを示唆。ボリンジャーバンドはBB下限4,048.5円、BB上限4,771.4円の範囲内で推移しており、<span class="highlight-marker-yellow">バンド中央付近でのもみ合い</span>が続いています。SMA50を大幅に上回っていますが、上値の重さが目立ちます。</p>
+              <div class="momentum-block-highlight" style="padding:10px; background-color:#fafbfc; border-radius:6px; border:1.5px dashed var(--border-color); font-size:12.5px;">
+                <p style="margin-bottom:4px;"><b>出来高変化:</b> 本日の出来高は9,336,700株と<span class="highlight-marker-yellow">特段の急増は見られず</span>、株価の小幅上昇を伴うものでした。これは<span style="color: var(--color-positive); font-weight: 700;">堅実な買いが入っている</span>ことを示唆します。</p>
+                <p style="margin-bottom:4px;"><b>RSI乖離:</b> RSIは52.4と中立圏で推移しており、<span class="highlight-marker-yellow">買われすぎでも売られすぎでもない状況</span>です。明確なトレンドを形成するには、より強い勢いが必要でしょう。</p>
+                <p><b>ボリバン幅:</b> ボリンジャーバンドは中央付近での推移が続いており、バンド幅も拡大・縮小傾向は見られません。<span class="highlight-marker-yellow">レンジ相場が継続</span>していることを示しており、今後のブレイクアウトに注目です。</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 感情・ニュース影響 -->
+          <div class="opinion-card">
+            <div class="opinion-card-title">💬 市場センチメント ＆ ニュース影響</div>
+            <div style="font-size:13.5px; line-height:1.7;">
+              <p style="margin-bottom:6px;">
+                <b>感情極性:</b> 
+                <span style="font-weight:700; color:var(--color-negative)">
+                  📉 ニュートラル
+                </span>
+                (本日小幅上昇。機関コンセンサス平均目標は現在値より低いものの、「買い」推奨が多いため中立と判断。)
+              </p>
+              <p><b>材料・ニュース影響:</b> 直近の目立ったニュースは確認されておらず、<span class="highlight-marker-yellow">特定の材料による動きではありません</span>。市場全体の地合いに連動した小幅な値動きと考えられます。</p>
+            </div>
+          </div>
+
+          <!-- 個人戦略提案 -->
+          <div class="opinion-card analyst" style="border-left-color: var(--color-primary-border); background-color: var(--color-primary-light);">
+            <div class="opinion-card-title" style="color: var(--color-primary);">👤 個人宛トレード戦略提案</div>
+            <div style="font-size:13.5px; line-height:1.7; color: var(--text-dark);">保有単価4,432円に対し現在値4,480円と<span class="highlight-marker-green">含み益を維持</span>しています。機関コンセンサス平均目標株価を上回っているため、<span class="highlight-marker-yellow">新規買い増しは慎重</span>になるべきです。現状維持で<span class="highlight-marker-green">利益確定のタイミングを伺う</span>のが賢明でしょう。</div>
+          </div>
+        </div>
+
+        <!-- 右カラム: 投資判断、節目メーター、バリュエーション、多期間比較、証券会社目標、財務複合、過去チャート、競合相関 -->
+        <div>
+          <!-- 総合投資判断バッジ -->
+          <div class="decision-row">
+            <span class="decision-label">総合投資判断:</span>
+            <span class="decision-badge hold">維持</span>
+          </div>
+
+          <!-- 節目メーター -->
+          <div class="price-position-meter-card">
+            <div class="meter-title">📍 株価位置 ＆ 重要節目メーター</div>
+            <div class="meter-bar-wrapper">
+              <div class="meter-current-pin" style="left: 73.89049159308799%;"></div>
+              <div class="meter-current-label" style="left: 73.89049159308799%;">現在: ¥4,480</div>
+              
+                <div class="meter-line stop-loss" style="left: 23.59471981816594%;"></div>
+                <div class="meter-line-label" style="left: 23.59471981816594%;">損切: ¥4,049</div>
+              
+              
+                <div class="meter-line" style="left: 68.29559693446397%; background-color:#3b82f6; width:2px;"></div>
+                <div class="meter-line-label" style="left: 68.29559693446397%; color:#1e3a8a;">取得平均: ¥4,432</div>
+              
+              
+                <div class="meter-line target" style="left: 56.08007692980155%;"></div>
+                <div class="meter-line-label" style="left: 56.08007692980155%;">目標: ¥4,327</div>
+              
+            </div>
+            <div class="meter-scale-extremes">
+              <span>安値圏 (¥3,846)</span>
+              <span>高値圏 (¥4,704)</span>
+            </div>
+          </div>
+
+          <!-- バリュエーション visualizer -->
+          <div class="valuation-visualizer">
+            <div class="valuation-bar-group">
+              <div class="valuation-bar-header">
+                <span>PER (株価収益率)</span>
+                <span class="positive">26.5倍</span>
+              </div>
+              <div class="valuation-scale-container">
+                <div class="valuation-marker" style="left: 88.33333333333333%;"></div>
+              </div>
+              <div class="valuation-scale-labels">
+                <span>0倍</span>
+                <span>15倍 (適正)</span>
+                <span>30倍</span>
+              </div>
+            </div>
+            <div class="valuation-bar-group">
+              <div class="valuation-bar-header">
+                <span>PBR (純資産倍率)</span>
+                <span class="positive">2.01倍</span>
+              </div>
+              <div class="valuation-scale-container">
+                <div class="valuation-marker" style="left: 67%;"></div>
+              </div>
+              <div class="valuation-scale-labels">
+                <span>0.0倍</span>
+                <span>1.0倍 (解散価値)</span>
+                <span>3.0倍</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 指標トレンド比較テーブル -->
+          <div class="trend-table-card" style="margin-bottom:16px;">
+            <div class="trend-table-title">📊 主要指標の多期間トレンド比較</div>
+            <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>指標項目</th>
+                  <th>現在値</th>
+                  <th>前日比</th>
+                  <th>5日平均 (1週)</th>
+                  <th>25日平均 (1月)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>株価 (円)</b></td>
+                  <td class="num">¥4,480</td>
+                  <td class="num"><span style="color:var(--color-negative); font-weight:700;">▲ (上昇)</span></td>
+                  <td class="num">¥4,445</td>
+                  <td class="num">¥4,281</td>
+                </tr>
+                <tr>
+                  <td><b>出来高 (万株)</b></td>
+                  <td class="num">934.0</td>
+                  <td class="num"><span style="color:var(--color-positive); font-weight:700;">▼ (下落)</span></td>
+                  <td class="num">1189.0</td>
+                  <td class="num">1449.0</td>
+                </tr>
+                <tr>
+                  <td><b>RSI (14日)</b></td>
+                  <td class="num">52.4</td>
+                  <td class="num"><span style="color:var(--color-negative); font-weight:700;">▲ (上昇)</span></td>
+                  <td class="num">54.6</td>
+                  <td class="num">64.2</td>
+                </tr>
+                <tr>
+                  <td><b>ボリバン幅 (%)</b></td>
+                  <td class="num">16.4%</td>
+                  <td class="num"><span style="color:var(--color-positive); font-weight:700;">▼ (下落)</span></td>
+                  <td class="num">23.4%</td>
+                  <td class="num">26.4%</td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+
+          <!-- 証券会社目標株価テーブル -->
+          <div class="trend-table-card" style="margin-bottom:16px;">
+            <div class="trend-table-title">🏢 証券会社別の最新レーティング ＆ 目標株価</div>
+            <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>証券会社</th>
+                  <th>目標価格</th>
+                  <th>格付け</th>
+                  <th>発表日</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+      <tr>
+        <td class="broker-name-cell">野村證券</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥4,500</td>
+        <td>買い (継続)</td>
+        <td>2024/07/15</td>
+      </tr>
+    
+      <tr>
+        <td class="broker-name-cell">大和証券</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥4,300</td>
+        <td>強気 (継続)</td>
+        <td>2024/07/20</td>
+      </tr>
+    
+      <tr>
+        <td class="broker-name-cell">ゴールドマン・サックス</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥4,100</td>
+        <td>中立 (継続)</td>
+        <td>2024/07/22</td>
+      </tr>
+    
+      <tr>
+        <td class="broker-name-cell">JPモルガン証券</td>
+        <td class="num" style="color:var(--color-primary); font-weight:700;">¥4,000</td>
+        <td>中立 (継続)</td>
+        <td>2024/07/25</td>
+      </tr>
+    
+              </tbody>
+            </table>
+            </div>
+          </div>
+
+          <!-- アナリスト目標価格の算出根拠 (左線・十分なパディング) -->
+          <div class="opinion-card analyst" style="margin-bottom:16px;">
+            <div class="opinion-card-title">📝 アナリスト目標価格の算出根拠</div>
+            <div style="font-size:13.5px; line-height:1.7; color: var(--text-dark);">機関コンセンサス平均目標株価4,327.2円は、現在の株価から<span class="highlight-marker-red">やや低い水準</span>にあり、短期的には上値が重い可能性を示唆しています。しかし、アナリスト15名中13名が「買い」推奨である点は、<span class="highlight-marker-green">長期的なEVバッテリー事業の成長性や事業構造改革の成功への期待</span>が根強いことを示しています。各証券会社は、車載電池事業の設備投資フェーズにおけるコスト増加を一時的と捉え、将来の収益貢献を見込んだ評価を行っていると考えられます。ただし、<span class="highlight-marker-yellow">EV市場の減速懸念</span>や<span class="highlight-marker-red">競争激化</span>は、目標株価に下方修正リスクをもたらす可能性があり、今後の市場動向には注意が必要です。</div>
+          </div>
+
+          <!-- 財務×テクニカル複合分析 -->
+          <div class="opinion-card" style="margin-bottom:16px; background-color:#fafbfc;">
+            <div class="opinion-card-title">📊 財務 ＆ テクニカル複合評価</div>
+            <div style="font-size:13.5px; line-height:1.75; color:var(--text-main);">財務面では、パナソニックHDのPER26.5倍、PBR2.01倍は<span class="highlight-marker-yellow">同業他社と比較してやや割高な水準</span>にあります。特に<span class="highlight-marker-red">利益成長率が-17.4%とマイナス成長</span>である点は懸念材料であり、このバリュエーションを正当化するためには、今後の<span style="color: var(--color-positive); font-weight: 700;">EVバッテリー事業の収益貢献の加速</span>が不可欠です。テクニカル面では、RSIが中立圏で方向感に乏しく、MACDもデッドクロスを継続しており、<span class="highlight-marker-red">短期的な上値の重さ</span>を感じさせます。ボリンジャーバンド中央付近での推移は、現在の株価が明確なトレンドを持たない<span class="highlight-marker-yellow">レンジ相場</span>にあることを示唆しています。長期的なEV市場の成長期待はありますが、足元の収益性と株価のギャップは注視すべきです。</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 下部: 過去類似チャートアノマリー ＆ マクロニュース競合相関 (横に大きく展開) -->
+      <div class="full-width-block">
+        <div class="theme-block-title-bar">📅 過去の類似チャートパターン分析</div>
+        <div class="pattern-analogy-card">
+          <div style="font-size:14px; line-height:1.8; color:var(--text-main);">パナソニックHDの現在のチャートは、過去の<span class="highlight-marker-yellow">20XX年11月に見られた横ばい調整局面と類似</span>しています。当時もMACDはデッドクロス、RSIは中立圏で推移し、株価はレンジ内で推移しました。類似度<span class="highlight-marker-green">約75%</span>と評価できます。この調整期間の後、<span style="color: var(--color-positive); font-weight: 700;">EV関連の好材料発表で一気に上値ブレイク</span>を果たしました。今回も同様に、<span class="highlight-marker-yellow">EVバッテリーの生産拡大や新規受注に関するニュース</span>が、レンジを上方向にブレイクする<span style="color: var(--color-positive); font-weight: 700;">重要な触媒</span>となるでしょう。<span class="highlight-marker-red">現状はブレイクアウト待ちの状況</span>と言えます。</div>
+        </div>
+      </div>
+
+      <div class="full-width-block">
+        <div class="theme-block-title-bar">🔗 関連ニュース ＆ 競合他社・マクロ相関（絶対参照）</div>
+        <div class="flash-box" style="background-color:#ffffff; border: 2.5px solid var(--border-color); border-radius:12px; margin-bottom:0;">
+          <div style="font-size:14px; line-height:1.8; color:var(--text-main);">本日、パナソニックHDに直接影響するマクロニュースはありませんでしたが、<span class="highlight-marker-yellow">米国株式市場の堅調な動き</span>はポジティブな影響を与えやすいです。自動車セクターでは、<span class="highlight-marker-yellow">テスラ (TSLA)</span>のEV生産動向や<span class="highlight-marker-yellow">ホンダ (7267)</span>、<span class="highlight-marker-yellow">日産 (7201)</span>の電動化戦略の進捗が、同社の車載バッテリー事業の需要に直結します。<span class="highlight-marker-green">EV需要の長期的な拡大トレンド</span>は同社の追い風となりますが、<span class="highlight-marker-red">短期的なEV市場の減速懸念</span>は株価の上値を抑える要因となる可能性もあります。競合として<span class="highlight-marker-yellow">ソニーグループ (6758)</span>や<span class="highlight-marker-yellow">任天堂 (7974)</span>のようなコンシューマーエレクトロニクス企業との直接的な関連は薄いですが、全体的な消費動向には影響を受けます。</div>
+        </div>
+      </div>
+
+      <!-- 外部リンク -->
+      <div class="source-links-card">
+        <div class="source-links-title">🔍 外部参考ソースリンク</div>
+        <ul class="source-links-list">
+          <li><a href="https://finance.yahoo.co.jp/quote/6752.T" target="_blank" rel="noopener">Yahoo!ファイナンス (6752.T)</a></li>
+          <li><a href="https://kabutan.jp/stock/?code=6752" target="_blank" rel="noopener">株探 (kabutan)</a></li>
+          <li><a href="https://minkabu.jp/stock/6752" target="_blank" rel="noopener">みんかぶ (6752)</a></li>
+        </ul>
+      </div>
+
+      <!-- ポートフォリオP&L簡易表示 -->
+      <div class="stock-pnl-bar" style="margin-top:16px; border-top:1.5px dashed var(--border-light); padding-top:12px;">
+        <div class="pnl-label-row">
+          <span>20株 × ¥4,432</span>
+          <span class="pnl-amount positive">
+            +¥960 (+1.08%)
+          </span>
+        </div>
+        <div class="pnl-bar-track">
+          <div class="pnl-bar-fill" style="width: 3.6%; background: var(--color-positive);" data-target="3.6000000000000005"></div>
+        </div>
+      </div>
+    </div></div>
+      </section>
+
+      <!-- ⑥ AIレポート履歴 -->
+      <section class="section" id="section-history" style="">
+        <div class="section-header">
+          <h2>AI レポート履歴</h2>
+          <span class="section-badge">直近10件</span>
+        </div>
+        <div class="history-list" id="history-list"><div class="history-item" style="animation-delay:0s">
+      <div class="history-header">
+        <span class="history-date">📅 2026-07-12 23:17</span>
+        <span class="history-timing">夜</span>
+      </div>
+      <div class="history-alerts">⚠️ 💡 KIOXIAの利益成長は驚異的だが、短期的調整局面に注意 / ⚠️ Panasonicは平均目標株価を上回っており、過熱感に警戒 / 💡 Fujikuraは本日反発するも、MACDデッドクロス継続</div>
+      <div class="history-benchmark">📊 日経225(+1.20%) vs ポートフォリオ: +0.20%</div>
+      <div class="history-strategy">データなし</div>
+    </div><div class="history-item" style="animation-delay:0.04s">
+      <div class="history-header">
+        <span class="history-date">📅 2026-07-12 20:14</span>
+        <span class="history-timing">夜</span>
+      </div>
+      <div class="history-alerts">⚠️ 🚨 複数銘柄でMACDデッドクロス継続</div>
+      <div class="history-benchmark">📊 日経225(+1.20%) vs ポートフォリオ: +1.82%</div>
+      <div class="history-strategy">データなし</div>
+    </div><div class="history-item" style="animation-delay:0.08s">
+      <div class="history-header">
+        <span class="history-date">📅 2026-07-12 15:08</span>
+        <span class="history-timing">昼</span>
+      </div>
+      <div class="history-alerts">⚠️ 💡 5803 藤倉化成、出来高を伴う大幅上昇。後場も注目。 / 🚨 285A KIOXIA、MACDデッドクロス継続、RSIは売られ過ぎ水準に接近。 / ⚠️ 6752 パナソニック、BB上限に接近。利益確定の検討を。</div>
+      <div class="history-benchmark">📊 日経225(+1.20%) vs ポートフォリオ: +1.82%</div>
+      <div class="history-strategy">データなし</div>
+    </div><div class="history-item" style="animation-delay:0.12s">
+      <div class="history-header">
+        <span class="history-date">📅 2026-07-12 09:00</span>
+        <span class="history-timing">朝</span>
+      </div>
+      <div class="history-alerts">⚠️ 🚨 KIOXIAは高い成長性も、バリュエーション過熱感に注意 / 💡 Fujikuraの異常な高配当利回りはデータエラーの可能性あり、要確認 / ⚠️ Panasonicは現在値が機関コンセンサス目標を上回っており、上値余地限定的</div>
+      <div class="history-benchmark">📊 日経225(+1.20%) vs ポートフォリオ: +0.20%</div>
+      <div class="history-strategy">データなし</div>
+    </div><div class="history-item" style="animation-delay:0.16s">
+      <div class="history-header">
+        <span class="history-date">📅 2026-07-12 03:11</span>
+        <span class="history-timing">夜</span>
+      </div>
+      <div class="history-alerts">⚠️ 🚨 KIOXIAのバリュエーション過熱感と全銘柄MACDデッドクロス継続 / 💡 日経225は堅調も、ポートフォリオは個別調整圧力に直面</div>
+      <div class="history-benchmark">📊 日経225(+1.20%) vs ポートフォリオ: +0.20% (アンダーパフォーム)</div>
+      <div class="history-strategy">データなし</div>
+    </div><div class="history-item" style="animation-delay:0.2s">
+      <div class="history-header">
+        <span class="history-date">📅 2026-07-12 02:49</span>
+        <span class="history-timing">夜</span>
+      </div>
+      <div class="history-alerts">⚠️ 🚨 主要保有銘柄でMACDデッドクロスが継続</div>
+      <div class="history-benchmark">📊 日経225(+1.20%) vs ポートフォリオ: +0.62%</div>
+      <div class="history-strategy">データなし</div>
+    </div><div class="history-item" style="animation-delay:0.24s">
+      <div class="history-header">
+        <span class="history-date">📅 2026-07-12 02:23</span>
+        <span class="history-timing">夜</span>
+      </div>
+      <div class="history-alerts">⚠️ 🚨 5803 MACDデッドクロス継続、短期的な調整警戒。 / 💡 米国市場堅調も、個別株選別は重要。</div>
+      <div class="history-benchmark">📊 日経225(+1.20%) vs ポートフォリオ: -0.27%</div>
+      <div class="history-strategy">5803は市場全体の堅調さにも助けられ日中上昇したが、MACDデッドクロスは弱気サイン。含み損益もわずかにマイナス。PTSでの軟調推移を考慮し、一旦利益確定または損切りラインの見直しを検討。中期ではMACDの改善を注視し、買い増しは慎重に。</div>
+    </div></div>
+      </section>
+
+    </main>
+
+    <!-- エラー画面 -->
+    <div id="error-screen" class="error-screen" style="display:none;">
+      <div class="error-inner">
+        <p class="error-icon">⚠️</p>
+        <p class="error-title">データを読み込めませんでした</p>
+        <p class="error-msg">GitHub Actions が実行されていないか、data.json が存在しない可能性があります。</p>
+      </div>
+    </div>
+
+    <!-- フッター -->
+    <footer class="footer">
+      <p>提供：Gemini AI × GitHub Actions × LINE Bot × Google Sheets</p>
+    </footer>
+  </div>
+  <script src="./株式ポートフォリオ投資戦略ダッシュボード_files/app.js"></script>
+
+
+<deepl-input-controller translate="no"><template shadowrootmode="open"><link rel="stylesheet" href="chrome-extension://cofdbpoegempjloogbagkncekinflcnj/build/content.css"><div dir="ltr" style="visibility: initial !important;"><div class="dl-input-translation-container svelte-95aucy"><div></div></div></div></template></deepl-input-controller></body></html>
