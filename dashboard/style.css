@@ -636,6 +636,105 @@ body {
   border-top: 2px solid var(--border-light); margin-top: 32px;
 }
 
+/* ===== Prototype準拠: 不足クラス追加 ===== */
+.report-card {
+  background-color: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+.card-headline {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+  border-bottom: 3px solid var(--color-primary);
+  padding-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 24px 0 8px 6px;
+  border-left: 6px solid var(--color-primary);
+  padding-left: 12px;
+}
+.main-header { margin-bottom: 16px; }
+.main-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+.update-time {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.summary-prime {
+  text-align: center;
+  padding-bottom: 16px;
+}
+.summary-amount-large {
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.1;
+  margin: 6px 0;
+}
+.stat-list-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 2px solid var(--border-color);
+  padding-top: 16px;
+}
+.market-weather {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* PnL Bar */
+.pnl-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.pnl-amount {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.pnl-amount.positive { color: var(--color-positive); }
+.pnl-amount.negative { color: var(--color-negative); }
+.pnl-bar-track {
+  height: 6px;
+  background-color: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.pnl-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s ease;
+}
+
+/* Report strip */
+.report-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+.strip-item { white-space: nowrap; }
+.strip-divider { color: var(--border-light); }
+
 /* ===== Animations ===== */
 @keyframes fadeUp {
   from { opacity:0; transform: translateY(12px); }
