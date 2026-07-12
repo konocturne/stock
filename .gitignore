@@ -22,3 +22,7 @@ report_state.json   # 廃止済み
 # GitHub Pages デプロイ用出力（ローカルで実行した場合）
 gh_pages_output/
 
+
+# ダッシュボードのローカルプレビュー用出力
+dashboard/charts/
+dashboard/data.json

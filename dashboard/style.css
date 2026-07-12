@@ -1,28 +1,31 @@
-/* ===== CSS Variables ===== */
+/* ===== CSS Variables (ライトテーマ & 高コントラスト・プロ仕様) ===== */
 :root {
-  --bg-primary:    #080e1a;
-  --bg-secondary:  #0d1526;
-  --bg-card:       #111d2e;
-  --bg-card-hover: #182540;
-  --border:        #1e3050;
-  --border-subtle: #162540;
-  --text-primary:  #e8f0fe;
-  --text-secondary: #8fabc7;
-  --text-muted:    #415a78;
-  --accent-blue:   #3b82f6;
-  --accent-cyan:   #06b6d4;
-  --accent-purple: #818cf8;
-  --positive:      #22c55e;
-  --positive-bg:   rgba(34,197,94,0.08);
-  --negative:      #f43f5e;
-  --negative-bg:   rgba(244,63,94,0.08);
-  --warning:       #f59e0b;
+  --bg-main:       #f8fafc;       /* 背景グレー */
+  --card-bg:       #ffffff;       /* カード白 */
+  --border-color:  #334155;       /* 濃いグレー（罫線・外枠用 2px） */
+  --border-light:  #94a3b8;       /* 薄いグレー（内枠用） */
+  
+  --color-primary: #1e3a8a;       /* 濃いネイビー */
+  --color-primary-light: #eff6ff;
+  --color-primary-border: #3b82f6;
+  
+  --color-positive: #16a34a;      /* 濃い緑 */
+  --color-positive-bg: #f0fdf4;
+  --color-negative: #dc2626;      /* 濃い赤 */
+  --color-negative-bg: #fef2f2;
+  
+  --color-warning: #d97706;       /* 濃いオレンジ */
+  --color-warning-bg: #fffbeb;
+
+  --text-dark:     #0f172a;       /* 漆黒 */
+  --text-main:     #1e293b;       /* 本文 */
+  --text-muted:    #334155;       /* 補助・視認性を確保 */
+  
+  --font-family:   'Inter', 'Noto Sans JP', sans-serif;
   --radius-sm:     8px;
   --radius-md:     12px;
-  --radius-lg:     18px;
-  --shadow-card:   0 4px 24px rgba(0,0,0,0.4);
-  --shadow-hover:  0 12px 40px rgba(0,0,0,0.6);
-  --transition:    all 0.22s cubic-bezier(0.4,0,0.2,1);
+  --radius-lg:     16px;
+  --transition:    all 0.2s ease;
 }
 
 /* ===== Reset ===== */
@@ -30,57 +33,43 @@
 html { scroll-behavior:smooth; }
 
 body {
-  font-family: 'Inter','Noto Sans JP',-apple-system,sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  font-family: var(--font-family);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.8;
+  font-size: 15px;
   min-height: 100vh;
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
 }
 
-body::before {
-  content:'';
-  position:fixed; inset:0;
-  background:
-    radial-gradient(ellipse 60% 40% at 15% 10%, rgba(59,130,246,.07) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 85% 80%, rgba(6,182,212,.06) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(129,140,248,.04) 0%, transparent 70%);
-  pointer-events:none; z-index:0;
-}
-#app { position:relative; z-index:1; }
-
-/* ===== Header ===== */
+/* ===== Header (ライトテーマ調整) ===== */
 .header {
-  background: rgba(8,14,26,.88);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border);
+  background: #ffffff;
+  border-bottom: 3.5px solid var(--color-primary); /* 下部境界をネイビーに変更 */
   position: sticky; top:0; z-index:100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 .header-inner {
-  max-width:1360px; margin:0 auto;
-  padding:.75rem 1.5rem;
-  display:flex; justify-content:space-between; align-items:center; gap:1rem;
+  max-width: 1200px; margin:0 auto;
+  padding: 0.8rem 1.5rem;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
 }
-.logo { display:flex; align-items:center; gap:.75rem; }
-.logo-icon { font-size:1.7rem; line-height:1; }
+.logo { display: flex; align-items: center; gap: 0.75rem; }
+.logo-icon { font-size: 1.8rem; line-height: 1; }
 .logo h1 {
-  font-size:1.05rem; font-weight:700; letter-spacing:-.02em;
-  background:linear-gradient(135deg,#60a5fa 0%,#38bdf8 40%,#818cf8 100%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  font-size: 1.2rem; font-weight: 700; color: var(--color-primary);
 }
-.header-sub { font-size:.62rem; color:var(--text-muted); margin-top:1px; }
+.header-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
 
-.header-right { display:flex; align-items:center; gap:1.2rem; }
+.header-right { display: flex; align-items: center; gap: 1.2rem; }
 
 .update-badge {
-  display:flex; align-items:center; gap:.4rem;
-  background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.18);
-  border-radius:999px; padding:.28rem .75rem;
-  font-size:.64rem; color:#86efac; white-space:nowrap;
+  display: flex; align-items: center; gap: 0.4rem;
+  background: var(--color-positive-bg); border: 2px solid var(--color-positive);
+  border-radius: 999px; padding: 0.3rem 0.8rem;
+  font-size: 11px; color: var(--color-positive); font-weight: 700; white-space: nowrap;
 }
 .update-dot {
-  width:6px; height:6px; border-radius:50%; background:#22c55e;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--color-positive);
   animation: blink 2.4s ease-in-out infinite;
 }
 @keyframes blink {
@@ -88,328 +77,576 @@ body::before {
   50%      { opacity:.35; transform:scale(.7); }
 }
 
-.header-nav { display:flex; gap:.4rem; }
+.header-nav { display: flex; gap: 0.4rem; }
 .nav-link {
-  font-size:.65rem; color:var(--text-muted); text-decoration:none;
-  padding:.28rem .6rem; border-radius:6px;
-  transition:var(--transition);
+  font-size: 12px; color: var(--text-muted); text-decoration: none;
+  font-weight: 700;
+  padding: 0.3rem 0.7rem; border-radius: 6px;
+  transition: var(--transition);
 }
-.nav-link:hover { color:var(--text-primary); background:rgba(255,255,255,.05); }
+.nav-link:hover { color: var(--color-primary); background: var(--color-primary-light); }
 
 /* ===== Main ===== */
-.main { max-width:1360px; margin:0 auto; padding:2rem 1.5rem; }
+.main { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
 
 /* ===== Section ===== */
-.section { margin-bottom:3rem; }
+.section { margin-bottom: 32px; }
 .section-header {
-  display:flex; justify-content:space-between; align-items:center; margin-bottom:1.1rem;
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
 }
-.section-header h2 { font-size:.95rem; font-weight:700; letter-spacing:-.01em; }
+.section-header h2 { 
+  font-size: 20px; font-weight: 700; color: var(--text-dark);
+  border-left: 6px solid var(--color-primary); padding-left: 12px;
+}
 .section-badge {
-  font-size:.63rem; color:var(--text-muted);
-  background:rgba(255,255,255,.04); border:1px solid var(--border);
-  border-radius:999px; padding:.2rem .65rem;
+  font-size: 12px; color: var(--color-primary); font-weight: 700;
+  background: var(--color-primary-light); border: 2px solid var(--color-primary-border);
+  border-radius: 999px; padding: 0.2rem 0.7rem;
 }
 
-/* ===== Summary Cards ===== */
-.summary-grid {
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:.9rem;
-  margin-bottom:1.2rem;
+/* ===== AI 全体総括 ===== */
+.alert-banner {
+  background-color: var(--color-negative-bg);
+  border: 3px solid var(--color-negative);
+  color: var(--color-negative);
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 14.5px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.6;
 }
-.summary-card {
-  background:var(--bg-card); border:1px solid var(--border);
-  border-radius:var(--radius-md); padding:1.2rem 1.35rem;
-  transition:var(--transition); position:relative; overflow:hidden;
-  box-shadow:var(--shadow-card);
-}
-.summary-card::after {
-  content:''; position:absolute; top:0; left:0; right:0; height:1px;
-  background:linear-gradient(90deg,transparent,rgba(59,130,246,.4),transparent);
-  opacity:0; transition:opacity .22s;
-}
-.summary-card:hover { border-color:rgba(59,130,246,.25); transform:translateY(-2px); box-shadow:var(--shadow-hover); }
-.summary-card:hover::after { opacity:1; }
-.summary-label {
-  font-size:.63rem; color:var(--text-muted);
-  text-transform:uppercase; letter-spacing:.1em; margin-bottom:.5rem;
-}
-.summary-value {
-  font-size:1.5rem; font-weight:700;
-  font-variant-numeric:tabular-nums; letter-spacing:-.02em; line-height:1.2;
-}
-.summary-sub {
-  font-size:.76rem; font-weight:600; margin-top:.3rem;
-  font-variant-numeric:tabular-nums;
+.flash-box {
+  background: #ffffff;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  line-height: 1.75;
 }
 
-/* ===== Chart Card ===== */
-.chart-card {
-  background:var(--bg-card); border:1px solid var(--border);
-  border-radius:var(--radius-md); padding:1.3rem; box-shadow:var(--shadow-card);
-}
-.chart-card-title {
-  font-size:.72rem; font-weight:600; color:var(--text-secondary);
-  text-transform:uppercase; letter-spacing:.07em; margin-bottom:1rem;
-}
-.chart-container { height:260px; }
-
-/* ===== Positive / Negative ===== */
-.positive { color:var(--positive); }
-.negative { color:var(--negative); }
-.neutral  { color:var(--text-secondary); }
-
-/* ===== Alerts Banner ===== */
-.alerts-banner {
-  background:rgba(185,28,28,.08); border:1px solid rgba(185,28,28,.2);
-  border-radius:var(--radius-sm); padding:.75rem 1.1rem;
-  margin-bottom:1rem; display:flex; flex-direction:column; gap:.4rem;
-}
-.alert-item {
-  font-size:.78rem; color:#fca5a5; font-weight:500;
-}
-.alert-item.info { color:#93c5fd; }
-
-/* ===== Report Strip ===== */
-.report-strip {
-  display:flex; gap:1rem; flex-wrap:wrap; align-items:center;
-  background:rgba(255,255,255,.025); border:1px solid var(--border);
-  border-radius:var(--radius-sm); padding:.6rem 1.1rem;
-  margin-bottom:1rem; font-size:.72rem; color:var(--text-secondary);
-}
-.strip-item { display:flex; align-items:center; gap:.35rem; }
-.strip-divider { color:var(--border); }
-
-/* ===== Tabs ===== */
+/* ===== タブ (ライトテーマ) ===== */
 .tab-nav {
-  display:flex; gap:.4rem; flex-wrap:wrap; margin-bottom:.9rem;
-  border-bottom:1px solid var(--border); padding-bottom:.6rem;
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;
+  border-bottom: 2px solid var(--border-color); padding-bottom: 8px;
 }
 .tab-btn {
-  font-size:.72rem; font-weight:500; padding:.35rem .85rem;
-  border:1px solid var(--border); border-radius:6px;
-  background:rgba(255,255,255,.03); color:var(--text-muted);
-  cursor:pointer; transition:var(--transition);
+  font-size: 13px; font-weight: 700; padding: 6px 14px;
+  border: 2px solid var(--border-color); border-radius: 8px;
+  background: #f1f5f9; color: var(--text-muted);
+  cursor: pointer; transition: var(--transition);
 }
-.tab-btn:hover { color:var(--text-primary); border-color:var(--accent-blue); }
+.tab-btn:hover { color: var(--color-primary); background: var(--color-primary-light); }
 .tab-btn.active {
-  background:rgba(59,130,246,.12); border-color:var(--accent-blue);
-  color:#93c5fd; font-weight:600;
+  background: var(--color-primary); border-color: var(--color-primary);
+  color: #ffffff;
 }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
 
-.tab-panel { display:none; }
-.tab-panel.active { display:block; }
-
-/* Report text blocks */
+/* 簡易レポートブロック */
 .report-block {
-  background:var(--bg-card); border:1px solid var(--border);
-  border-radius:var(--radius-md); padding:1.4rem;
-  margin-bottom:.8rem; box-shadow:var(--shadow-card);
+  background: var(--card-bg); border: 2px solid var(--border-color);
+  border-radius: 12px; padding: 20px;
+  margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.02);
 }
 .report-block-title {
-  font-size:.78rem; font-weight:700; color:var(--accent-cyan);
-  text-transform:uppercase; letter-spacing:.08em; margin-bottom:.75rem;
-  display:flex; align-items:center; gap:.45rem;
-}
-.report-block-title::before {
-  content:''; display:block; width:3px; height:1em;
-  background:var(--accent-cyan); border-radius:2px;
+  font-size: 15px; font-weight: 700; color: var(--color-primary);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+  border-bottom: 2px solid var(--color-primary-light); padding-bottom: 4px;
 }
 .report-block-body {
-  font-size:.82rem; line-height:1.8; color:var(--text-secondary);
-  white-space:pre-wrap;
+  font-size: 14.5px; line-height: 1.8; color: var(--text-main);
+  white-space: pre-wrap;
 }
 
-/* Strategy cards */
-.strategy-grid { display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
+/* 戦略ボックス */
+.strategy-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 768px) {
+  .strategy-grid { grid-template-columns: 1fr 1fr; }
+}
 .strategy-card {
-  background:rgba(59,130,246,.05); border:1px solid rgba(59,130,246,.15);
-  border-radius:var(--radius-md); padding:1.2rem;
+  background: var(--color-primary-light); border: 2px solid var(--color-primary-border);
+  border-radius: 12px; padding: 20px;
 }
 .strategy-card.mid-term {
-  background:rgba(129,140,248,.05); border-color:rgba(129,140,248,.15);
+  background: #f8fafc; border-color: var(--border-color);
 }
 .strategy-card-label {
-  font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
-  margin-bottom:.6rem;
+  font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  margin-bottom: 8px; border-bottom: 2px solid rgba(0,0,0,0.05); padding-bottom: 4px;
 }
-.strategy-card.short-term .strategy-card-label { color:#60a5fa; }
-.strategy-card.mid-term   .strategy-card-label { color:#a5b4fc; }
-.strategy-card-body { font-size:.8rem; line-height:1.75; color:var(--text-secondary); }
+.strategy-card.short-term .strategy-card-label { color: var(--color-primary); }
+.strategy-card.mid-term .strategy-card-label { color: var(--text-dark); }
+.strategy-card-body { font-size: 14px; line-height: 1.75; color: var(--text-main); }
 .outlook-box {
-  background:rgba(16,185,129,.05); border:1px solid rgba(16,185,129,.15);
-  border-radius:var(--radius-sm); padding:.9rem 1.1rem; margin-top:.8rem;
-  font-size:.8rem; color:#6ee7b7; line-height:1.7;
+  background: var(--color-positive-bg); border: 2px solid var(--color-positive);
+  border-radius: 8px; padding: 14px 18px; margin-top: 16px;
+  font-size: 14px; color: var(--color-positive); line-height: 1.7; font-weight: 700;
 }
-.outlook-box strong { font-size:.65rem; text-transform:uppercase; letter-spacing:.1em; display:block; margin-bottom:.4rem; opacity:.7; }
+.outlook-box strong { font-size: 11px; display: block; margin-bottom: 2px; opacity: 0.8; }
 
-/* ===== Stock Cards ===== */
+/* ===== ポートフォリオ概要 & サマリーカード ===== */
+.summary-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;
+  margin-bottom: 20px;
+}
+.summary-card {
+  background: var(--card-bg); border: 2px solid var(--border-color);
+  border-radius: 12px; padding: 20px;
+  transition: var(--transition); box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.summary-card:hover { border-color: var(--color-primary-border); transform: translateY(-2px); }
+.summary-label {
+  font-size: 11px; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; font-weight: 700;
+}
+.summary-value {
+  font-size: 24px; font-weight: 700; color: var(--text-dark);
+  font-variant-numeric: tabular-nums; letter-spacing: -0.01em; line-height: 1.2;
+}
+.summary-sub {
+  font-size: 13.5px; font-weight: 700; margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-card {
+  background: var(--card-bg); border: 2px solid var(--border-color);
+  border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+.chart-card-title {
+  font-size: 13px; font-weight: 700; color: var(--color-primary);
+  text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px;
+}
+.chart-container { height: 260px; }
+
+/* ===== ポートフォリオ将来見通し & ポジションマップ (プロトタイプ構造) ===== */
+.summary-grid-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 768px) {
+  .summary-grid-wrapper {
+    grid-template-columns: 1.15fr 1.85fr;
+  }
+}
+.portfolio-chart-wrapper {
+  height: 220px;
+  margin-top: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px;
+  background-color: #fafbfc;
+}
+.valuation-plot-card {
+  margin-top: 24px;
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px;
+  background-color: #ffffff;
+}
+.valuation-plot-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: 6px;
+}
+.valuation-plot-frame {
+  height: 250px;
+  position: relative;
+}
+
+/* ===== 罫線完全強化テーブル ===== */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  margin-bottom: 16px;
+}
+.data-table th, .data-table td {
+  border: 2px solid var(--border-color);
+  padding: 10px 12px;
+  text-align: left;
+}
+.data-table th {
+  background-color: #cbd5e1;
+  color: var(--text-dark);
+  font-weight: 700;
+}
+.data-table td.num {
+  text-align: right;
+  font-family: 'Inter', monospace;
+  font-weight: 600;
+}
+.data-table td.broker-name-cell {
+  white-space: nowrap;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* ===== 個別銘柄 詳細アナリストレポート ===== */
 .stocks-grid {
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 .stock-card {
-  background:var(--bg-card); border:1px solid var(--border);
-  border-radius:var(--radius-md); overflow:hidden;
-  transition:var(--transition); box-shadow:var(--shadow-card);
-  animation: fadeUp .35s ease both;
-}
-.stock-card:hover {
-  border-color:rgba(59,130,246,.28); transform:translateY(-3px); box-shadow:var(--shadow-hover);
+  background-color: var(--card-bg);
+  border: 2.5px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
 }
 
-/* Card Header */
-.stock-card-header {
-  display:flex; justify-content:space-between; align-items:flex-start;
-  padding:.9rem 1.1rem .65rem; gap:.5rem;
+.stock-meta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 3px solid var(--text-dark);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
 }
-.stock-code {
-  display:inline-block; font-size:.58rem; color:var(--text-muted); font-weight:700;
-  letter-spacing:.1em; background:rgba(255,255,255,.04); border:1px solid var(--border);
-  padding:.12rem .42rem; border-radius:4px; margin-bottom:.28rem;
+.stock-meta-name-code {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.2;
 }
-.stock-name { font-size:.9rem; font-weight:700; line-height:1.3; letter-spacing:-.01em; margin-bottom:.28rem; }
-.stock-sector {
-  display:inline-block; font-size:.58rem; color:#a5b4fc;
-  background:rgba(99,102,241,.1); border:1px solid rgba(99,102,241,.18);
-  padding:.1rem .38rem; border-radius:999px;
+.stock-meta-sub {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
-.stock-price-block { text-align:right; flex-shrink:0; }
-.stock-price { font-size:1.12rem; font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:-.02em; }
-.stock-change { font-size:.7rem; font-weight:600; margin-top:2px; font-variant-numeric:tabular-nums; }
+.stock-price-block-pro {
+  text-align: right;
+}
+.stock-price-val-pro {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.1;
+}
+.stock-price-chg-pro {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+.stock-price-chg-pro.down { color: var(--color-negative); }
+.stock-price-chg-pro.up { color: var(--color-positive); }
 
-/* Recommendation badge */
-.rec-badge {
-  display:inline-block; font-size:.6rem; font-weight:700;
-  padding:.18rem .55rem; border-radius:999px; margin-top:.4rem;
-  letter-spacing:.04em;
+/* 最適行動・指値水準マニュアル */
+.live-action-box {
+  background-color: #fffbeb;
+  border: 2.5px solid var(--color-warning);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
 }
-.rec-strong-buy  { background:rgba(21,128,61,.2);  color:#4ade80; border:1px solid rgba(21,128,61,.3); }
-.rec-buy         { background:rgba(22,163,74,.15); color:#6ee7b7; border:1px solid rgba(22,163,74,.25); }
-.rec-hold        { background:rgba(71,85,105,.2);  color:#94a3b8; border:1px solid rgba(71,85,105,.3); }
-.rec-partial     { background:rgba(180,93,9,.15);  color:#fcd34d; border:1px solid rgba(180,93,9,.25); }
-.rec-sell        { background:rgba(185,28,28,.15); color:#f87171; border:1px solid rgba(185,28,28,.25); }
-
-/* Chart image */
-.stock-chart-wrap { width:100%; aspect-ratio:10/4; background:#060a14; overflow:hidden; position:relative; }
-.stock-chart-img  { width:100%; height:100%; object-fit:cover; display:block; }
-.stock-chart-placeholder {
-  width:100%; height:100%; display:flex; align-items:center; justify-content:center;
-  color:var(--text-muted); font-size:.72rem;
-  background:linear-gradient(135deg,#060a14,#0d1526);
-}
-
-/* Metrics strip */
-.stock-metrics {
-  display:grid; grid-template-columns:repeat(4,1fr);
-  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-}
-.metric { padding:.45rem 0; text-align:center; border-right:1px solid var(--border); }
-.metric:last-child { border-right:none; }
-.metric-label { font-size:.56rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.07em; }
-.metric-value { font-size:.75rem; font-weight:600; margin-top:2px; color:var(--text-secondary); }
-
-/* Technical detail section */
-.stock-technical {
-  padding:.7rem 1.1rem; border-bottom:1px solid var(--border);
-}
-.tech-title {
-  font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
-  color:var(--accent-purple); margin-bottom:.4rem;
-}
-.tech-body { font-size:.71rem; color:var(--text-secondary); line-height:1.6; }
-
-/* Target price row */
-.stock-targets {
-  display:grid; grid-template-columns:1fr 1fr;
-  gap:0; border-bottom:1px solid var(--border);
-}
-.target-item { padding:.55rem 1.1rem; border-right:1px solid var(--border); }
-.target-item:last-child { border-right:none; }
-.target-label { font-size:.58rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:2px; }
-.target-value { font-size:.85rem; font-weight:700; font-variant-numeric:tabular-nums; }
-.target-basis { font-size:.6rem; color:var(--text-muted); margin-top:2px; line-height:1.4; }
-
-/* P&L bar */
-.stock-pnl-bar { padding:.6rem 1.1rem .8rem; }
-.pnl-label-row {
-  display:flex; justify-content:space-between; align-items:center;
-  font-size:.63rem; color:var(--text-muted); margin-bottom:.32rem; gap:.4rem;
-}
-.pnl-amount { font-weight:700; font-variant-numeric:tabular-nums; }
-.pnl-bar-track { height:4px; background:rgba(255,255,255,.06); border-radius:999px; overflow:hidden; }
-.pnl-bar-fill  { height:100%; border-radius:999px; transition:width .9s cubic-bezier(.4,0,.2,1); }
-
-/* Risk / News row */
-.stock-risk {
-  padding:.5rem 1.1rem .75rem;
-  font-size:.68rem; color:var(--text-muted); line-height:1.55;
-}
-.risk-label {
-  font-size:.58rem; font-weight:700; text-transform:uppercase;
-  letter-spacing:.08em; color:#fca5a5; margin-bottom:.25rem;
+.live-action-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-warning);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid #fde68a;
+  padding-bottom: 6px;
 }
 
-/* ===== History ===== */
-.history-list { display:flex; flex-direction:column; gap:.65rem; }
+/* 銘柄リスク＆カタリストプロファイル */
+.risk-catalyst-card {
+  background-color: #f8fafc;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  font-size: 13.5px;
+  margin-bottom: 16px;
+}
+@media (min-width: 600px) {
+  .risk-catalyst-card {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+  }
+}
+.risk-cat-item {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px dashed var(--border-light);
+  padding-bottom: 4px;
+}
+.risk-cat-lbl {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.risk-cat-val {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* ブロック単位レイアウト */
+.theme-block-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+  border-bottom: 2px dashed var(--border-light);
+  padding-bottom: 24px;
+}
+@media (min-width: 900px) {
+  .theme-block-grid {
+    grid-template-columns: 1fr 1.1fr;
+  }
+}
+.theme-block-title-bar {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 12px;
+  border-left: 5px solid var(--color-primary);
+  padding-left: 8px;
+  background-color: var(--color-primary-light);
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.full-width-block {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+/* 意思決定バッジ */
+.decision-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8fafc;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 18px;
+  margin-bottom: 16px;
+}
+.decision-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.decision-badge {
+  font-size: 20px;
+  font-weight: 700;
+  padding: 4px 18px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.decision-badge.hold { background-color: #f1f5f9; color: var(--text-muted); border: 2.5px solid #64748b; }
+.decision-badge.buy { background-color: var(--color-positive-bg); color: var(--color-positive); border: 2.5px solid var(--color-positive); }
+.decision-badge.sell { background-color: var(--color-negative-bg); color: var(--color-negative); border: 2.5px solid var(--color-negative); }
+
+/* 株価位置インジケーター */
+.price-position-meter-card {
+  background-color: #f8fafc;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.meter-title { font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+.meter-bar-wrapper {
+  height: 16px;
+  background: linear-gradient(to right, #fca5a5 0%, #cbd5e1 15%, #cbd5e1 85%, #86efac 100%);
+  border-radius: 4px;
+  position: relative;
+  margin: 28px 0 24px 0;
+  border: 1px solid var(--border-color);
+}
+.meter-line { position: absolute; top: -6px; bottom: -6px; width: 2px; background-color: #475569; }
+.meter-line.stop-loss { background-color: #ef4444; width: 3px; z-index: 10; }
+.meter-line.target { background-color: #22c55e; width: 3px; z-index: 10; }
+.meter-current-pin { position: absolute; top: -10px; width: 2px; height: 36px; background-color: #0f172a; z-index: 20; }
+.meter-current-label { position: absolute; top: -26px; transform: translateX(-50%); font-size: 11px; font-weight: 700; background-color: #0f172a; color: #ffffff; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+.meter-line-label { position: absolute; bottom: -22px; transform: translateX(-50%); font-size: 10px; font-weight: 700; white-space: nowrap; color: var(--text-muted); }
+.meter-scale-extremes { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-top: -12px; }
+
+/* PER/PBRバリュエーションバー */
+.valuation-visualizer {
+  background-color: #ffffff;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.valuation-bar-group { display: flex; flex-direction: column; gap: 4px; }
+.valuation-bar-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; }
+.valuation-scale-container { height: 10px; background-color: #e2e8f0; border-radius: 999px; position: relative; margin: 6px 0; border: 1px solid var(--border-light); }
+.valuation-marker { width: 14px; height: 14px; background-color: var(--color-primary); border-radius: 50%; position: absolute; top: -2px; transform: translateX(-50%); }
+.valuation-scale-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
+
+/* トレンドテーブル */
+.trend-table-card {
+  background-color: #ffffff;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+}
+.trend-table-title { font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; border-bottom: 2px solid var(--border-color); padding-bottom: 4px; }
+
+/* 3大根拠カード */
+.rating-justification-card {
+  background-color: #f8fafc;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* 過去チャートアノマリー */
+.pattern-analogy-card {
+  background-color: var(--color-primary-light);
+  border: 2px solid var(--color-primary-border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.pattern-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+  border-bottom: 2px solid var(--color-primary-border);
+  padding-bottom: 4px;
+}
+
+/* 意見・解説カード (パディングを確保して文字が縦線にくっつかないようにする) */
+.opinion-card {
+  padding: 16px 20px;
+  border-radius: 12px;
+  background-color: #fafbfc;
+  border: 2px solid var(--border-color);
+  margin-bottom: 24px;
+}
+.opinion-card.analyst {
+  border: none;
+  border-left: 6px solid var(--color-primary-border);
+  border-radius: 0 12px 12px 0;
+  padding: 16px 20px 16px 28px; /* 左側パディングを十分確保 */
+  background-color: #fafbfc;
+}
+.opinion-card-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+.opinion-card.risk {
+  border: 2px solid var(--border-color);
+  background-color: var(--color-negative-bg);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+
+/* 外部リンク */
+.source-links-card {
+  background-color: #fafbfc;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 16px;
+}
+.source-links-title {
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+.source-links-list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.source-links-list a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+/* 蛍光ペン & 文字装飾 */
+.highlight-marker-yellow { background: linear-gradient(transparent 30%, #fef08a 30%); font-weight: 700; color: var(--text-dark); padding: 0 4px; }
+.highlight-marker-green { background: linear-gradient(transparent 30%, #bbf7d0 30%); font-weight: 700; color: var(--text-dark); padding: 0 4px; }
+.highlight-marker-red { background: linear-gradient(transparent 30%, #fecaca 30%); font-weight: 700; color: var(--text-dark); padding: 0 4px; }
+
+.momentum-block-highlight {
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 18px;
+  background-color: #ffffff;
+}
+
+/* ===== 履歴 (ライトテーマ) ===== */
+.history-list { display: flex; flex-direction: column; gap: 12px; }
 .history-item {
-  background:var(--bg-card); border:1px solid var(--border);
-  border-radius:var(--radius-sm); padding:.85rem 1.1rem;
-  transition:var(--transition); animation:fadeUp .3s ease both;
+  background: var(--card-bg); border: 2px solid var(--border-color);
+  border-radius: 8px; padding: 16px 20px;
+  transition: var(--transition); animation: fadeUp .3s ease both;
 }
-.history-item:hover { border-color:rgba(59,130,246,.25); }
-.history-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:.4rem; gap:.5rem; }
-.history-date   { font-size:.7rem; font-weight:600; color:var(--accent-cyan); }
+.history-item:hover { border-color: var(--color-primary-border); }
+.history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; }
+.history-date   { font-size: 13.5px; font-weight: 700; color: var(--color-primary); }
 .history-timing {
-  font-size:.6rem; background:rgba(99,102,241,.12); color:#a5b4fc;
-  padding:.1rem .42rem; border-radius:999px; border:1px solid rgba(99,102,241,.2);
+  font-size: 11px; background: var(--color-primary-light); color: var(--color-primary);
+  padding: 0.1rem 0.5rem; border-radius: 999px; border: 1.5px solid var(--color-primary-border);
+  font-weight: 700;
 }
-.history-alerts   { font-size:.66rem; color:#fca5a5; margin-bottom:.3rem; line-height:1.5; }
-.history-benchmark { font-size:.63rem; color:#60a5fa; margin-bottom:.3rem; }
-.history-strategy  { font-size:.68rem; color:var(--text-secondary); line-height:1.55; }
+.history-alerts   { font-size: 13.5px; color: var(--color-negative); margin-bottom: 6px; line-height: 1.5; font-weight: 700; }
+.history-benchmark { font-size: 13px; color: var(--color-primary); margin-bottom: 6px; font-weight: 700; }
+.history-strategy  { font-size: 14px; color: var(--text-main); line-height: 1.6; }
 
-/* ===== Loading / Error ===== */
+/* ===== ローディング / エラー ===== */
 .loading-screen {
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  min-height:65vh; color:var(--text-muted); gap:1.2rem; font-size:.8rem;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 65vh; color: var(--text-muted); gap: 16px; font-size: 14px;
 }
 .loader {
-  width:36px; height:36px;
-  border:2.5px solid rgba(59,130,246,.15); border-top-color:#3b82f6;
-  border-radius:50%; animation:spin .75s linear infinite;
+  width: 40px; height: 40px;
+  border: 4px solid var(--color-primary-light); border-top-color: var(--color-primary);
+  border-radius: 50%; animation: spin .75s linear infinite;
 }
-@keyframes spin { to { transform:rotate(360deg); } }
-.error-screen  { display:flex; align-items:center; justify-content:center; min-height:65vh; }
-.error-inner   { text-align:center; }
-.error-icon    { font-size:2.8rem; margin-bottom:1rem; }
-.error-title   { font-size:1rem; font-weight:600; }
-.error-msg     { font-size:.75rem; color:var(--text-muted); margin-top:.4rem; max-width:380px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.error-screen  { display: flex; align-items: center; justify-content: center; min-height: 65vh; }
+.error-inner   { text-align: center; }
+.error-icon    { font-size: 3rem; margin-bottom: 12px; }
+.error-title   { font-size: 18px; font-weight: 700; color: var(--text-dark); }
+.error-msg     { font-size: 13px; color: var(--text-muted); margin-top: 6px; max-width: 400px; }
 
-/* ===== Footer ===== */
+/* ===== フッター ===== */
 .footer {
-  text-align:center; padding:2rem 1.5rem;
-  font-size:.63rem; color:var(--text-muted);
-  border-top:1px solid var(--border-subtle); margin-top:2rem; letter-spacing:.02em;
+  text-align: center; padding: 32px 16px;
+  font-size: 12px; color: var(--text-muted);
+  border-top: 2px solid var(--border-light); margin-top: 32px;
 }
 
 /* ===== Animations ===== */
 @keyframes fadeUp {
-  from { opacity:0; transform:translateY(12px); }
-  to   { opacity:1; transform:translateY(0); }
+  from { opacity:0; transform: translateY(12px); }
+  to   { opacity:1; transform: translateY(0); }
 }
-.summary-card { animation:fadeUp .3s ease both; }
 
 /* ===== Responsive ===== */
-@media (max-width:720px) {
-  .header-inner   { flex-direction:column; gap:.6rem; text-align:center; }
-  .header-right   { flex-direction:column; gap:.6rem; align-items:center; }
-  .summary-grid   { grid-template-columns:1fr 1fr; }
-  .stocks-grid    { grid-template-columns:1fr; }
-  .strategy-grid  { grid-template-columns:1fr; }
-  .stock-metrics  { grid-template-columns:repeat(2,1fr); }
-  .stock-targets  { grid-template-columns:1fr; }
-  .target-item    { border-right:none; border-bottom:1px solid var(--border); }
-  .target-item:last-child { border-bottom:none; }
-  .main { padding:1rem; }
-  .summary-value  { font-size:1.2rem; }
-  .logo h1        { font-size:.95rem; }
-  .tab-nav        { gap:.3rem; }
+@media (max-width: 720px) {
+  .header-inner   { flex-direction: column; gap: 8px; text-align: center; }
+  .header-right   { flex-direction: column; gap: 8px; align-items: center; }
+  .summary-grid   { grid-template-columns: 1fr 1fr; }
+  .main { padding: 12px; }
+  .logo h1        { font-size: 16px; }
 }

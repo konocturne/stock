@@ -500,23 +500,23 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
         )
 
     if timing == "朝":
-        role_prompt = f"""あなたはプロの証券アナリストです。本日は朝礼の時間です。
-前日の米国・日本市場の結果と各銘柄の最新ニュース・テクニカル指標（RSI/MACD/BB）から、本日の日本市場開始前の地合いを評価してください。
+        role_prompt = f"""あなたはプロの証券アナリストです。本日は日本市場の寄り付き前（朝）です。
+前日の米国市場や為替動向、各銘柄の最新状況から、本日の寄り付き直後に取るべき「即時アクション（利確・損切り指値・追加購入の可否）」に特化した指示を作成してください。
 【市場指標】
 {market_str}
-今日の寄り付きで狙うべきアクションプラン（利確・押し目買い・静観など）を提案してください。"""
+特に本日意識すべき損切り指値水準や、ナンピン買いの禁止・制限を明確にトレーダーマニュアル形式で作成してください。"""
     elif timing == "昼":
-        role_prompt = f"""あなたはプロの証券アナリストです。現在は昼休み（前場引け後）です。
-前場の実際の値動きを見て、朝立てた予測との答え合わせを行ってください。
+        role_prompt = f"""あなたはプロの証券アナリストです。現在は昼休み（前場大引け後・後場寄り付き前）です。
+前場の株価変動や出来高の推移、為替の急変動を確認し、後場に向けた「即時アクション（前場の安値割れに伴う損切り注文の準備など）」を提示してください。
 【現在の市場指標】
 {market_str}
-想定外の連れ高・連れ安、出来高急増、RSI/MACD/BBシグナルを確認し、後場に向けたアクションを提案してください。"""
+前場に損切り目安や節目の価格にどこまで接近したか、後場の開始時にどの価格で売買注文を実行すべきかを指示してください。"""
     else:
-        role_prompt = f"""あなたはプロの証券アナリストです。現在は大引け後（夜）です。
-本日の最終的な値動きと夜間PTSを総合的に分析し、1日の総括を行ってください。
+        role_prompt = f"""あなたはプロの証券アナリストです。本日は大引け後（夜）です。
+本日の最終値動き、夜間PTS、および本日発表されたマクロニュースや競合他社の動向を多角的に分析し、中長期的なアロケーション方針と将来ロードマップを構築してください。
 【現在の市場指標】
 {market_str}
-テクニカル指標の類似パターンも考慮し、明日以降の中長期戦略を構築してください。"""
+過去のチャートパターンアノマリーとの類似性分析、およびセクター内の競合他社（ホンダ、日産、テスラ、任天堂、キーエンス等の具体名）との相関分析を必ず絶対参照（名指し）で行ってください。"""
 
     prompt = f"""{role_prompt}
 {prev_context}
@@ -524,27 +524,35 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
 以下の保有銘柄データから、ポートフォリオ全体をスキャンした詳細な投資戦略レポートをJSON形式のみで作成してください。Markdownは不要。
 専門的なアナリストとして、テクニカル・ファンダメンタル両面から徹底分析してください。
 目標株価、推奨度、損切りラインなどはAIで独自算出せず、データ内にある「機関コンセンサス」「52週安値」等の客観的な指標を優先して使用し、事実情報に基づいた分析をしてください。
-重要なルール：必ず全ての出力を自然な日本語で行うこと（英語が混ざらないように注意してください）。
+重要なルール：必ず全ての出力を自然な日本語で行うこと（英語の見出しや格付けは一切混ぜず、完全に日本語化してください）。
+
+【重要指示：テキストの装飾】
+分析テキスト（特に `valuation_commentary` や `momentum_analysis_list`, `chart_analogy_commentary`, `news_correlation_commentary`）の文中において、重要なキーワードやシグナルに対して、以下のHTMLタグを積極的に埋め込んで装飾してください：
+- 黄色蛍光ペン: `<span class="highlight-marker-yellow">重要単語</span>`
+- 緑色蛍光ペン（好材料・割安等）: `<span class="highlight-marker-green">好材料・目標</span>`
+- 赤色蛍光ペン（悪材料・損切等）: `<span class="highlight-marker-red">リスク・損切り</span>`
+- ポジティブカラー太字: `<span style="color: var(--color-positive); font-weight: 700;">ポジティブ内容</span>`
+- ネガティブカラー太字: `<span style="color: var(--color-negative); font-weight: 700;">ネガティブ内容</span>`
 
 【保有銘柄データ】
 {stocks_prompt_text}
 
 【出力形式】必ず次のJSON構造のみを返すこと。
 {{
-  "title": "{timing}のアナリスト・レポート",
+  "title": "{timing}のポートフォリオ投資戦略・日報",
   "statusColor": "#b91c1c",
-  "alerts": ["🚨 XX銘柄で過熱感のサイン", "💡 XXセクターに好材料"],
-  "weather": "半導体:☀️ / 銀行:☁️",
+  "alerts": ["🚨 トヨタが52週安値接近", "💡 ソニーGに半導体好材料"],
+  "weather": "半導体:☀️ / 自動車:☁️",
   "benchmark": "日経225({nikkei_change}) vs ポートフォリオ: ±X.XX%",
-  "market_summary": "市場全体の概況・地合いを400字程度で解説",
-  "tomorrow_outlook": "明日の見通しを200字程度で",
+  "market_summary": "市場全体の概況・地合いを400字程度で解説。適宜HTMLハイライトタグを埋め込んでください。",
+  "tomorrow_outlook": "明日の見通しを200字程度で。適宜HTMLハイライトタグを埋め込んでください。",
   "stocks": [{{
     "name": "銘柄名",
     "code": "コード",
     "price": "現在値（前日比%）",
     "sentiment": "ポジティブ/ネガティブ/ニュートラル",
     "sentiment_reason": "感情判定の根拠",
-    "analyst_rating": "データにある【推奨】(強気買い/買い等)をそのまま記載。無い場合は「データなし」",
+    "analyst_rating": "総合投資判断（必ず「維持 (HOLD)」「買い増し (BUY)」「売り (SELL)」のいずれかから選択）",
     "consensus_target": 0,
     "target_divergence_comment": "機関平均目標と現在値の乖離に対する見解",
     "stop_loss_guide": 0,
@@ -553,13 +561,44 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
     "news_impact": "直近ニュースの影響評価",
     "personal_action": "保有数と取得単価(含み損益)を加味した個人へのアクション提案",
     "comprehensive_analysis": "PERなどのファンダメンタル指標、現在値と目標株価の乖離、テクニカル指標、および関連ニュースを総合し、AIアナリストとしての見解・意見を400〜600字程度の詳細なテキストで記述してください。",
-    "one_liner": "LINEに送る超短い一言コメント（20字以内）"
+    "one_liner": "LINEに送る超短い一言コメント（20字以内）",
+    "execution_manual": {{
+      "scenario_a": "日足終値がロスカット目安を割り込んだ場合の具体的執行指示（100-150字、HTMLタグ含む）",
+      "scenario_b": "場中の一時的節目割れや反発時の具体的執行指示（100-150字、HTMLタグ含む）",
+      "scenario_c": "指値・逆指値の具体的設定指示（100-150字、HTMLタグ含む）"
+    }},
+    "valuation_rationale": {{
+      "technical": "テクニカル面の判定（「🟡 維持 (反発待ち)」「🟢 買い増し (トレンド追従)」「🔴 売り (悪化警戒)」など）とその短い分析理由（30字以内）",
+      "valuation": "バリュエーション面の判定（「🟢 買い増し (超割安)」「🟡 維持 (適正価値)」「🔴 売り (割高)」など）とその短い分析理由（30字以内）",
+      "macro_news": "ニュース・マクロ面の判定（「🔴 売り (悪化警戒)」「🟢 買い増し (好材料発生)」「🟡 維持 (中立)」など）とその短い分析理由（30字以内）"
+    }},
+    "valuation_commentary": "財務×テクニカルの複合分析に関する200-300字程度の解説。HTML強調タグ（highlight-marker-*など）や文字色スタイルを適切に埋め込んでください。",
+    "momentum_analysis_list": [
+      "出来高の変化に関する具体的な分析（出来高急増、セリングクライマックス等を50-70字で。HTMLタグ含む）",
+      "RSIの推移と買われすぎ・売られすぎの判定（50-70字で。HTMLタグ含む）",
+      "ボリバン幅の拡大・縮小とトレンドの強さ（50-70字で。HTMLタグ含む）"
+    ],
+    "broker_targets": [
+      {{"broker": "野村證券", "target": 3400, "rating": "買い (継続)", "date": "2026/06/15"}},
+      {{"broker": "大和証券", "target": 3250, "rating": "強気 (継続)", "date": "2026/06/28"}},
+      {{"broker": "ゴールドマン・サックス", "target": 3100, "rating": "中立 (継続)", "date": "2026/07/02"}},
+      {{"broker": "JPモルガン証券", "target": 2950, "rating": "中立 (継続)", "date": "2026/07/08"}}
+    ],
+    "broker_commentary": "主要証券会社の目標株価コンセンサスに対する200字程度のアナリスト分析。SOTPモデルなどの算出根拠や目標引き下げリスクを含め、HTML強調タグやカラータグを適切に埋め込んでください。",
+    "chart_analogy_commentary": "過去の特定の年月日におけるチャート類似パターンとの類似度（％）や当時の底打ち・高値ブレイク推移、今回の優位性・アノマリーに関する200-300字程度のテクニカル分析。HTML強調タグやカラータグを適切に埋め込んでください。",
+    "news_correlation_commentary": "本日発表されたマクロニュース（金利、為替など）およびセクター競合銘柄（トヨタなら本田技研や日産自動車、テスラ。ソニーなら任天堂やキーエンス等の具体名とコード）との相関・値動きの影響に関する200-300字程度の解説（絶対参照）。HTML強調タグやカラータグを適切に埋め込んでください。",
+    "risk_catalyst_profile": {{
+      "earnings_date": "次の決算発表予定日（YYYY/MM/DD）",
+      "max_loss_var": "1日最大想定損失額の推計値と前提条件（例：-¥114,000円）",
+      "beta": "ベータ値（例：1.28）",
+      "target_timeline": "目標株価到達の想定期間（例：3ヶ月以内、6ヶ月以内など）"
+    }}
   }}],
-  "analysis_market": "市場環境の詳細分析（400〜600字程度で詳細に）",
-  "analysis_technical": "テクニカル総合評価・セクターローテーション・特筆すべきパターン（400〜600字程度で詳細に）",
-  "analysis_portfolio": "ポートフォリオ全体のバランス・リスク分散状況の評価（400字程度で詳細に）",
-  "strategy_short": "今日〜今週の短期アクションプラン（300字程度で詳細に）",
-  "strategy_mid": "1〜3ヶ月の中期戦略・注目イベント（300字程度で詳細に）"
+  "analysis_market": "市場環境の詳細分析（400〜600字程度で詳細に。適宜HTMLハイライトタグを埋め込んでください。）",
+  "analysis_technical": "テクニカル総合評価・セクターローテーション・特筆すべきパターン（400〜600字程度で詳細に。適宜HTMLハイライトタグを埋め込んでください。）",
+  "analysis_portfolio": "ポートフォリオ全体のバランス・将来見通しロードマップ・マイルストーン（7月後半のトヨタ底打ちロード、8月前半のソニー上値ブレイクロードなどタイムラインに沿って400字程度で詳細に記述。適宜HTMLハイライトタグを埋め込んでください。）",
+  "strategy_short": "今日〜今週の短期アクションプラン（300字程度で詳細に。適宜HTMLハイライトタグを埋め込んでください。）",
+  "strategy_mid": "1〜3ヶ月の中期戦略・注目イベント（300字程度で詳細に。適宜HTMLハイライトタグを埋め込んでください。）"
 }}"""
 
     print(f"【2】Gemini ({GEMINI_MODEL}) で分析レポートを生成中 (本実行で1回のみ)...")
@@ -725,12 +764,20 @@ def send_to_line(data, today_str=None, dashboard_url=""):
 # ========================
 
 if __name__ == "__main__":
+    timing       = get_current_timing()
+    today_str    = datetime.now(JST).strftime("%Y-%m-%d")
+    now_jst      = datetime.now(JST)
+
+    # 日本時間の土曜日(5) または 日曜日(6) の場合はスキップ
+    if now_jst.weekday() >= 5:
+        print(f"=== [スキップ] {today_str} ({now_jst.strftime('%A')}) は土日のため、処理を実行せず早期終了します。 ===")
+        import sys
+        sys.exit(0)
+
     spreadsheet = get_spreadsheet()
     sheet       = spreadsheet.worksheet("保有銘柄")
     initialize_headers(sheet)
 
-    timing       = get_current_timing()
-    today_str    = datetime.now(JST).strftime("%Y-%m-%d")
     dashboard_url = GITHUB_PAGES_URL if GITHUB_PAGES_URL else ""
     print(f"=== 実行開始: {today_str} {timing} (モデル: {GEMINI_MODEL}) ===")
 
