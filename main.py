@@ -541,7 +541,7 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
 {{
   "title": "{timing}のポートフォリオ投資戦略・日報",
   "statusColor": "#b91c1c",
-  "alerts": ["🚨 トヨタが52週安値接近", "💡 ソニーGに半導体好材料"],
+  "alerts": ["🚨 A社が52週安値接近", "💡 B社に好材料"],
   "weather": "半導体:☀️ / 自動車:☁️",
   "benchmark": "日経225({nikkei_change}) vs ポートフォリオ: ±X.XX%",
   "market_summary": "市場全体の概況・地合いを400字程度で解説。適宜HTMLハイライトタグを埋め込んでください。",
@@ -586,7 +586,7 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
     ],
     "broker_commentary": "主要証券会社の目標株価コンセンサスに対する200字程度のアナリスト分析。SOTPモデルなどの算出根拠や目標引き下げリスクを含め、HTML強調タグやカラータグを適切に埋め込んでください。",
     "chart_analogy_commentary": "過去の特定の年月日におけるチャート類似パターンとの類似度（％）や当時の底打ち・高値ブレイク推移、今回の優位性・アノマリーに関する200-300字程度のテクニカル分析。HTML強調タグやカラータグを適切に埋め込んでください。",
-    "news_correlation_commentary": "本日発表されたマクロニュース（金利、為替など）およびセクター競合銘柄（トヨタなら本田技研や日産自動車、テスラ。ソニーなら任天堂やキーエンス等の具体名とコード）との相関・値動きの影響に関する200-300字程度の解説（絶対参照）。HTML強調タグやカラータグを適切に埋め込んでください。",
+    "news_correlation_commentary": "本日発表されたマクロニュース（金利、為替など）およびセクター競合銘柄（対象銘柄の具体的な競合他社名とコード）との相関・値動きの影響に関する200-300字程度の解説（絶対参照）。HTML強調タグやカラータグを適切に埋め込んでください。",
     "risk_catalyst_profile": {{
       "earnings_date": "次の決算発表予定日（YYYY/MM/DD）",
       "max_loss_var": "1日最大想定損失額の推計値と前提条件（例：-¥114,000円）",
@@ -596,7 +596,7 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
   }}],
   "analysis_market": "市場環境の詳細分析（400〜600字程度で詳細に。適宜HTMLハイライトタグを埋め込んでください。）",
   "analysis_technical": "テクニカル総合評価・セクターローテーション・特筆すべきパターン（400〜600字程度で詳細に。適宜HTMLハイライトタグを埋め込んでください。）",
-  "analysis_portfolio": "ポートフォリオ全体のバランス・将来見通しロードマップ・マイルストーン（7月後半のトヨタ底打ちロード、8月前半のソニー上値ブレイクロードなどタイムラインに沿って400字程度で詳細に記述。適宜HTMLハイライトタグを埋め込んでください。）",
+  "analysis_portfolio": "ポートフォリオ全体のバランス・将来見通しロードマップ・マイルストーン（X月後半のA社底打ちロード、Y月前半のB社上値ブレイクロードなどタイムラインに沿って400字程度で詳細に記述。適宜HTMLハイライトタグを埋め込んでください。）",
   "strategy_short": "今日〜今週の短期アクションプラン（300字程度で詳細に。適宜HTMLハイライトタグを埋め込んでください。）",
   "strategy_mid": "1〜3ヶ月の中期戦略・注目イベント（300字程度で詳細に。適宜HTMLハイライトタグを埋め込んでください。）"
 }}"""

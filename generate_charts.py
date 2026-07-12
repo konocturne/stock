@@ -55,14 +55,6 @@ def fetch_margin_data(code: str) -> dict:
     except Exception as e:
         print(f"[警告] {code_clean} 信用データスクレイピング失敗 (フォールバック適用): {e}")
 
-    # 特定銘柄のフォールバック (テストデータ保証用)
-    if code_clean == "7203":
-        margin_ratio = 6.2
-        margin_buy_raw = 840.0
-    elif code_clean == "6758":
-        margin_ratio = 1.4
-        margin_buy_raw = 20.0
-
     return {
         "margin_ratio": margin_ratio,
         "margin_buy_man": margin_buy_raw

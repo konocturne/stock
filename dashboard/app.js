@@ -256,6 +256,11 @@ function renderAIReport(report, today) {
     `;
     strategyLong.classList.remove('night-only'); // Show it dynamically
   }
+
+  const roadmap = document.getElementById('display-roadmap');
+  if (roadmap && report.analysis_portfolio) {
+    roadmap.innerHTML = `<li>${report.analysis_portfolio}</li>`;
+  }
 }
 
 function block(title, content) {
