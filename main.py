@@ -396,7 +396,7 @@ def update_stock_data(sheet):
                     analyst_text = (
                         f"【機関コンセンサス】平均目標: {format_currency(target_mean)}円 "
                         f"(高値: {format_currency(target_high)}円 / 安値: {format_currency(target_low)}円)\n"
-                        f"　推奨: {rec_str} / アナリスト数: {analysts_count}名\n"
+                        f" 推奨: {rec_str} / アナリスト数: {analysts_count}名\n"
                         f"【指標・リスク】ベータ値(市場連動): {beta} / 52週高値: {format_currency(w52_high)}円 / 52週安値: {format_currency(w52_low)}円"
                     )
                 else:
@@ -406,8 +406,8 @@ def update_stock_data(sheet):
                 if tech["rsi"]:
                     tech_text = (
                         f"【テクニカル】{tech['tech_signal']}\n"
-                        f"　RSI:{tech['rsi']:.1f} / MACD:{tech['macd']:.2f}(sig:{tech['macd_signal']:.2f})\n"
-                        f"　BB上:{format_currency(tech['bb_upper'])} / BB下:{format_currency(tech['bb_lower'])}"
+                        f" RSI:{tech['rsi']:.1f} / MACD:{tech['macd']:.2f}(sig:{tech['macd_signal']:.2f})\n"
+                        f" BB上:{format_currency(tech['bb_upper'])} / BB下:{format_currency(tech['bb_lower'])}"
                     )
                 else:
                     tech_text = f"【テクニカル】{tech['tech_signal']}"
@@ -420,7 +420,7 @@ def update_stock_data(sheet):
                 
                 funda_text = (
                     f"【ファンダメンタル】PER: {f'{per:.1f}' if per else '---'} / PBR: {f'{pbr:.2f}' if pbr else '---'} / 配当利回り: {f'{div_yield:.2f}' if div_yield else '---'}%\n"
-                    f"　売上成長率: {f'{rev_growth*100:.1f}%' if rev_growth else '---'} / 利益成長率: {f'{earn_growth*100:.1f}%' if earn_growth else '---'}"
+                    f" 売上成長率: {f'{rev_growth*100:.1f}%' if rev_growth else '---'} / 利益成長率: {f'{earn_growth*100:.1f}%' if earn_growth else '---'}"
                 )
 
                 technical_context[code] = f"{tech_text}\n{funda_text}\n{analyst_text}\n{pnl_text}\n【ニュース】{recent_news}"
@@ -526,77 +526,76 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
 目標株価、推奨度、損切りラインなどはAIで独自算出せず、データ内にある「機関コンセンサス」「52週安値」等の客観的な指標を優先して使用し、事実情報に基づいた分析をしてください。
 重要なルール：必ず全ての出力を自然な日本語で行うこと（英語の見出しや格付けは一切混ぜず、完全に日本語化してください）。
 
-【重要指示：テキストの装飾】
-分析テキスト（特に `valuation_commentary` や `momentum_analysis_list`, `chart_analogy_commentary`, `news_correlation_commentary`）の文中において、重要なキーワードやシグナルに対して、以下のHTMLタグを積極的に埋め込んで装飾してください：
-- 黄色蛍光ペン: `<span class="highlight-marker-yellow">重要単語</span>`
-- 緑色蛍光ペン（好材料・割安等）: `<span class="highlight-marker-green">好材料・目標</span>`
-- 赤色蛍光ペン（悪材料・損切等）: `<span class="highlight-marker-red">リスク・損切り</span>`
-- ポジティブカラー太字: `<span style="color: var(--color-positive); font-weight: 700;">ポジティブ内容</span>`
-- ネガティブカラー太字: `<span style="color: var(--color-negative); font-weight: 700;">ネガティブ内容</span>`
+【重要指示：テキストの装飾と量の削減】
+・全てのテキスト出力は極めて短く簡潔にすること。
+・説明が続く項目は、必ず箇条書き（<ul><li>...</li></ul> または <ol><li>...</li></ol>）を用いて視認性を高めること。
+・重要なキーワードには以下のHTMLタグを使用：
+  - 黄色: `<span class="highlight-marker-yellow">...</span>`
+  - 緑色: `<span class="highlight-marker-green">...</span>`
+  - 赤色: `<span class="highlight-marker-red">...</span>`
+  - ポジティブ太字: `<span style="color: var(--color-positive); font-weight: 700;">...</span>`
+  - ネガティブ太字: `<span style="color: var(--color-negative); font-weight: 700;">...</span>`
 
 【保有銘柄データ】
 {stocks_prompt_text}
 
 【出力形式】必ず次のJSON構造のみを返すこと。
 {{
-  "title": "{timing}のポートフォリオ投資戦略・日報",
+  "title": "{timing}のポートフォリオ投資戦略",
   "statusColor": "#b91c1c",
-  "alerts": ["🚨 A社が52週安値接近", "💡 B社に好材料"],
-  "market_summary": "市場全体の概況・地合いを400字程度で解説。適宜HTMLハイライトタグを埋め込んでください。",
-  "tomorrow_outlook": "明日の見通しを200字程度で。適宜HTMLハイライトタグを埋め込んでください。",
+  "alerts": ["🚨 A社安値接近", "💡 B社好材料"],
+  "market_summary": "市場概況を要点のみ100〜150字で極めて簡潔に。",
+  "tomorrow_outlook": "明日の見通しを100字程度で簡潔に。",
   "stocks": [{{
     "name": "銘柄名",
     "code": "コード",
     "price": "現在値（前日比%）",
     "sentiment": "ポジティブ/ネガティブ/ニュートラル",
-    "sentiment_reason": "感情判定の根拠",
-    "analyst_rating": "総合投資判断（必ず「維持 (HOLD)」「買い増し (BUY)」「売り (SELL)」のいずれかから選択）",
+    "sentiment_reason": "判定根拠",
+    "analyst_rating": "総合投資判断（必ず「維持 (HOLD)」「買い増し (BUY)」「売り (SELL)」のいずれか）",
     "consensus_target": 0,
-    "target_divergence_comment": "機関平均目標と現在値の乖離に対する見解",
+    "target_divergence_comment": "乖離見解",
     "stop_loss_guide": 0,
-    "risk_comment": "ベータ値や直近のボラティリティを踏まえた客観的なリスク解説",
-    "technical_detail": "RSI・MACD・BB・SMAを使った詳細テクニカル解説",
-    "news_impact": "直近ニュースの影響評価",
-    "personal_action": "保有数と取得単価(含み損益)を加味した個人へのアクション提案",
-    "comprehensive_analysis": "PERなどのファンダメンタル指標、現在値と目標株価の乖離、テクニカル指標、および関連ニュースを総合し、AIアナリストとしての見解・意見を400〜600字程度の詳細なテキストで記述してください。",
-    "one_liner": "LINEに送る超短い一言コメント（20字以内）",
+    "risk_comment": "リスク解説",
+    "technical_detail": "テクニカル解説",
+    "news_impact": "ニュース評価",
+    "personal_action": "アクション提案",
+    "comprehensive_analysis": "総合見解を短く箇条書きで。",
+    "one_liner": "一言コメント（20字以内）",
     "execution_manual": {{
-      "scenario_a": "日足終値がロスカット目安を割り込んだ場合の具体的執行指示（100-150字、HTMLタグ含む）",
-      "scenario_b": "場中の一時的節目割れや反発時の具体的執行指示（100-150字、HTMLタグ含む）",
-      "scenario_c": "指値・逆指値の具体的設定指示（100-150字、HTMLタグ含む）"
+      "scenario_a": "終値損切時の指示（短く箇条書きでHTML使用）",
+      "scenario_b": "場中反発時の指示（短く箇条書きでHTML使用）",
+      "scenario_c": "指値設定（短く箇条書きでHTML使用）"
     }},
     "valuation_rationale": {{
-      "technical": "テクニカル面の判定（「🟡 維持 (反発待ち)」「🟢 買い増し (トレンド追従)」「🔴 売り (悪化警戒)」など）とその短い分析理由（30字以内）",
-      "valuation": "バリュエーション面の判定（「🟢 買い増し (超割安)」「🟡 維持 (適正価値)」「🔴 売り (割高)」など）とその短い分析理由（30字以内）",
-      "macro_news": "ニュース・マクロ面の判定（「🔴 売り (悪化警戒)」「🟢 買い増し (好材料発生)」「🟡 維持 (中立)」など）とその短い分析理由（30字以内）"
+      "technical": "判定と理由（30字以内）",
+      "valuation": "判定と理由（30字以内）",
+      "macro_news": "判定と理由（30字以内）"
     }},
-    "valuation_commentary": "財務×テクニカルの複合分析に関する200-300字程度の解説。HTML強調タグ（highlight-marker-*など）や文字色スタイルを適切に埋め込んでください。",
+    "valuation_commentary": "財務×テクニカル分析。箇条書き(<ul><li>)を用いて要点のみ100〜150字で簡潔に。",
     "momentum_analysis_list": [
-      "出来高の変化に関する具体的な分析（出来高急増、セリングクライマックス等を50-70字で。HTMLタグ含む）",
-      "RSIの推移と買われすぎ・売られすぎの判定（50-70字で。HTMLタグ含む）",
-      "ボリバン幅の拡大・縮小とトレンドの強さ（50-70字で。HTMLタグ含む）"
+      "出来高の変化（30-50字、HTMLタグ含む）",
+      "RSI推移（30-50字、HTMLタグ含む）",
+      "ボリバン幅（30-50字、HTMLタグ含む）"
     ],
     "broker_targets": [
-      {{"broker": "野村證券", "target": 3400, "rating": "買い (継続)", "date": "2026/06/15"}},
-      {{"broker": "大和証券", "target": 3250, "rating": "強気 (継続)", "date": "2026/06/28"}},
-      {{"broker": "ゴールドマン・サックス", "target": 3100, "rating": "中立 (継続)", "date": "2026/07/02"}},
-      {{"broker": "JPモルガン証券", "target": 2950, "rating": "中立 (継続)", "date": "2026/07/08"}}
+      {{"broker": "野村證券", "target": 3400, "rating": "買い", "date": "2026/06/15"}}
     ],
-    "broker_commentary": "主要証券会社の目標株価コンセンサスに対する200字程度のアナリスト分析。SOTPモデルなどの算出根拠や目標引き下げリスクを含め、HTML強調タグやカラータグを適切に埋め込んでください。",
-    "chart_analogy_commentary": "過去の特定の年月日におけるチャート類似パターンとの類似度（％）や当時の底打ち・高値ブレイク推移、今回の優位性・アノマリーに関する200-300字程度のテクニカル分析。HTML強調タグやカラータグを適切に埋め込んでください。",
-    "news_correlation_commentary": "本日発表されたマクロニュース（金利、為替など）およびセクター競合銘柄（対象銘柄の具体的な競合他社名とコード）との相関・値動きの影響に関する200-300字程度の解説（絶対参照）。HTML強調タグやカラータグを適切に埋め込んでください。",
+    "broker_commentary": "目標株価分析。箇条書き(<ul><li>)を用いて要点のみ100〜150字で簡潔に。",
+    "chart_analogy_commentary": "チャート類似パターン分析。箇条書き(<ul><li>)を用いて要点のみ100〜150字で簡潔に。",
+    "news_correlation_commentary": "ニュース・競合銘柄相関。箇条書き(<ul><li>)を用いて要点のみ100〜150字で簡潔に。",
     "risk_catalyst_profile": {{
-      "earnings_date": "次の決算発表予定日（YYYY/MM/DD）",
-      "max_loss_var": "1日最大想定損失額の推計値と前提条件（例：-¥114,000円）",
-      "beta": "ベータ値（例：1.28）",
-      "target_timeline": "目標株価到達の想定期間（例：3ヶ月以内、6ヶ月以内など）"
+      "earnings_date": "YYYY/MM/DD",
+      "max_loss_var": "推計値",
+      "beta": "ベータ値",
+      "target_timeline": "想定期間"
     }}
   }}],
-  "analysis_market": "市場環境の詳細分析（400〜600字程度で詳細に。適宜HTMLハイライトタグを埋め込んでください。）",
-  "analysis_technical": "テクニカル総合評価・セクターローテーション・特筆すべきパターン（400〜600字程度で詳細に。適宜HTMLハイライトタグを埋め込んでください。）",
-  "analysis_portfolio": "ポートフォリオ全体のバランス・将来見通しロードマップ・マイルストーン（X月後半のA社底打ちロード、Y月前半のB社上値ブレイクロードなどタイムラインに沿って400字程度で詳細に記述。適宜HTMLハイライトタグを埋め込んでください。）",
-  "strategy_short": "今日〜今週の短期アクションプラン（300字程度で詳細に。適宜HTMLハイライトタグを埋め込んでください。）",
-  "strategy_mid": "1〜3ヶ月の中期戦略・注目イベント（300字程度で詳細に。適宜HTMLハイライトタグを埋め込んでください。）"
+  "analysis_market": "市場環境分析（要点のみ150字程度で簡潔に。）",
+  "analysis_technical": "テクニカル総合評価（要点のみ150字程度で簡潔に。）",
+  "analysis_portfolio": "ロードマップ。必ず短い箇条書き(<ul><li>)で簡潔に。",
+  "strategy_short": "短期アクションプラン。箇条書き(<ul><li>)で簡潔に。",
+  "strategy_mid": "中期戦略。箇条書き(<ul><li>)で簡潔に。"
 }}"""
 
     print(f"【2】Gemini ({GEMINI_MODEL}) で分析レポートを生成中 (本実行で1回のみ)...")
@@ -611,7 +610,7 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
                 generation_config={"response_mime_type": "application/json"}
             )
             report = json.loads(response.text)
-            save_current_state(spreadsheet, timing, report.get("strategy_content", ""))
+            save_current_state(spreadsheet, timing, report.get("strategy_short", ""))
             return report
         except Exception as e:
             err_str = str(e)

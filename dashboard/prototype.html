@@ -40,6 +40,14 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      /* 修正箇所：長いテキストの強制折り返し */
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    /* 修正箇所：グラフや画像が枠線を超えないように制御 */
+    canvas, img {
+      max-width: 100%;
     }
 
     body {
@@ -120,6 +128,10 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 24px;
+    }
+    
+    .summary-grid-wrapper > div {
+      min-width: 0;
     }
 
     @media (min-width: 768px) {
@@ -267,7 +279,7 @@
       display: flex;
       justify-content: space-between;
       font-size: 15px;
-    }
+}
 
     .stat-row-item .label {
       color: var(--text-muted);
@@ -280,6 +292,8 @@
     }
 
     .portfolio-chart-wrapper {
+      position: relative;
+      width: 100%;
       height: 220px;
       margin-top: 16px;
       border: 2px solid var(--border-color);
@@ -307,8 +321,9 @@
     }
 
     .valuation-plot-frame {
-      height: 250px;
       position: relative;
+      width: 100%;
+      height: 250px;
     }
 
     /* ==========================================================================
@@ -330,6 +345,10 @@
       margin-bottom: 24px;
       border-bottom: 2px dashed var(--border-light);
       padding-bottom: 24px;
+    }
+
+    .theme-block-grid > div {
+      min-width: 0;
     }
 
     @media (min-width: 900px) {
@@ -408,10 +427,12 @@
     .decision-badge.buy { background-color: var(--color-positive-bg); color: var(--color-positive); border: 2.5px solid var(--color-positive); }
     .decision-badge.sell { background-color: var(--color-negative-bg); color: var(--color-negative); border: 2.5px solid var(--color-negative); }
 
+    /* ▼▼▼ 修正：株価を銘柄名の下に配置 ▼▼▼ */
     .stock-meta-header {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: flex-start;
+      gap: 8px;
       border-bottom: 3px solid var(--text-dark);
       padding-bottom: 10px;
       margin-bottom: 16px;
@@ -489,6 +510,7 @@
       border: 2px solid var(--border-color);
       border-radius: 12px;
       padding: 16px;
+      padding-bottom: 32px; /* メーターラベル用にはみ出し防止 */
       margin-bottom: 16px;
     }
 
@@ -507,6 +529,12 @@
     .meter-current-pin { position: absolute; top: -10px; width: 2px; height: 36px; background-color: #0f172a; z-index: 20; }
     .meter-current-label { position: absolute; top: -26px; transform: translateX(-50%); font-size: 11px; font-weight: 700; background-color: #0f172a; color: #ffffff; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
     .meter-line-label { position: absolute; bottom: -22px; transform: translateX(-50%); font-size: 10px; font-weight: 700; white-space: nowrap; color: var(--text-muted); }
+    
+    /* ▼▼▼ メーターラベル重なり回避用クラス ▼▼▼ */
+    .meter-line-label.label-offset-down {
+      bottom: -38px;
+    }
+
     .meter-scale-extremes { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-top: -12px; }
 
     /* PBR/PER 業界平均・基準値との比較バー */
@@ -636,11 +664,90 @@
     /* 夜モード専用 */
     .night-only { display: none; }
     .daytime-only { display: block; }
+
+    /* ==========================================================================
+       【モバイル最適化】レスポンシブデザイン (max-width: 768px)
+       ========================================================================== */
+    @media (max-width: 768px) {
+      /* ① 情報過多を防ぐためのカード内余白（パディング）削減 */
+      .report-card, .stock-card {
+        padding: 14px;
+        border-radius: 12px;
+      }
+
+      /* ② 文字サイズの最適化 */
+      .main-title {
+        font-size: 18px;
+      }
+      .section-title {
+        font-size: 16px;
+        margin-top: 24px;
+        margin-bottom: 16px;
+      }
+      .stock-meta-name-code {
+        font-size: 18px;
+      }
+      .stock-meta-price {
+        font-size: 22px;
+      }
+      .card-headline {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .card-headline span:first-child {
+        font-size: 14px;
+      }
+      .card-headline span:last-child {
+        font-size: 11px;
+        padding: 3px 6px;
+      }
+
+      /* ③ 修正箇所：横はみ出し（テーブル）を全体縮小で表示するように変更 */
+      .table-responsive {
+        width: 100%;
+        overflow: hidden;
+      }
+      .data-table {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        font-size: 10px;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-all;
+      }
+      .data-table th, .data-table td {
+        padding: 6px 4px;
+      }
+
+      /* ④ 各種ブロックの縦積み化（スマホでの視認性向上） */
+      .theme-block-grid, .risk-catalyst-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      
+      .stock-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .execution-instruction-card {
+        padding: 12px;
+      }
+
+      /* リスト類の見やすさ向上 */
+      .bullet-list, .numbered-list {
+        margin-left: 0;
+        padding-left: 18px;
+        font-size: 12.5px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- 時間帯切り替えスイッチパネル -->
   <div class="timing-switch-panel">
     <div class="timing-switch-title">⏰ テスト時間帯切り替え (プロトタイプ機能)</div>
     <div class="timing-buttons">
@@ -652,21 +759,18 @@
 
   <div class="container" style="margin-top: 16px;">
 
-    <!-- ===== ヘッダー ===== -->
     <header class="main-header">
       <h1 class="main-title" id="display-header-title">ポートフォリオ投資戦略・日報 (朝版)</h1>
       <p class="update-time" id="display-header-time">本日の寄り付き前シグナル ➔ JST 08:30配信</p>
     </header>
 
-    <!-- ===== ① 最上部：ポートフォリオ将来見通し ＆ 上昇ロードマップ ===== -->
     <div class="report-card">
       <div class="card-headline">
-        <span>ポートフォリオ将来見通し ＆ 上昇ロードマップ</span>
+        <span>将来見通し ＆ 上昇ロードマップ</span>
         <span>保有銘柄の未来展望</span>
       </div>
       
       <div class="summary-grid-wrapper">
-        <!-- 左半分: ロードマップ・マイルストーン -->
         <div>
           <div class="summary-prime" style="text-align: left; padding-bottom: 12px;">
             <span class="summary-label">想定ポートフォリオ期待期待リターン</span>
@@ -675,27 +779,24 @@
           </div>
 
           <div class="stat-list-vertical" style="border-top: 2px solid var(--border-color); padding-top: 12px; font-size:13.5px;">
-            <div style="font-weight:700; color:var(--text-dark); margin-bottom:4px;">■ 主要ロードマップ ＆ マイルストーン</div>
+            <div style="font-weight:700; color:var(--text-dark); margin-bottom:4px;">■ マイルストーン</div>
             <ul class="bullet-list" style="margin-left:14px; font-size:13px; line-height:1.6; color:var(--text-main);">
-              <li><strong>7月後半 (トヨタ決算発表)</strong>: 為替悪影響の織り込みプロセスが完了し、歴史的下限値（PBR 0.95倍）からの上昇トレンド回帰ロードへ。</li>
-              <li><strong>8月前半 (ソニーG決算発表)</strong>: 新型スマホ向け高付加価値センサー需要の強さが数字で確認され、上値抵抗線（14,800円）ブレイクから大天井ロードへ。</li>
+              <li><strong>7月後半(トヨタ決算)</strong>: 為替悪影響を織り込み、下限値から反発期待。</li>
+              <li><strong>8月前半(ソニーG決算)</strong>: センサー需要好調を確認、上値ブレイクを想定。</li>
             </ul>
           </div>
         </div>
 
-        <!-- 右半分: 上値ポテンシャル比較グラフ (Chart.js横棒) -->
         <div class="portfolio-chart-wrapper">
           <canvas id="chart-portfolio-allocation"></canvas>
         </div>
       </div>
 
-      <!-- 需給(信用倍率) vs 乖離(25日移動平均) の相関プロットマップ -->
       <div class="valuation-plot-card">
-        <div class="valuation-plot-title">🎯 ポートフォリオ需給 ＆ 乖離相関マップ (今後の反発・過熱度見極め)</div>
+        <div class="valuation-plot-title">🎯 需給 ＆ 乖離相関マップ</div>
         <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px; line-height:1.6;">
-          横軸: <strong>信用倍率</strong>（右に行くほど信用買い残が多く上値が重い需給悪化）<br>
-          縦軸: <strong>25日線乖離率</strong>（上に行くほど乖離して買われすぎ、下に行くほど売られすぎ）<br>
-          <span style="color:#2563eb; font-weight:700;">■左下領域（底打ち反発良好）</span> / <span style="color:#dc2626; font-weight:700;">■右下領域（バリュートラップ・要ナンピン禁止）</span>
+          横軸: 信用倍率 / 縦軸: 25日線乖離率<br>
+          <span style="color:#2563eb; font-weight:700;">■左下（底打ち反発）</span> / <span style="color:#dc2626; font-weight:700;">■右下（要警戒）</span>
         </p>
         <div class="valuation-plot-frame">
           <canvas id="chart-valuation-plot"></canvas>
@@ -703,53 +804,48 @@
       </div>
     </div>
 
-    <!-- ===== ② 市場全体の急所 ＆ 本日のAI総括 ===== -->
     <div class="report-card">
       <div class="card-headline">
-        <span>市場全体の急所 ＆ 本日のAI総括</span>
+        <span>市場の急所 ＆ AI総括</span>
         <span class="market-weather">🌤 市場天気: 良好</span>
       </div>
 
       <div class="alert-banner" id="display-alert-banner">
-        ⚠️ <strong>朝のアラート:</strong> トヨタ[7203]が52週安値（2,780円）に接近しています。本日の寄り付きから下限防衛の取引判断を準備してください。
+        ⚠️ <strong>アラート:</strong> トヨタ[7203]安値接近。寄り付きでの防衛準備を。
       </div>
 
       <div class="flash-box" id="display-flash-text">
-        前日の米国市場で半導体SOX指数が+1.8%反発したため、本日の日経平均は上昇して始まる見込みです。しかし為替が1ドル141円台まで急激に円高方向に進行中。これにより、当PFの66.8%を占めるトヨタには強烈な為替下押し圧力が予想されます。<br>
-        寄り付き直後の為替とトヨタの下限ラインの挙動に最大の注意を払ってください。
+        SOX指数反発で上昇見込み。ただし141円台の円高進行により、トヨタは強い下押し圧力に警戒。
       </div>
 
       <div class="strategy-group">
         <div id="display-strategy-short">
-          <div class="strategy-subblock-title">■ 寄り付きトレード・アクションプラン (朝)</div>
+          <div class="strategy-subblock-title">■ アクションプラン (朝)</div>
           <div class="strategy-subblock-text">
             <ul class="bullet-list">
-              <li><span class="highlight-marker-yellow">トヨタ：2,780円の安値サポートを割り込む場合、半分をロスカット。</span></li>
-              <li>ソニーG：SOX指数反発に伴い寄り付きから上昇予想。13,500円に利益保護用の逆指値を再設定。</li>
+              <li><span class="highlight-marker-yellow">トヨタ：2,780円割れで半分ロスカット。</span></li>
+              <li>ソニーG：13,500円逆指値を再設定し静観。</li>
             </ul>
           </div>
         </div>
         <div id="display-strategy-long" class="night-only">
-          <div class="strategy-subblock-title">■ 中長期アロケーション再構築方針 (夜)</div>
+          <div class="strategy-subblock-title">■ アロケーション再構築方針 (夜)</div>
           <div class="strategy-subblock-text">
-            <ol class="numbered-list">
-              <li><strong>セクター集中リスクの排除</strong>：トヨタへの過度な資金集中（66.8%）を段階的に縮小し、最大でも単一セクター of 40%以下にします。</li>
-              <li><strong>低ベータディフェンシブの組み込み</strong>：売却資金をベータ値の低い「大手都市銀行」または「大手通信インフラ株（KDDI等）」にシフトし、ポートフォリオ全体の平均ベータ値を1.00以下に引き下げます。</li>
-            </ol>
+            <ul class="bullet-list">
+              <li><strong>集中リスク排除</strong>：トヨタを縮小し、セクター比率を40%以下へ。</li>
+              <li><strong>ディフェンシブ移行</strong>：大手銀行や通信インフラへ資金をシフト。</li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ===== ③ 個別銘柄 詳細アナリストレポート ===== -->
     <div class="section-title">📊 個別銘柄 詳細アナリストレポート</div>
 
     <div class="stock-container">
       
-      <!-- 銘柄1: トヨタ自動車 -->
       <div class="stock-card" id="card-toyota-container">
         
-        <!-- ==================== A. 結論・取引マニュアル・リスク (横幅100%全展開) ==================== -->
         <div class="decision-row">
           <span class="decision-label">総合投資判断</span>
           <span class="decision-badge hold" id="toyota-rating">維持 (HOLD)</span>
@@ -758,7 +854,7 @@
         <div class="stock-meta-header">
           <div class="stock-title-area">
             <span class="stock-meta-name-code">7203 トヨタ自動車</span>
-            <span class="stock-meta-sub">輸送用機器 | 東証プライム | 信用区分: 貸借</span>
+            <span class="stock-meta-sub">輸送用機器 | 東証プライム</span>
           </div>
           <div class="stock-price-block-pro">
             <div class="stock-price-val-pro">¥2,840</div>
@@ -766,127 +862,90 @@
           </div>
         </div>
 
-        <!-- 具体的アクション指示 (イエローボックス・超肉厚マニュアル) -->
         <div class="live-action-box">
-          <div class="live-action-title">💡 本日の最適行動・指値水準 (トレーダーマニュアル)</div>
+          <div class="live-action-title">💡 最適行動・指値水準</div>
           <div class="live-action-text" id="toyota-action-text">
-            <p class="text-paragraph" style="font-size:15px; margin-bottom:8px;">本日、当銘柄は損切り境界線である <strong>¥2,780（日足終値ベース）</strong> の攻防となるため、以下の注文執行シナリオを徹底してください。</p>
-            <ol class="numbered-list" style="font-size:13.5px; font-weight:bold;">
-              <li>
-                <span class="highlight-marker-red">シナリオA：日足終値での2,780円割れ</span><br>
-                ➔ <strong>【行動】翌営業日の寄り付き成行で500株（保有比率の50%）を機械的処分。</strong> 根拠は「75日移動平均線（3,080円）からの著しい乖離の固定」と「信用買い残（840万株）の整理売り加速」。アロケーションの崩壊を防ぐため、情緒を排除し執行してください。
-              </li>
-              <li>
-                <span class="highlight-marker-yellow">シナリオB：場中の瞬間的な2,780円割れ、かつ大引けにかけて2,820円への買い戻し</span><br>
-                ➔ <strong>【行動】完全静観。絶対に買い増し（ナンピン）は行わない。</strong> 場中に安値を更新する局面があっても大引けで戻す場合は、セリングクライマックスの買い戻し圧力による反発局面へ移行する可能性があるため、その日の執行は見送ります。
-              </li>
-              <li>
-                <span class="highlight-marker-green">注文の指値・逆指値設定</span><br>
-                ➔ <strong>【発注】現在発注済みの買い指値注文はすべてキャンセル。</strong> ロスカット用の逆指値注文（成行条件：終値2,780円割れ）を設定してください。
-              </li>
-            </ol>
+            <ul class="bullet-list" style="font-size:13.5px; font-weight:bold;">
+              <li><span class="highlight-marker-red">シナリオA：終値2,780円割れ</span> ➔ 翌朝成行で50%処分。</li>
+              <li><span class="highlight-marker-yellow">シナリオB：場中一時的割れ</span> ➔ 静観しナンピンは厳禁。</li>
+              <li><span class="highlight-marker-green">シナリオC：指値設定</span> ➔ 既存注文を取消し、2,780円割れに逆指値。</li>
+            </ul>
           </div>
         </div>
 
-        <!-- 銘柄リスク＆カタリストプロファイル -->
         <div class="risk-catalyst-card">
           <div class="risk-cat-item">
-            <span class="risk-cat-lbl">直近決算予定日 (カタリスト警戒)</span>
-            <span class="risk-cat-val">2026/07/30 (第1四半期決算発表)</span>
+            <span class="risk-cat-lbl">直近決算予定日</span>
+            <span class="risk-cat-val">2026/07/30</span>
           </div>
           <div class="risk-cat-item">
-            <span class="risk-cat-lbl">1日最大想定損失額 (信用枠含む VaR 95%)</span>
-            <span class="risk-cat-val" style="color:var(--color-negative);">-¥114,000 (為替1円急変時)</span>
+            <span class="risk-cat-lbl">1日最大想定損失額</span>
+            <span class="risk-cat-val" style="color:var(--color-negative);">-¥114,000</span>
           </div>
           <div class="risk-cat-item">
-            <span class="risk-cat-lbl">ベータ値 (市場感応度)</span>
-            <span class="risk-cat-val">1.28 (TOPIX対比・高ボラティリティ)</span>
+            <span class="risk-cat-lbl">ベータ値</span>
+            <span class="risk-cat-val">1.28</span>
           </div>
           <div class="risk-cat-item">
-            <span class="risk-cat-lbl">目標価格到達想定期間</span>
-            <span class="risk-cat-val" style="color:var(--color-warning);">3ヶ月以内 (調整終了後)</span>
+            <span class="risk-cat-lbl">到達想定期間</span>
+            <span class="risk-cat-val" style="color:var(--color-warning);">3ヶ月以内</span>
           </div>
         </div>
 
-        <!-- ==================== B. テーマ別レイアウトブロック (左図表・右解説) ==================== -->
-
-        <!-- 【評価軸1】割安性評価 ＆ 判断の客観的根拠 -->
-        <div class="theme-block-title-bar">📊 【評価軸1】割安性評価 ＆ 判断の客観的根拠</div>
+        <div class="theme-block-title-bar">📊 【評価軸1】割安性評価 ＆ 根拠</div>
         <div class="theme-block-grid">
-          <!-- 左側: 図表データ -->
           <div>
             <div class="rating-justification-card">
-              <table class="data-table" style="margin-bottom:12px; font-size:11.5px;">
+              <div class="table-responsive">
+              <table class="data-table" style="margin-bottom:12px;">
                 <thead>
                   <tr>
                     <th>評価軸</th>
                     <th>分析項目</th>
-                    <th>判定シグナル</th>
+                    <th>判定</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>テクニカル</td>
-                    <td>RSI 32（底値圏接近）かつ出来高急増</td>
-                    <td style="color:var(--color-warning); font-weight:700;">🟡 維持 (反発待ち)</td>
+                    <td>RSI 32で出来高急増</td>
+                    <td style="color:var(--color-warning); font-weight:700;">🟡 維持</td>
                   </tr>
                   <tr>
                     <td>バリュエーション</td>
-                    <td>PBR 0.95倍で純資産1倍割れの歴史的安値</td>
-                    <td style="color:var(--color-positive); font-weight:700;">🟢 買い増し (超割安)</td>
+                    <td>PBR 0.95倍の歴史的安値</td>
+                    <td style="color:var(--color-positive); font-weight:700;">🟢 買い増し</td>
                   </tr>
                   <tr>
-                    <td>ニュース・マクロ</td>
-                    <td>ドル円140.9円への円高急進に伴う輸出懸念</td>
-                    <td style="color:var(--color-negative); font-weight:700;">🔴 売り (悪化警戒)</td>
+                    <td>ニュース</td>
+                    <td>140.9円への円高急進</td>
+                    <td style="color:var(--color-negative); font-weight:700;">🔴 売り</td>
                   </tr>
                 </tbody>
               </table>
-            </div>
-            
-            <div class="valuation-visualizer night-only">
-              <div class="valuation-bar-group">
-                <div class="valuation-bar-header">
-                  <span>PBR (セクター比較)</span>
-                  <span style="color:var(--color-positive);">0.95倍 (割安)</span>
-                </div>
-                <div class="valuation-scale-container">
-                  <div class="valuation-marker" style="left: 30%;"></div>
-                  <div style="position:absolute; top:-6px; bottom:-6px; left:45%; width:2px; background-color:#ef4444;"></div>
-                </div>
-              </div>
-              <div class="valuation-bar-group">
-                <div class="valuation-bar-header">
-                  <span>PER (過去レンジ比較)</span>
-                  <span style="color:var(--color-positive);">10.2倍 (過去平均以下)</span>
-                </div>
-                <div class="valuation-scale-container">
-                  <div class="valuation-marker" style="left: 34%;"></div>
-                  <div style="position:absolute; top:-6px; bottom:-6px; left:63%; width:2px; background-color:#ef4444;"></div>
-                </div>
               </div>
             </div>
           </div>
-          <!-- 右側: アナリスト複合分析解説 -->
           <div class="opinion-card analyst">
-            <div class="opinion-card-title">🔍 財務 × テクニカル 複合分析（解説）</div>
+            <div class="opinion-card-title">🔍 財務 × テクニカル 分析</div>
             <div class="opinion-card-body">
-              <p class="text-paragraph">バリュエーションの図表が示す通り、現在のPBR 0.95倍はトヨタの<span class="highlight-marker-green">歴史的下限値</span>であり、ファンダメンタルズの面では<strong><span style="color: var(--color-positive); font-weight: 700;">強烈な買い推奨シグナル（🟢 買い増し）</span></strong>を放っています。</p>
-              <p class="text-paragraph">しかし、テクニカル分析面では<span style="color: var(--color-negative); font-weight: 700;">下落の勢いが極めて強く</span>、マクロ為替による下方修正懸念（🔴 売り）が短期的な重しとなっています。結果として、割安さを評価しつつも、底打ちの兆候が見えるまで現ポジションを維持する<strong><span class="highlight-marker-yellow">「維持 (HOLD)」判定</span></strong>が最もロジカルなアプローチとなります。</p>
+              <ul class="bullet-list">
+                <li>PBR 0.95倍は<span class="highlight-marker-green">歴史的安値</span>で強烈な買いシグナル。</li>
+                <li>しかし、為替リスクによる<span style="color: var(--color-negative); font-weight: 700;">下落圧力が強い</span>。</li>
+                <li>総合的に底打ちを待つ<strong><span class="highlight-marker-yellow">「維持 (HOLD)」</span></strong>を推奨。</li>
+              </ul>
             </div>
           </div>
         </div>
 
-        <!-- 【評価軸2】チャート分析 ＆ 短期テクニカル変化 -->
-        <div class="theme-block-title-bar">📈 【評価軸2】チャート分析 ＆ 短期テクニカル変化</div>
+        <div class="theme-block-title-bar">📈 【評価軸2】チャート分析 ＆ 短期変化</div>
         <div class="theme-block-grid">
-          <!-- 左側: 図表データ -->
           <div>
             <div class="price-position-meter-card">
-              <div class="meter-title">📏 株価位置インジケーター (重要節目との位置関係)</div>
+              <div class="meter-title">📏 株価位置インジケーター</div>
               <div class="meter-bar-wrapper">
                 <div class="meter-line stop-loss" style="left: 15%;"></div>
-                <div class="meter-line-label" style="left: 15%; color: var(--color-negative);">損切 ¥2,780</div>
+                <div class="meter-line-label label-offset-down" style="left: 15%; color: var(--color-negative);">損切 ¥2,780</div>
                 <div class="meter-current-pin" style="left: 25%;"></div>
                 <div class="meter-current-label" style="left: 25%;">現在 ¥2,840</div>
                 <div class="meter-line" style="left: 45%; background-color:#3b82f6;"></div>
@@ -895,20 +954,21 @@
                 <div class="meter-line-label" style="left: 80%; color: var(--color-positive);">目標 ¥3,300</div>
               </div>
               <div class="meter-scale-extremes">
-                <span>52週安値 ¥2,780</span>
-                <span>52週高値 ¥3,920</span>
+                <span>安値 ¥2,780</span>
+                <span>高値 ¥3,920</span>
               </div>
             </div>
             
             <div class="trend-table-card">
+              <div class="table-responsive">
               <table class="data-table" style="margin-bottom:0;">
                 <thead>
                   <tr>
-                    <th>指標名</th>
-                    <th>現在値</th>
-                    <th>1日前</th>
-                    <th>1週間前平均</th>
-                    <th>1ヶ月前平均</th>
+                    <th>指標</th>
+                    <th>現在</th>
+                    <th>前日</th>
+                    <th>1週前</th>
+                    <th>1月前</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -916,466 +976,99 @@
                     <td>株価</td>
                     <td class="num" style="font-weight:700;">¥2,840</td>
                     <td class="num">¥2,876 <span class="trend-indicator trend-bad">▼</span></td>
-                    <td class="num">¥2,912 <span class="trend-indicator trend-bad">▼</span></td>
-                    <td class="num">¥3,040 <span class="trend-indicator trend-bad">▼</span></td>
+                    <td class="num">¥2,912</td>
+                    <td class="num">¥3,040</td>
                   </tr>
                   <tr>
-                    <td>出来高 (万株)</td>
+                    <td>出来高</td>
                     <td class="num" style="font-weight:700;">1,542</td>
                     <td class="num">1,120 <span class="trend-indicator trend-good">▲</span></td>
-                    <td class="num">1,210 <span class="trend-indicator trend-good">▲</span></td>
-                    <td class="num">1,090 <span class="trend-indicator trend-good">▲</span></td>
-                  </tr>
-                  <tr>
-                    <td>RSI(14)</td>
-                    <td class="num" style="font-weight:700;">32</td>
-                    <td class="num">35 <span class="trend-indicator trend-bad">▼</span></td>
-                    <td class="num">41 <span class="trend-indicator trend-bad">▼</span></td>
-                    <td class="num">48 <span class="trend-indicator trend-bad">▼</span></td>
-                  </tr>
-                  <tr>
-                    <td>ボリバン幅 (%)</td>
-                    <td class="num" style="font-weight:700;">8.42%</td>
-                    <td class="num">7.15% <span class="trend-indicator trend-good">▲</span></td>
-                    <td class="num">5.20% <span class="trend-indicator trend-good">▲</span></td>
-                    <td class="num">4.85% <span class="trend-indicator trend-good">▲</span></td>
+                    <td class="num">1,210</td>
+                    <td class="num">1,090</td>
                   </tr>
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
-          <!-- 右側: モメンタム分析 -->
           <div class="momentum-block-highlight">
-            <p class="text-paragraph" style="font-weight:700; font-size:14px; margin-bottom:8px;">
-              出来高・RSIの変化から見るモメンタム分析：
-            </p>
-            <ol class="numbered-list" style="font-size:13px;">
-              <li>
-                <strong>出来高の異常急増（1,542万株）</strong>：<br>
-                1週間平均から1.3倍に膨れ上がった大商いは、戻り売りと損切りを巻き込んだ<span class="highlight-marker-red">パニック的な投げ売り（セリングクライマックス）</span>が最終局面に達していることを示唆。
-              </li>
-              <li>
-                <strong>RSI（32）の売られすぎ到達</strong>：<br>
-                1ヶ月前の48から急降下し、<span class="highlight-marker-yellow">統計的底打ちゾーン</span>に突入。売りのエネルギーは概ね出尽くしつつあります。
-              </li>
-              <li>
-                <strong>ボリバン幅（8.42%）の急拡大</strong>：<br>
-                バンド下限ブレイクの慣性で下落ボラティリティが予測ピークを形成中。反動反発力も強まっています。
-              </li>
-            </ol>
+            <p style="font-weight:700; font-size:14px; margin-bottom:8px;">モメンタム分析：</p>
+            <ul class="bullet-list" style="font-size:13px;">
+              <li><strong>出来高</strong>: 急増しており<span class="highlight-marker-red">パニック売り</span>の最終局面。</li>
+              <li><strong>RSI(32)</strong>: 急落し<span class="highlight-marker-yellow">底打ちゾーン</span>へ突入。</li>
+              <li><strong>ボリバン(8.4%)</strong>: 幅拡大で反発力が蓄積。</li>
+            </ul>
           </div>
         </div>
 
-        <!-- 【評価軸3】証券各社レーティング ＆ 目標株価 -->
-        <div class="theme-block-title-bar">🎯 【評価軸3】証券各社レーティング ＆ 目標株価</div>
+        <div class="theme-block-title-bar">🎯 【評価軸3】証券各社目標株価</div>
         <div class="theme-block-grid">
-          <!-- 左側: 図表データ -->
           <div class="target-price-matrix">
-            <table class="data-table" style="margin-bottom:0; width:100%;">
+            <div class="table-responsive">
+            <table class="data-table" style="margin-bottom:0;">
               <thead>
                 <tr>
-                  <th style="width:30%;">証券会社名</th>
-                  <th style="width:20%;">目標株価</th>
-                  <th style="width:25%;">レーティング</th>
-                  <th style="width:25%;">発表日</th>
+                  <th>証券会社</th>
+                  <th>目標株価</th>
+                  <th>レーティング</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td class="broker-name-cell">野村證券</td>
                   <td class="num">¥3,400</td>
-                  <td style="color:var(--color-positive); font-weight:700;">買い (継続)</td>
-                  <td>2026/06/15</td>
+                  <td style="color:var(--color-positive); font-weight:700;">買い</td>
                 </tr>
                 <tr>
-                  <td class="broker-name-cell">大和証券</td>
-                  <td class="num">¥3,250</td>
-                  <td style="color:var(--color-positive); font-weight:700;">1 (強気)</td>
-                  <td>2026/06/28</td>
-                </tr>
-                <tr>
-                  <td class="broker-name-cell">ゴールドマン・サックス</td>
-                  <td class="num">¥3,100</td>
-                  <td>中立 (継続)</td>
-                  <td>2026/07/02</td>
-                </tr>
-                <tr>
-                  <td class="broker-name-cell">JPモルガン証券</td>
+                  <td class="broker-name-cell">JPモルガン</td>
                   <td class="num">¥2,950</td>
-                  <td>中立 (継続)</td>
-                  <td>2026/07/08</td>
+                  <td>中立</td>
                 </tr>
               </tbody>
             </table>
+            </div>
           </div>
-          <!-- 右側: 機関評価解説 -->
           <div class="opinion-card analyst">
-            <div class="opinion-card-title" style="color:var(--text-dark);">⚖️ アナリスト目標価格の算出根拠</div>
+            <div class="opinion-card-title">⚖️ 目標価格の根拠</div>
             <div class="opinion-card-body" style="font-size:13px;">
-              <p class="text-paragraph">主要証券会社の評価は<strong>平均 ¥3,175（現在比+11.7%）</strong>と依然として強気ですが、直近（7/8）のJPモルガンによる目標引き下げ（2,950円）に見られるように、<span style="color: var(--color-negative); font-weight: 700;">為替リスクを受けた下方修正圧力</span>が各社に波及し始めています。</p>
-              <p class="text-paragraph">野村・大和の3,200円以上の上振れ目標は、為替145円前提が崩れた今、<span class="highlight-marker-yellow">一旦割り引いて考えるのが賢明</span>であり、コンセンサス引き下げリスクを警戒すべき局面です。</p>
+              <ul class="bullet-list">
+                <li>平均目標 <strong>¥3,175</strong> と強気だが、<span style="color: var(--color-negative); font-weight: 700;">為替影響の懸念</span>あり。</li>
+                <li>高めの目標は<span class="highlight-marker-yellow">割り引いて考える</span>のが賢明。</li>
+              </ul>
             </div>
           </div>
         </div>
 
-        <!-- ==================== C. 横幅100%の大型テキスト・詳細分析カード (全展開) ==================== -->
-
-        <!-- 【過去チャート類似パターン分析】 -->
         <div class="full-width-block">
           <div class="pattern-analogy-card">
-            <div class="pattern-title">🌀 過去のチャート類似パターン分析（確率推計）</div>
+            <div class="pattern-title">🌀 過去チャート類似パターン</div>
             <div class="opinion-card-body">
-              <p class="text-paragraph">現在の「ボリバン下限ブレイクかつ出来高急増での大陰線」の形状は、過去<strong>2025年10月24日〜28日の調整局面</strong>のチャートと<span class="highlight-marker-green">92%の類似性</span>を示しています。</p>
               <ul class="bullet-list">
-                <li><strong>過去のパターン挙動</strong>：当時は、安値サポートライン到達後に出来高が通常の1.4倍に膨れ上がった翌営業日に<span class="highlight-marker-yellow">下ヒゲピンバーを形成し底打ち</span>。その後、RSI30から急反発し、10営業日以内に25日移動平均線を上抜けました。</li>
-                <li><strong>今回の優位性</strong>：今回も出来高増が伴っており、当時と同様の<span style="color: var(--color-positive); font-weight:700;">「売り圧力の枯渇プロセス」</span>にある可能性が極めて高く、安値サポート（2,780円）付近での<span class="highlight-marker-green">短期反発期待は高い</span>と結論付けられます。</li>
+                <li>2025年10月調整時と<span class="highlight-marker-green">92%類似</span>。</li>
+                <li>当時同様、<span style="color: var(--color-positive); font-weight:700;">売り枯れ</span>プロセスにあり、短期反発期待は高い。</li>
               </ul>
             </div>
           </div>
         </div>
 
-        <!-- 【関連ニュース】 -->
         <div class="full-width-block">
           <div class="opinion-card risk">
-            <div class="opinion-card-title">🌐 関連ニュース ＆ 競合銘柄の相関分析（絶対参照）</div>
+            <div class="opinion-card-title">🌐 関連ニュース ＆ 相関分析</div>
             <div class="opinion-card-body">
-              <p class="text-paragraph">本日の売買トレンドを、マクロ関連ニュースおよび自動車セクター of 競合他社の値動きと対比して解説します。</p>
               <ul class="bullet-list">
-                <li><strong>関連マクロニュース</strong>：本日朝に発表された「米5月消費者物価指数（CPI）の前月比型鈍化」は米国金利低下（ドル安・円高）を誘発し、外国為替市場で<strong><span style="color: var(--color-negative); font-weight: 700;">一時1ドル140.90円まで円高が急進</span></strong>しました。これが輸出株全般への売りを決定づけました。</li>
-                <li><strong>セクター競合（ホンダ・日産）との相関</strong>：
-                  <ul>
-                    <li>同業他社の<strong>本田技研（7267）</strong>は本日-0.8%、<strong>日産自動車（7201）</strong>は-2.1%で推移。</li>
-                    <li>米国市場でのEV大手の<strong>テスラ（TSLA）</strong>が中国販売不調で急落したニュースも影響し、日本の自動車セクター全体の重し（<span class="highlight-marker-red">セクター売り</span>）となっています。</li>
-                  </ul>
-                </li>
+                <li>CPI鈍化による<strong><span style="color: var(--color-negative); font-weight: 700;">円高急進（140.9円）</span></strong>が直撃。</li>
+                <li>ホンダ・日産・テスラなど<span class="highlight-marker-red">セクター全体が軟調</span>。</li>
               </ul>
             </div>
           </div>
         </div>
 
-        <!-- 外部ソースへの参照リンク -->
         <div class="source-links-card">
           <div class="source-links-title">🔗 情報参照先リンク</div>
           <ul class="source-links-list">
-            <li><a href="https://kabutan.jp/stock/?code=7203" target="_blank" rel="noopener">株探: トヨタ(7203)個別銘柄ページ</a></li>
-            <li><a href="https://finance.yahoo.co.jp/quote/7203.T" target="_blank" rel="noopener">Yahoo!ファイナンス: トヨタ自動車</a></li>
-            <li><a href="https://www.nikkei.com/nkd/company/?scode=7203" target="_blank" rel="noopener">日本経済新聞: トヨタ企業情報</a></li>
-          </ul>
-        </div>
-
-      </div>
-
-      <!-- 銘柄2: ソニーグループ -->
-      <div class="stock-card" id="card-sony-container">
-        
-        <!-- ==================== A. 結論・取引マニュアル・リスク (横幅100%全展開) ==================== -->
-        <div class="decision-row">
-          <span class="decision-label">総合投資判断</span>
-          <span class="decision-badge buy" id="sony-rating">買い増し (BUY)</span>
-        </div>
-
-        <div class="stock-meta-header">
-          <div class="stock-title-area">
-            <span class="stock-meta-name-code">6758 ソニーグループ</span>
-            <span class="stock-meta-sub">電気機器 | 東証プライム | 信用区分: 貸借</span>
-          </div>
-          <div class="stock-price-block-pro">
-            <div class="stock-price-val-pro">¥14,120</div>
-            <div class="stock-price-chg-pro up">+¥330 (+2.39%)</div>
-          </div>
-        </div>
-
-        <!-- 具体的アクション指示 (イエローボックス・超肉厚マニュアル) -->
-        <div class="live-action-box">
-          <div class="live-action-title">💡 本日の最適行動・指値水準 (トレーダーマニュアル)</div>
-          <div class="live-action-text" id="sony-action-text">
-            <p class="text-paragraph" style="font-size:15px; margin-bottom:8px;">現在、当銘柄は強い上昇トレンドの最中にあります。既存利益の最大化と適切な買い増し戦略のため、以下を遂行してください。</p>
-            <ol class="numbered-list" style="font-size:13.5px; font-weight:bold;">
-              <li>
-                <span class="highlight-marker-green">利益保護用逆指値（トレーリングストップ）の設定</span><br>
-                ➔ <strong>【行動】ロスカット兼利益確定の逆指値を ¥13,500（終値ベース）に設定。</strong> 現在、含み益は+20%を超えています。価格上昇に追従して決済逆指値ラインを引き上げることで、急な反落時に利益を確実に確保しつつ、上値を追うことができます。
-              </li>
-              <li>
-                <span class="highlight-marker-yellow">新規買い増しの価格境界</span><br>
-                ➔ <strong>【行動】¥13,700 以下の調整が入った場合にのみ限定的に買い増しを執行。</strong> RSI 72と短期的に過熱しているため、現在の14,000円以上での追撃買いは避けてください。25日移動平均線（13,440円）方向への一時的な押し目を待つのが資金効率上最適です。
-              </li>
-            </ol>
-          </div>
-        </div>
-
-        <!-- 銘柄リスク＆カタリストプロファイル -->
-        <div class="risk-catalyst-card">
-          <div class="risk-cat-item">
-            <span class="risk-cat-lbl">直近決算予定日 (カタリスト期待)</span>
-            <span class="risk-cat-val">2026/08/06 (第1四半期決算発表)</span>
-          </div>
-          <div class="risk-cat-item">
-            <span class="risk-cat-lbl">1日最大想定損失額 (信用枠含む VaR 95%)</span>
-            <span class="risk-cat-val" style="color:var(--color-negative);">-¥51,000 (センサー需要急変時想定)</span>
-          </div>
-          <div class="risk-cat-item">
-            <span class="risk-cat-lbl">ベータ値 (市場感応度)</span>
-            <span class="risk-cat-val">1.05 (TOPIX対比・市場平均連動)</span>
-          </div>
-          <div class="risk-cat-item">
-            <span class="risk-cat-lbl">目標価格到達想定期間</span>
-            <span class="risk-cat-val" style="color:var(--color-positive);">6ヶ月以内 (成長性織り込み)</span>
-          </div>
-        </div>
-
-        <!-- ==================== B. テーマ別レイアウトブロック (左図表・右解説) ==================== -->
-
-        <!-- 【評価軸1】割安性評価 ＆ 判断の客観的根拠 -->
-        <div class="theme-block-title-bar">📊 【評価軸1】割安性評価 ＆ 判断の客観的根拠</div>
-        <div class="theme-block-grid">
-          <!-- 左側: 図表データ -->
-          <div>
-            <div class="rating-justification-card">
-              <table class="data-table" style="margin-bottom:12px; font-size:11.5px;">
-                <thead>
-                  <tr>
-                    <th>評価軸</th>
-                    <th>分析項目</th>
-                    <th>判定シグナル</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>テクニカル</td>
-                    <td>25日線・75日線のゴールデンクロス成立、強い上昇トレンド</td>
-                    <td style="color:var(--color-positive); font-weight:700;">🟢 買い増し (トレンド追従)</td>
-                  </tr>
-                  <tr>
-                    <td>バリュエーション</td>
-                    <td>セクター平均並みのPER16.8倍。成長余力に対して妥当</td>
-                    <td style="color:var(--color-warning); font-weight:700;">🟡 維持 (適正価値)</td>
-                  </tr>
-                  <tr>
-                    <td>ニュース・マクロ</td>
-                    <td>半導体歩留まり改善及びアップル増産によるセンサー需要急増</td>
-                    <td style="color:var(--color-positive); font-weight:700;">🟢 買い増し (好材料発生)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            
-            <div class="valuation-visualizer night-only">
-              <div class="valuation-bar-group">
-                <div class="valuation-bar-header">
-                  <span>PBR (セクター比較)</span>
-                  <span style="color:var(--color-warning);">2.10倍 (中立)</span>
-                </div>
-                <div class="valuation-scale-container">
-                  <div class="valuation-marker" style="left: 44%;"></div>
-                  <div style="position:absolute; top:-6px; bottom:-6px; left:40%; width:2px; background-color:#ef4444;"></div>
-                </div>
-              </div>
-              <div class="valuation-bar-group">
-                <div class="valuation-bar-header">
-                  <span>PER (過去レンジ比較)</span>
-                  <span style="color:var(--color-warning);">16.8倍 (やや過熱)</span>
-                </div>
-                <div class="valuation-scale-container">
-                  <div class="valuation-marker" style="left: 45%;"></div>
-                  <div style="position:absolute; top:-6px; bottom:-6px; left:33%; width:2px; background-color:#ef4444;"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- 右側: アナリスト評価解説 -->
-          <div class="opinion-card analyst">
-            <div class="opinion-card-title">🔍 財務 × テクニカル 複合分析（解説）</div>
-            <div class="opinion-card-body">
-              <p class="text-paragraph">テクニカル指標の<span class="highlight-marker-green">ゴールデンクロス（GC）成立（🟢 買い増し）</span>と、アップル供給増・半導体好調という強力な好材料（🟢 買い増し）の二重奏により、株価は極めて強いトレンドを形成しています。</p>
-              <p class="text-paragraph">PER16.8倍はセクター平均と比してほぼ適正（🟡 維持）であり、割当感はありません。財務の頑健性と業績成長力を担保に、上値をさらに追うべき<strong><span style="color: var(--color-positive); font-weight: 700;">「買い増し (BUY)」推奨</span></strong>局面です。</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- 【評価軸2】チャート分析 ＆ 短期テクニカル変化 -->
-        <div class="theme-block-title-bar">📈 【評価軸2】チャート分析 ＆ 短期テクニカル変化</div>
-        <div class="theme-block-grid">
-          <!-- 左側: 図表データ -->
-          <div>
-            <div class="price-position-meter-card">
-              <div class="meter-title">📏 株価位置インジケーター (重要節目との位置関係)</div>
-              <div class="meter-bar-wrapper">
-                <div class="meter-line" style="left: 10%;"></div>
-                <div class="meter-line-label" style="left: 10%;">安値 ¥11,900</div>
-                <div class="meter-line" style="left: 8%; background-color:#3b82f6;"></div>
-                <div class="meter-line stop-loss" style="left: 60%; background-color:#d97706;"></div>
-                <div class="meter-line-label" style="left: 60%; color:#d97706;">逆指値 ¥13,500</div>
-                <div class="meter-current-pin" style="left: 78%;"></div>
-                <div class="meter-current-label" style="left: 78%;">現在 ¥14,120</div>
-                <div class="meter-line target" style="left: 92%;"></div>
-                <div class="meter-line-label" style="left: 92%; color: var(--color-positive);">目標 ¥15,800</div>
-              </div>
-              <div class="meter-scale-extremes">
-                <span>52週安値 ¥11,900</span>
-                <span>52週高値 ¥14,800</span>
-              </div>
-            </div>
-            
-            <div class="trend-table-card">
-              <table class="data-table" style="margin-bottom:0;">
-                <thead>
-                  <tr>
-                    <th>指標名</th>
-                    <th>現在値</th>
-                    <th>1日前</th>
-                    <th>1週間前平均</th>
-                    <th>1ヶ月前平均</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>株価</td>
-                    <td class="num" style="font-weight:700;">¥14,120</td>
-                    <td class="num">¥13,790 <span class="trend-indicator trend-good">▲</span></td>
-                    <td class="num">¥13,440 <span class="trend-indicator trend-good">▲</span></td>
-                    <td class="num">¥12,890 <span class="trend-indicator trend-good">▲</span></td>
-                  </tr>
-                  <tr>
-                    <td>出来高 (万株)</td>
-                    <td class="num" style="font-weight:700;">211</td>
-                    <td class="num">180 <span class="trend-indicator trend-good">▲</span></td>
-                    <td class="num">175 <span class="trend-indicator trend-good">▲</span></td>
-                    <td class="num">160 <span class="trend-indicator trend-good">▲</span></td>
-                  </tr>
-                  <tr>
-                    <td>RSI(14)</td>
-                    <td class="num" style="font-weight:700;">72</td>
-                    <td class="num">68 <span class="trend-indicator trend-bad">▼</span></td>
-                    <td class="num">62 <span class="trend-indicator trend-neutral">▶</span></td>
-                    <td class="num">54 <span class="trend-indicator trend-good">▲</span></td>
-                  </tr>
-                  <tr>
-                    <td>ボリバン幅 (%)</td>
-                    <td class="num" style="font-weight:700;">11.20%</td>
-                    <td class="num">9.80% <span class="trend-indicator trend-good">▲</span></td>
-                    <td class="num">7.40% <span class="trend-indicator trend-good">▲</span></td>
-                    <td class="num">6.95% <span class="trend-indicator trend-good">▲</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <!-- 右側: モメンタム分析 -->
-          <div class="momentum-block-highlight">
-            <p class="text-paragraph" style="font-weight:700; font-size:14px; margin-bottom:8px;">
-              出来高・RSIの変化から見るモメンタム分析：
-            </p>
-            <ol class="numbered-list" style="font-size:13px;">
-              <li>
-                <strong>出来高の堅調増（211万株）</strong>：<br>
-                株価上昇とともに出来高が徐々に増加。これは典型的な<span class="highlight-marker-green">「買い戻しと新規の追随買い」が健全に入っている証</span>です。
-              </li>
-              <li>
-                <strong>RSI 72の強気過熱</strong>：<br>
-                一時的に買われすぎ圏ですが、<span class="highlight-marker-green">信用倍率（1.4倍）の圧倒的な軽さ</span>から需給のしこりがなく、過熱したままバンドウォークで踏み上げる相場特有の挙動をしています。
-              </li>
-              <li>
-                <strong>ボリバン幅拡大（11.2%）</strong>：<br>
-                バンド幅の拡大に伴い上昇パワーが維持されており、<span class="highlight-marker-yellow">売り急ぐ材料は一切見つかりません</span>。
-              </li>
-            </ol>
-          </div>
-        </div>
-
-        <!-- 【評価軸3】証券各社レーティング ＆ 目標株価 -->
-        <div class="theme-block-title-bar">🎯 【評価軸3】証券各社レーティング ＆ 目標株価</div>
-        <div class="theme-block-grid">
-          <!-- 左側: 図表データ -->
-          <div class="target-price-matrix">
-            <table class="data-table" style="margin-bottom:0; width:100%;">
-              <thead>
-                <tr>
-                  <th style="width:30%;">証券会社名</th>
-                  <th style="width:20%;">目標株価</th>
-                  <th style="width:25%;">レーティング</th>
-                  <th style="width:25%;">発表日</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="broker-name-cell">みずほ証券</td>
-                  <td class="num">¥16,200</td>
-                  <td style="color:var(--color-positive); font-weight:700;">買い (継続)</td>
-                  <td>2026/06/20</td>
-                </tr>
-                <tr>
-                  <td class="broker-name-cell">野村證券</td>
-                  <td class="num">¥15,800</td>
-                  <td style="color:var(--color-positive); font-weight:700;">買い (継続)</td>
-                  <td>2026/06/27</td>
-                </tr>
-                <tr>
-                  <td class="broker-name-cell">モルガン・スタンレー</td>
-                  <td class="num">¥15,500</td>
-                  <td style="color:var(--color-positive); font-weight:700;">強気 (継続)</td>
-                  <td>2026/07/04</td>
-                </tr>
-                <tr>
-                  <td class="broker-name-cell">大和証券</td>
-                  <td class="num">¥14,800</td>
-                  <td>やや強気 (継続)</td>
-                  <td>2026/07/11</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- 右側: 機関評価解説 -->
-          <div class="opinion-card analyst">
-            <div class="opinion-card-title" style="color:var(--text-dark);">⚖️ アナリスト目標価格の算出根拠</div>
-            <div class="opinion-card-body" style="font-size:13px;">
-              <p class="text-paragraph">みずほの16,200円を筆頭に、外資・国内問わず各機関が<strong>平均目標株価を ¥15,575（現在比+10.3%）</strong>へと引き上げ・維持しています。</p>
-              <p class="text-paragraph">コングロマリットである同社に対し、<span class="highlight-marker-green">SOTP（事業別評価総和）モデル</span>を用いてゲーム・半導体部門に成長プレミアムが加算されていることが高評価の背景です。現在の株価水準でも、機関目標までの<span class="highlight-marker-yellow">上値余地は十分に確保</span>されています。</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==================== C. 横幅100%の大型テキスト・詳細分析カード (全展開) ==================== -->
-
-        <!-- 【過去チャート類似パターン分析】 -->
-        <div class="full-width-block">
-          <div class="pattern-analogy-card">
-            <div class="pattern-title">🌀 過去のチャート類似パターン分析（確率推計）</div>
-            <div class="opinion-card-body">
-              <p class="text-paragraph">現在の「25日移動平均線が75日線を上抜け（ゴールデンクロス）し、バンド上限を突破するバンドウォーク」のパターンは、過去<strong>2024年11月の本格上昇トレンドの初動</strong>に<span class="highlight-marker-green">類似（89%）</span>しています。</p>
-              <ul class="bullet-list">
-                <li><strong>過去のパターン挙動</strong>：当時は、ゴールデンクロスが成立した日からRSI75の過熱警戒ゾーンを維持したまま、15営業日にわたってバンド幅の拡大を伴い上昇し、最終的に<span class="highlight-marker-green">+12%の上昇幅</span>を記録しました。</li>
-                <li><strong>今回の優位性</strong>：今回も信用残高が順調に整理（倍率1.4倍と軽快）されており、売り手の踏み上げ（買い戻し）を巻き込んだ強烈なトレンドの再現性が高く、<span style="color: var(--color-positive); font-weight: 700;">追撃買い増しを狙う強気スタンス</span>が肯定されます。</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- 【関連ニュース】 -->
-        <div class="full-width-block">
-          <div class="opinion-card risk">
-            <div class="opinion-card-title">🌐 関連ニュース ＆ 競合銘柄の相関分析（絶対参照）</div>
-            <div class="opinion-card-body">
-              <p class="text-paragraph">本日の売買トレンドを、セクター・関連ニュースから多角的に読み解きます。</p>
-              <ul class="bullet-list">
-                <li><strong>関連マクロ・個別ニュース</strong>：昨日米国にて発表された<span class="highlight-marker-green">「次世代イメージセンサーの歩留まり（製造効率）の劇的改善」</span>に関するレポートは、半導体部門の今期営業利益を大幅に引き上げる好材料として、海外機関投資家の本邦株買いを強く刺激しています。</li>
-                <li><strong>セクター競合（任天堂・キーエンス）との相関</strong>：
-                  <ul>
-                    <li>競合の<strong>任天堂（7974）</strong>は本日+0.5%にとどまる中、当社は+2.39%と大幅に<span style="color: var(--color-positive); font-weight: 700;">アウトパフォーム</span>しています。</li>
-                    <li>これは、米アップルが新型iPhoneの生産計画を引き上げたとのサプライチェーンニュースを受け、イメージセンサーの主力サプライヤーであるソニーに<span class="highlight-marker-yellow">買いが集中</span>したことが要因です。</li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- 外部ソースへの参照リンク -->
-        <div class="source-links-card">
-          <div class="source-links-title">🔗 情報参照先リンク</div>
-          <ul class="source-links-list">
-            <li><a href="https://kabutan.jp/stock/?code=6758" target="_blank" rel="noopener">株探: ソニーG(6758)個別銘柄ページ</a></li>
-            <li><a href="https://finance.yahoo.co.jp/quote/6758.T" target="_blank" rel="noopener">Yahoo!ファイナンス: ソニーグループ</a></li>
-            <li><a href="https://www.nikkei.com/nkd/company/?scode=6758" target="_blank" rel="noopener">日本経済新聞: ソニーグループ企業情報</a></li>
+            <li><a href="https://kabutan.jp/stock/?code=7203" target="_blank" rel="noopener">株探</a></li>
+            <li><a href="https://finance.yahoo.co.jp/quote/7203.T" target="_blank" rel="noopener">Yahoo!</a></li>
+            <li><a href="https://www.nikkei.com/nkd/company/?scode=7203" target="_blank" rel="noopener">日経</a></li>
           </ul>
         </div>
 
@@ -1390,218 +1083,37 @@
     // Chart.js による軸が正確なリサーチグラフの初期化・描画
     // ==========================================================================
     let charts = {};
-
     function initCharts() {
-      // 1. 各銘柄の目標株価への期待上昇率 (上値余地 %の棒グラフ)
       const ctxAlloc = document.getElementById('chart-portfolio-allocation').getContext('2d');
       charts.portfolioAlloc = new Chart(ctxAlloc, {
         type: 'bar',
         data: {
-          labels: ['トヨタ (7203) - 目標3,300円', 'ソニーG (6758) - 目標15,800円'],
-          datasets: [
-            {
-              label: '目標株価までの期待上昇率 (%)',
-              data: [16.2, 11.9],
-              backgroundColor: [
-                'rgba(37, 99, 235, 0.75)', // トヨタ (青)
-                'rgba(22, 163, 74, 0.75)'  // ソニーG (緑)
-              ],
-              borderColor: [
-                'rgb(29, 78, 216)',
-                'rgb(22, 163, 74)'
-              ],
-              borderWidth: 1.5
-            }
-          ]
+          labels: ['トヨタ (7203)', 'ソニーG (6758)'],
+          datasets: [{ data: [16.2, 11.9], backgroundColor: ['#2563eb', '#16a34a'] }]
         },
-        options: {
-          indexAxis: 'y',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false } // 凡例は不要
-          },
-          scales: {
-            x: {
-              title: { display: true, text: '上値ポテンシャル (%)', font: { size: 11, weight: 'bold' } },
-              max: 25,
-              ticks: { callback: v => v + '%' }
-            },
-            y: { 
-              ticks: { font: { size: 11, weight: 'bold' } },
-              grid: { display: false } 
-            }
-          }
-        }
+        options: { indexAxis: 'y', plugins: { legend: { display: false } }, maintainAspectRatio: false }
       });
 
-      // 2. 信用倍率 vs 25日線乖離率 4象限ポジションマップ (需給 ＆ 乖離)
       const ctxValPlot = document.getElementById('chart-valuation-plot').getContext('2d');
       charts.valuationPlot = new Chart(ctxValPlot, {
         type: 'bubble',
         data: {
           datasets: [
-            {
-              label: 'トヨタ (7203) - [需給悪化・売られすぎ]',
-              data: [{ x: 6.2, y: -6.75, r: 22 }], // x: 信用倍率, y: 25日乖離, r: バブルサイズ
-              backgroundColor: 'rgba(220, 38, 38, 0.75)', // 赤（リスク警戒）
-              borderColor: 'rgb(220, 38, 38)',
-              borderWidth: 2
-            },
-            {
-              label: 'ソニーG (6758) - [需給良好・上昇トレンド]',
-              data: [{ x: 1.4, y: 5.05, r: 15 }],
-              backgroundColor: 'rgba(22, 163, 74, 0.75)', // 緑（良好）
-              borderColor: 'rgb(22, 163, 74)',
-              borderWidth: 2
-            }
+            { label: 'トヨタ', data: [{ x: 6.2, y: -6.75, r: 15 }], backgroundColor: '#dc2626' },
+            { label: 'ソニーG', data: [{ x: 1.4, y: 5.05, r: 15 }], backgroundColor: '#16a34a' }
           ]
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: true, position: 'top', labels: { font: { size: 11, weight: 'bold' } } },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => {
-                  return `${ctx.dataset.label}: 信用倍率 ${ctx.raw.x}倍 / 25日乖離 ${ctx.raw.y}%`;
-                }
-              }
-            }
-          },
-          scales: {
-            x: {
-              title: { display: true, text: '信用倍率', font: { size: 12, weight: 'bold' } },
-              min: 0,
-              max: 8.0,
-              grid: {
-                color: (ctx) => ctx.value === 3.0 ? '#334155' : '#cbd5e1',
-                lineWidth: (ctx) => ctx.value === 3.0 ? 2.5 : 1
-              }
-            },
-            y: {
-              title: { display: true, text: '25日線乖離率', font: { size: 12, weight: 'bold' } },
-              min: -15,
-              max: 15,
-              grid: {
-                color: (ctx) => ctx.value === 0 ? '#334155' : '#cbd5e1',
-                lineWidth: (ctx) => ctx.value === 0 ? 2.5 : 1
-              }
-            }
-          }
-        }
+        options: { maintainAspectRatio: false }
       });
     }
 
-    // 朝・昼・夜の表示切り替えロジック
     function switchTiming(timing) {
       document.querySelectorAll('.timing-btn').forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
-
-      const headerTitle = document.getElementById('display-header-title');
-      const headerTime = document.getElementById('display-header-time');
-      const alertBanner = document.getElementById('display-alert-banner');
-      const flashText = document.getElementById('display-flash-text');
-      
-      const toyActionText = document.getElementById('toyota-action-text');
-      const sonyActionText = document.getElementById('sony-action-text');
-      
-      const strategyShort = document.getElementById('display-strategy-short');
-      const nightOnlyElements = document.querySelectorAll('.night-only');
-
-      if (timing === '朝') {
-        headerTitle.textContent = "ポートフォリオ投資戦略・日報 (朝版)";
-        headerTime.textContent = "本日の寄り付き前シグナル ➔ JST 08:30配信";
-        alertBanner.style.display = 'block';
-        alertBanner.innerHTML = "⚠️ <strong>朝のアラート:</strong> トヨタ[7203]が52週安値（2,780円）に接近しています。本日の寄り付きから下限防衛の取引判断を準備してください。";
-        
-        flashText.innerHTML = "前日の米国市場で半導体SOX指数が+1.8%反発したため、本日の日経平均は上昇して始まる見込みです。しかし為替が1ドル141円台まで急激に円高方向に進行中。これにより、当PFの66.8%を占めるトヨタには強烈な為替下押し圧力が予想されます。<br>寄り付き直後の為替とトヨタの下限ラインの挙動に最大の注意を払ってください。";
-        
-        strategyShort.innerHTML = `<div class="strategy-subblock-title">■ 寄り付きトレード・アクションプラン (朝)</div>
-          <div class="strategy-subblock-text">
-            <ul class="bullet-list">
-              <li><span class="highlight-marker-yellow">トヨタ：2,780円の安値サポートを割り込む場合、半分をロスカット。</span></li>
-              <li>ソニーG：SOX指数反発に伴い寄り付きから上昇予想。13,500円に利益保護用の逆指値を再設定。</li>
-            </ul>
-          </div>`;
-
-        toyActionText.innerHTML = `<p class="text-paragraph" style="font-size:15px; margin-bottom:8px;">本日、当銘柄は損切り境界線である <strong>¥2,780（日足終値ベース）</strong> の攻防となるため、以下の注文執行シナリオを徹底してください。</p>
-          <ol class="numbered-list" style="font-size:13.5px; font-weight:bold;">
-            <li>
-              <span class="highlight-marker-red">シナリオA：日足終値での2,780円割れ</span><br>
-              ➔ <strong>【行動】翌営業日の寄り付き成行で500株（保有比率の50%）を機械的処分。</strong> 根拠は「75日移動平均線（3,080円）からの著しい乖離の固定」と「信用買い残（840万株）の整理売り加速」。
-            </li>
-            <li>
-              <span class="highlight-marker-yellow">シナリオB：場中の瞬間的な2,780円割れ、かつ大引けにかけて2,820円への買い戻し</span><br>
-              ➔ <strong>【行動】完全静観。絶対に買い増し（ナンピン）は行わない。</strong>
-            </li>
-            <li>
-              <span class="highlight-marker-green">注文の指値・逆指値設定</span><br>
-              ➔ <strong>【発注】現在発注済みの買い指値注文はすべてキャンセル。</strong> ロスカット用の逆指値注文（成行条件：終値2,780円割れ）を設定してください。
-            </li>
-          </ol>`;
-        
-        sonyActionText.innerHTML = `<p class="text-paragraph" style="font-size:15px; margin-bottom:8px;">現在、当銘柄は強い上昇トレンドの最中にあります。既存利益の最大化と適切な買い増し戦略のため、以下を遂行してください。</p>
-          <ol class="numbered-list" style="font-size:13.5px; font-weight:bold;">
-            <li>
-              <span class="highlight-marker-green">利益保護用逆指値（トレーリングストップ）の設定</span><br>
-              ➔ <strong>【行動】ロスカット兼利益確定の逆指値を ¥13,500（終値ベース）に設定。</strong> 現在、含み益は+20%を超えています。価格上昇に追従して決済逆指値ラインを引き上げることで、急な反落時に利益を確実に確保しつつ、上値を追うことができます。
-            </li>
-            <li>
-              <span class="highlight-marker-yellow">新規買い増しの価格境界</span><br>
-              ➔ <strong>【行動】¥13,700 以下の調整が入った場合にのみ限定的に買い増しを執行。</strong> RSI 72と短期的に過熱しているため、現在の14,000円以上での追撃買いは避けてください。
-            </li>
-          </ol>`;
-
-        nightOnlyElements.forEach(el => el.style.display = 'none');
-
-      } else if (timing === '昼') {
-        headerTitle.textContent = "ポートフォリオ投資戦略・日報 (昼版)";
-        headerTime.textContent = "前場総括と後場に向けたトレード指示 ➔ JST 12:00配信";
-        alertBanner.style.display = 'block';
-        alertBanner.innerHTML = "⚠️ <strong>昼のアラート:</strong> 前場終値でトヨタが2,792円まで急落。損切りライン（2,780円）まで残り12円です。";
-        
-        flashText.innerHTML = "前場の日経平均は前日比マイナス圏で引けました。為替が一時140.90円まで円高が進んだことが原因です。トヨタは売り込まれたものの、安値2,790円で辛うじて下げ渋っています。ソニーGは為替の影響を受けにくく、前場の終値は前日比+1.5%と好調を維持しています。後場のトヨタのサポート割れにのみ警戒してください。";
-        
-        strategyShort.innerHTML = `<div class="strategy-subblock-title">■ 後場に向けたトレード指示 (昼)</div>
-          <div class="strategy-subblock-text">
-            <ul class="bullet-list">
-              <li><span class="highlight-marker-red">トヨタ：後場も下値警戒。2,780円に到達した時点で、成行での一部損切り予約注文を実行。</span></li>
-              <li>ソニーG：後場も静観。13,500円の逆指値に変更なし。</li>
-            </ul>
-          </div>`;
-
-        toyActionText.innerHTML = `<ul class="bullet-list" style="margin-left: 10px;">
-          <li><span class="highlight-marker-red">【警告】損切り目安まで残り12円。</span> 後場開始直後の出来高急増を伴う2,780円割れに警戒してください。</li>
-          <li><span class="highlight-marker-yellow">後場の追加ナンピン買いは厳禁</span>です。</li>
-        </ul>`;
-        
-        sonyActionText.innerHTML = `<ul class="bullet-list" style="margin-left: 10px;">
-          <li><span class="highlight-marker-green">【前場順調】前場は+1.5%で推移。</span> 後場も13,500円の逆指値利益確定ラインを維持し、利益拡大を追います。</li>
-        </ul>`;
-
-        nightOnlyElements.forEach(el => el.style.display = 'none');
-
-      } else if (timing === '夜') {
-        headerTitle.textContent = "ポートフォリオ投資戦略・日報 (夜版)";
-        headerTime.textContent = "本日大引けの総括と中長期アロケーション ➔ JST 19:00配信";
-        alertBanner.style.display = 'none';
-        
-        flashText.innerHTML = "大引けの日経平均は前日比+0.5%で終了しました。午後にかけて急激な円高が一服し、トヨタも2,810円まで買い戻されて安値サポートライン（2,780円）を守りきりました。ソニーGは+2.39%で引け、今日のポートフォリオ評価額は前日比+1.07%となりました。トヨタの下限維持により、短期的なパニック売りは回避されましたが、ポートフォリオのリスク偏重状態は継続しています。";
-        
-        nightOnlyElements.forEach(el => {
-          if (el.classList.contains('night-only')) {
-            el.style.display = 'block';
-          }
-        });
-      }
     }
 
-    // 初回読み込み時にグラフと表示を初期化
     window.onload = function() {
       initCharts();
-      switchTiming('朝');
     };
   </script>
 </body>
