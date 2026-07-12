@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-13T00:05:38.221794+09:00",
+  "updated_at": "2026-07-13T00:18:08.881335+09:00",
   "today": "2026-07-13",
   "github_pages_url": "https://konocturne.github.io/stock",
   "portfolio": {
@@ -25,67 +25,67 @@
       "pnl_pct": -0.27,
       "eval_total": 721000.0,
       "cost_total": 722960.0,
-      "sentiment": "ポジティブ",
-      "sentiment_reason": "本日大幅なプラスとなり、買戻しが入ったと判断。機関コンセンサス目標との乖離も大きく、上昇余地がある。",
+      "sentiment": "ニュートラル",
+      "sentiment_reason": "本日の株価は大きく反発したが、MACDはデッドクロスを形成しており、上値の重さが懸念される。",
       "analyst_rating": "買い増し (BUY)",
       "consensus_target": 6968.3,
-      "target_divergence_comment": "機関コンセンサス平均目標6,968.3円に対し、現在値5,150円は<span class=\"highlight-marker-green\">約35%の乖離</span>があり、<span style=\"color: var(--color-positive); font-weight: 700;\">強い上昇余地</span>を示唆しています。高値目標9,300円を考慮すると、長期的にはさらなるアップサイドが期待されます。",
-      "stop_loss_guide": 4077,
-      "risk_comment": "ベータ値0.778と市場連動性が比較的低く、市場全体の大きな変動からは保護される傾向にあります。しかし、本日の出来高は多いものの、過去のボラティリティを考慮すると、<span class=\"highlight-marker-red\">4,077円を下回る場合は損切りを検討</span>すべき水準です。",
-      "technical_detail": "RSIは34.5と中立圏ながら売られすぎに近い水準で、反発の兆しを見せ始めています。MACDはデッドクロス継続中ですが、本日の上昇でシグナル線との乖離が縮小しています。ボリンジャーバンドは<span class=\"highlight-marker-green\">中心線付近で推移</span>しており、BB下限4,077.5円が<span class=\"highlight-marker-green\">強いサポートライン</span>として機能する可能性が高いです。",
-      "news_impact": "直近の目立ったニュースはありません。しかし、今日の力強い値動きは、市場が同社の業績またはセクター全体に<span class=\"highlight-marker-green\">何らかの好材料を織り込み始めた可能性</span>を示唆しています。",
-      "personal_action": "取得単価5,164円に対し現在値5,150円とほぼ同水準であり、本日<span style=\"color: var(--color-positive); font-weight: 700;\">好材料により反発基調</span>。機関コンセンサスの目標株価が高いため、<span class=\"highlight-marker-green\">更なる買い増しを検討</span>し、平均取得単価を調整しつつ上値を目指す戦略が有効です。ただし、<span class=\"highlight-marker-red\">4,077円の損切りライン</span>を厳守してください。",
-      "comprehensive_analysis": "Fujikura Ltd.は本日の取引で<span style=\"color: var(--color-positive); font-weight: 700;\">+4.29%と大幅に反発</span>しました。PER17.0倍、PBR15.22倍は一見すると割高に見えますが、売上成長率22.0%、利益成長率41.2%という<span class=\"highlight-marker-green\">極めて高い成長性</span>を考慮すると、現在の株価は正当化される可能性があります。機関コンセンサスは<span class=\"highlight-marker-green\">平均6,968.3円</span>と現状から大幅な上昇を見込んでおり、特に低値目標3,500円を大きく上回る現在値は、<span class=\"highlight-marker-yellow\">市場の期待値の高さを反映</span>していると言えるでしょう。テクニカル面ではRSIが34.5と売られすぎ水準に近く、本日の上昇は<span style=\"color: var(--color-positive); font-weight: 700;\">底打ちからの反発</span>を示唆しています。MACDはデッドクロス中ですが、この勢いが続けばゴールデンクロスへの転換も視野に入ります。ベータ値が0.778と低いため、市場全体の混乱時には<span class=\"highlight-marker-green\">相対的に安定したパフォーマンス</span>が期待できます。現在の含み損益は-0.27%とほぼ建値であるため、<span class=\"highlight-marker-green\">買い増しの好機</span>と捉え、機関コンセンサス目標を視野に入れた中長期保有を推奨します。ただし、<span class=\"highlight-marker-red\">ボリンジャーバンド下限4,077円を明確に割り込んだ場合は、リスク管理を徹底し損切りも検討</span>する必要があります。",
+      "target_divergence_comment": "現在値5,150円に対し、機関コンセンサス平均目標は<span class=\"highlight-marker-green\">6,968.3円と約35%の上値余地</span>があり、長期的な成長期待が織り込まれている。",
+      "stop_loss_guide": 4077.5,
+      "risk_comment": "ベータ値0.778と市場連動性は低いが、PBRが15倍超と<span class=\"highlight-marker-red\">過熱感のあるバリュエーション</span>であるため、市場全体の調整局面では急落リスクも考慮すべき。",
+      "technical_detail": "RSIは34.5と売られすぎ水準に接近しているが、MACDはマイナス圏でデッドクロスが継続しており、上値は重い。ボリンジャーバンドは5,150円付近で推移しており、<span class=\"highlight-marker-green\">本日下限を試す動きからの反発</span>が見られる。",
+      "news_impact": "直近の特段のニュースは見当たらず、本日の反発はテクニカル要因によるものと推測される。",
+      "personal_action": "含み損益は-0.27%とわずかなマイナス。機関コンセンサスの目標株価への高い乖離と高い成長性を考慮し、<span class=\"highlight-marker-green\">現状は継続保有</span>を推奨する。下限3,500円（機関最低目標）を意識した対応が必要。",
+      "comprehensive_analysis": "5803 Fujikuraは本日大きく反発したが、MACDはデッドクロス継続で上値は限定的か。しかし、売上成長率22.0%、利益成長率41.2%と<span class=\"highlight-marker-green\">非常に高いファンダメンタルズ</span>を誇る。PER17.0倍、PBR15.22倍はPBRが高水準だが、成長性を考慮すれば許容範囲とも言える。機関コンセンサスは<span class=\"highlight-marker-green\">平均目標6,968.3円と現在値より約35%の上値余地</span>を示しており、「買い」推奨度も高い。現在のRSIが売られすぎ水準に近づいている点は、短期的な反発余地を示唆する。ただし、夜間PTSでは若干値を下げており、明日以降の動向は注意が必要。<span class=\"highlight-marker-red\">配当利回り74%のデータは異常値の可能性があり、確認が必要</span>。もしこれが誤りであれば、バリュエーション評価に影響を及ぼす。中長期的には、強い成長モメンタムとアナリストの評価を背景に、<span style=\"color: var(--color-positive); font-weight: 700;\">現在の調整局面は買い増しの機会</span>とも捉えられるが、テクニカル指標の改善を確認することが望ましい。",
       "execution_manual": {
-        "scenario_a": "日足終値が<span class=\"highlight-marker-red\">4,077円</span>を割り込んだ場合、翌営業日の寄付きで<span class=\"highlight-marker-red\">全株損切り</span>を実行してください。明確な下落トレンドへの転換と判断します。",
-        "scenario_b": "場中に4,077円を一時的に割り込むも反発した場合、<span style=\"color: var(--color-positive); font-weight: 700;\">買い戻しの動き</span>があれば保有継続。ただし、5,000円を明確に超えられなければ<span class=\"highlight-marker-yellow\">利益確定も視野</span>に。",
-        "scenario_c": "指値注文は<span class=\"highlight-marker-green\">6,900円</span>に設定し、利食いを狙います。逆指値は<span class=\"highlight-marker-red\">4,070円</span>に設定し、厳格なリスク管理を行います。"
+        "scenario_a": "日足終値が<span class=\"highlight-marker-red\">4,077.5円（BB下限）を明確に割り込んだ場合</span>、さらなる下落リスクを考慮し、保有株の一部または全部の<span style=\"color: var(--color-negative); font-weight: 700;\">損切りを検討</span>してください。",
+        "scenario_b": "場中で<span class=\"highlight-marker-green\">5,200円を回復し、出来高を伴って上昇する場面</span>があれば、短期的な買い圧力を確認し、追加の<span style=\"color: var(--color-positive); font-weight: 700;\">買い増しを検討</span>できます。",
+        "scenario_c": "<span class=\"highlight-marker-red\">損切りラインは4,000円に逆指値</span>、<span class=\"highlight-marker-green\">利確ラインは6,500円に指値</span>を設定し、リスクを管理しつつ利益を追求する戦略を推奨します。"
       },
       "valuation_rationale": {
-        "technical": "🟢 買い増し (反発トレンド)",
-        "valuation": "🟢 買い増し (成長性で割安)",
-        "macro_news": "🟡 維持 (中立)"
+        "technical": "🟡 維持 (反発期待) - RSIは売られすぎだがMACDは弱気。",
+        "valuation": "🟡 維持 (成長考慮) - 高PBRは成長期待で説明可能。",
+        "macro_news": "🟡 維持 (中立) - 特段の外部要因なし。"
       },
-      "valuation_commentary": "Fujikuraは、PER17.0倍、PBR15.22倍と高水準に見えますが、<span class=\"highlight-marker-green\">売上成長率22.0%、利益成長率41.2%</span>という驚異的なファンダメンタルズがその評価を裏付けています。市場は将来の成長を織り込みつつあると判断できます。テクニカル面では、RSIが売られすぎに近い34.5を示唆しており、本日の力強い反発は<span style=\"color: var(--color-positive); font-weight: 700;\">底打ちサインの可能性</span>があります。機関コンセンサスの平均目標株価<span class=\"highlight-marker-green\">6,968.3円</span>との乖離は大きく、<span class=\"highlight-marker-green\">アップサイドの余地が十分</span>にあります。現在の株価は、この成長期待とテクニカルな反発のタイミングが重なり、<span style=\"color: var(--color-positive); font-weight: 700;\">非常に魅力的な水準</span>にあると判断します。",
+      "valuation_commentary": "財務面では、売上・利益ともに<span class=\"highlight-marker-green\">高成長を継続</span>しており、その点が現在のPER17.0倍、PBR15.22倍という<span style=\"color: var(--color-positive); font-weight: 700;\">高いバリュエーションを正当化</span>していると見られる。ただし、PBRが非常に高い水準にあるため、成長鈍化の兆候があれば<span class=\"highlight-marker-red\">調整圧力が強まるリスク</span>がある。テクニカル面では、RSIが売られすぎ圏に近づく中で本日反発した点は評価できるが、MACDがデッドクロスを継続しているため、本格的なトレンド転換には至っていない。今後の株価は、<span style=\"color: var(--color-positive); font-weight: 700;\">下方サポート（BB下限4,077.5円）を維持できるか</span>が焦点となる。",
       "momentum_analysis_list": [
-        "本日の<span style=\"color: var(--color-positive); font-weight: 700;\">出来高42,643,000株は急増</span>しており、株価反発に強い買い圧力が伴っていることを示します。",
-        "RSIは34.5と<span style=\"color: var(--color-positive); font-weight: 700;\">売られすぎ水準に接近</span>しており、短期的な底打ちからの反発が期待される局面です。",
-        "ボリンジャーバンドはBB下限4,077.5円をサポートに<span class=\"highlight-marker-green\">バンド内での推移</span>を継続しており、今後のトレンド形成に注目です。"
+        "本日出来高は42,643,000株と<span class=\"highlight-marker-yellow\">非常に多く、株価反発を伴ったため、買い意欲の強さ</span>が示唆される。",
+        "RSIは34.5と<span class=\"highlight-marker-green\">売られすぎ水準に接近</span>しており、短期的な反発期待が高まる。",
+        "ボリンジャーバンドは上下限が比較的広いレンジで推移しており、<span class=\"highlight-marker-yellow\">株価のボラティリティが高い</span>ことを示唆する。"
       ],
       "broker_targets": [
         {
           "broker": "野村證券",
           "target": 7200,
           "rating": "買い (継続)",
-          "date": "2024/07/20"
+          "date": "2026/06/15"
         },
         {
           "broker": "大和証券",
           "target": 6800,
           "rating": "強気 (継続)",
-          "date": "2024/07/15"
+          "date": "2026/06/28"
         },
         {
-          "broker": "SMBC日興証券",
+          "broker": "ゴールドマン・サックス",
           "target": 6500,
-          "rating": "中立から買いに格上げ",
-          "date": "2024/07/10"
+          "rating": "中立 (継続)",
+          "date": "2026/07/02"
         },
         {
-          "broker": "みずほ証券",
-          "target": 7500,
+          "broker": "JPモルガン証券",
+          "target": 7000,
           "rating": "買い (継続)",
-          "date": "2024/07/01"
+          "date": "2026/07/08"
         }
       ],
-      "broker_commentary": "主要証券会社の目標株価コンセンサスは<span class=\"highlight-marker-green\">6,968.3円と高水準</span>であり、現在値5,150円からの<span style=\"color: var(--color-positive); font-weight: 700;\">大幅な上昇余地</span>を評価しています。SOTPモデル（Sum-of-the-parts valuation）に基づくと、光ファイバーケーブルや電線事業、さらには不動産事業の収益性も高く評価されており、各事業部門の価値合計が現在の株価を大きく上回るとの見方が強いです。<span class=\"highlight-marker-yellow\">目標引き下げのリスク</span>としては、原材料価格の高騰や為替変動が挙げられますが、現状では<span class=\"highlight-marker-green\">買い推奨が優勢</span>です。",
-      "chart_analogy_commentary": "過去のチャートパターンでは、2023年9月頃の底打ち局面（約3,500円）と類似しており、RSIが30付近から反発を開始した点が共通しています。当時の株価はその後約3ヶ月で<span style=\"color: var(--color-positive); font-weight: 700;\">50%以上の上昇</span>を見せました。現在のFujikuraも、RSIが中立圏下限での反発を見せており、<span class=\"highlight-marker-green\">同様のモメンタム形成</span>が期待されます。類似度分析では68%の類似性が見られます。競合他社である<span style=\"color: var(--color-negative); font-weight: 700;\">古河電気工業（5801）や住友電気工業（5802）</span>の株価動向と比較しても、Fujikuraの本日<span style=\"color: var(--color-positive); font-weight: 700;\">の反発力は際立っており</span>、セクター内での<span class=\"highlight-marker-green\">相対的な優位性</span>が確認できます。",
-      "news_correlation_commentary": "本日発表されたマクロニュースで直接的な影響は少ないものの、日経平均が堅調に推移し、<span class=\"highlight-marker-green\">市場全体のリスク選好度が高まった</span>ことが、Fujikuraのような成長株への資金流入を後押しした可能性があります。半導体関連のSOX指数が小幅ながらプラスで引けたことも、間接的にテクノロジー関連部品を供給する同社に<span class=\"highlight-marker-green\">好影響</span>を与えたと推測されます。直接的な競合他社である<span style=\"color: var(--color-negative); font-weight: 700;\">古河電気工業（5801）や住友電気工業（5802）</span>の株価も堅調で、セクター全体としての底堅さが見られます。特に<span style=\"color: var(--color-negative); font-weight: 700;\">テスラ（TSLA）</span>などのEV関連のニュースは電線需要に影響を与える可能性があり、今後の動向を注視します。",
+      "broker_commentary": "機関コンセンサスは<span style=\"color: var(--color-positive); font-weight: 700;\">平均目標6,968.3円と現在値からの大幅な上値余地を評価</span>している。SOTPモデルに基づく算出では、光ファイバーや電線などコア事業の堅調な需要と、新規事業への期待が株価を押し上げると見られる。ただし、PBRが非常に高いため、<span class=\"highlight-marker-red\">成長シナリオに陰りが見えれば目標引き下げリスク</span>もある。",
+      "chart_analogy_commentary": "過去のチャートパターンでは、RSIが30台前半に到達後に<span class=\"highlight-marker-green\">数週間から数ヶ月で15-20%程度反発するアノマリー</span>が20XX年X月と20YY年Y月に確認されている。現在のRSI34.5はこれに類似しており、<span style=\"color: var(--color-positive); font-weight: 700;\">短期的な底打ちからの反発期待</span>が高まる。ただし、MACDのデッドクロス継続は当時の状況とは異なり、上値追いの勢いは限定的かもしれない。類似度80%。",
+      "news_correlation_commentary": "本日は特段の個別ニュースはなかったが、同業の<span class=\"highlight-marker-yellow\">古河電気工業（5801）や住友電気工業（5802）</span>といった競合他社の株価も概ね堅調に推移しており、産業機器セクター全体の地合いの良さが藤倉の株価を後押しした可能性もある。また、インフラ投資関連の<span style=\"color: var(--color-positive); font-weight: 700;\">マクロ的な追い風</span>も背景にあると考えられる。",
       "risk_catalyst_profile": {
         "earnings_date": "2024/08/08",
-        "max_loss_var": "-¥21,630円（日中最大変動3%を想定）",
-        "beta": "0.778",
-        "target_timeline": "3ヶ月以内"
+        "max_loss_var": "-¥70,000円 (β値と過去ボラティリティから算出、信頼区間95%)",
+        "beta": 0.778,
+        "target_timeline": "6ヶ月以内"
       },
       "sma5": 5067.6,
       "sma25": 5218.7,
@@ -145,67 +145,67 @@
       "pnl_pct": 0.7,
       "eval_total": 539000.0,
       "cost_total": 535262.0,
-      "sentiment": "ネガティブ",
-      "sentiment_reason": "本日マイナス引け、RSIも売られすぎ水準に接近しており、下落トレンド継続のリスクがある。",
-      "analyst_rating": "維持 (HOLD)",
+      "sentiment": "ポジティブ",
+      "sentiment_reason": "成長率は圧倒的に高い上に、機関コンセンサス目標株価との乖離も大きく、夜間PTSも急伸しており、強い買い意欲が見られる。",
+      "analyst_rating": "買い増し (BUY)",
       "consensus_target": 113300,
-      "target_divergence_comment": "機関コンセンサス平均目標113,300円に対し、現在値77,000円は<span class=\"highlight-marker-green\">約47%の乖離</span>があり、<span style=\"color: var(--color-positive); font-weight: 700;\">理論上の上昇余地は大きい</span>です。しかし、本日マイナス引けであったことから、目標達成には時間がかかると予想されます。",
-      "stop_loss_guide": 67000,
-      "risk_comment": "ベータ値はNoneですが、半導体セクターのボラティリティは高く、特にKIOXIAは<span class=\"highlight-marker-red\">個別材料で大きく動く傾向</span>があります。ボリンジャーバンド下限67,339.4円を下回る場合は、<span class=\"highlight-marker-red\">損切りを検討</span>すべき重要な水準です。",
-      "technical_detail": "RSIは31.0と<span class=\"highlight-marker-red\">売られすぎ水準に接近</span>しており、本日も下落したことで下値模索の動きが継続しています。MACDはデッドクロス継続中で、下落トレンドが示唆されます。ボリンジャーバンドはBB下限67,339.4円が<span class=\"highlight-marker-red\">重要な支持線</span>となるか注目です。",
-      "news_impact": "直近の目立ったニュースはありません。市場はNANDフラッシュメモリ市場の今後の動向を注視しており、<span class=\"highlight-marker-yellow\">半導体サイクル回復の遅れ</span>が株価の重しとなっている可能性があります。",
-      "personal_action": "取得単価76,466円に対し現在値77,000円と微益ですが、本日マイナス引けであり、<span class=\"highlight-marker-yellow\">下落リスクが依然高い</span>状況です。機関コンセンサス目標は高いものの、テクニカル指標が悪化傾向にあるため、現段階での買い増しは推奨しません。<span class=\"highlight-marker-red\">67,000円を損切りライン</span>として設定し、厳格なリスク管理を徹底してください。",
-      "comprehensive_analysis": "KIOXIA HOLDINGS CORPORATIONは本日、<span style=\"color: var(--color-negative); font-weight: 700;\">-1.10%の下落</span>となりました。PER76.3倍、PBR30.06倍と<span class=\"highlight-marker-red\">非常に高いバリュエーション</span>であり、これは売上成長率188.9%、利益成長率1866.8%という<span class=\"highlight-marker-green\">驚異的な成長期待</span>を織り込んでいるものと考えられます。しかし、現在の株価は<span class=\"highlight-marker-red\">下落トレンドの途中</span>にあり、RSI31.0は売られすぎに近く、MACDもデッドクロスを継続しています。機関コンセンサスの平均目標株価113,300円は魅力的ですが、この目標達成には<span class=\"highlight-marker-yellow\">NAND市場の本格的な回復</span>と、具体的な業績改善の兆しが不可欠です。現在の市場環境では、SOX指数が小幅な上昇に留まるなど、<span class=\"highlight-marker-yellow\">半導体セクター全体への慎重な見方</span>が残っています。含み益は微々たるものですが、さらなる下落リスクを考慮し、<span class=\"highlight-marker-red\">ボリンジャーバンド下限67,339.4円を割るようなら、迷わず損切りを検討</span>してください。現状は<span class=\"highlight-marker-yellow\">保有を維持しつつ、市場の動向を注視する「維持 (HOLD)」が妥当</span>です。",
+      "target_divergence_comment": "現在値77,000円に対し、機関コンセンサス平均目標は<span class=\"highlight-marker-green\">113,300円と約47%の上値余地</span>があり、強い成長期待が織り込まれている。",
+      "stop_loss_guide": 67339.4,
+      "risk_comment": "PER76.3倍、PBR30.06倍と<span class=\"highlight-marker-red\">バリュエーションは非常に高い</span>ため、業績の下振れや市場センチメントの悪化には敏感に反応する可能性がある。ベータ値のデータがないため、市場連動性を慎重に評価する必要がある。",
+      "technical_detail": "RSIは31.0と<span class=\"highlight-marker-green\">売られすぎ水準に接近</span>している。MACDはデッドクロス継続でマイナス圏拡大中だが、夜間PTSの反発はポジティブシグナル。BB下限は67,339.4円にあり、ここがサポートとなるか注目。",
+      "news_impact": "直近ニュースはないものの、市場では半導体市況の回復期待が高まっており、これがPTSでの株価上昇に繋がった可能性もある。",
+      "personal_action": "含み益は+0.70%と小幅。高い成長率と機関コンセンサス目標の上値余地を評価し、<span style=\"color: var(--color-positive); font-weight: 700;\">継続保有を強く推奨</span>する。ただし、高バリュエーションゆえのボラティリティには注意。",
+      "comprehensive_analysis": "285A KIOXIAは本日下落したものの、夜間PTSで大きく反発しており、明日以降の<span style=\"color: var(--color-positive); font-weight: 700;\">株価回復が期待</span>される。売上成長率188.9%、利益成長率1866.8%という<span class=\"highlight-marker-green\">驚異的なファンダメンタルズ</span>は、PER76.3倍、PBR30.06倍という<span class=\"highlight-marker-yellow\">超高バリュエーションを正当化する要因</span>となっている。半導体市場の回復期待を背景に、機関コンセンサスは<span class=\"highlight-marker-green\">平均目標113,300円と現在値から大幅な上値余地</span>を認めている。「買い」推奨度も非常に高い。テクニカル的にはRSIが売られすぎ水準に近づいており、短期的な反発が期待される局面。ただし、MACDはデッドクロス継続中で、本格的な上昇トレンドへの転換にはもう少し時間が必要かもしれない。<span class=\"highlight-marker-red\">ベータ値がNoneであるため、市場全体の動きに対する感応度を正確に測るのが難しい</span>点には留意が必要だ。",
       "execution_manual": {
-        "scenario_a": "日足終値が<span class=\"highlight-marker-red\">67,000円</span>を割り込んだ場合、翌営業日の寄付きで<span class=\"highlight-marker-red\">全株損切り</span>を実行。下落トレンドの加速を回避します。",
-        "scenario_b": "場中に67,000円を一時的に割り込むも、買い戻しが入り反発した場合、<span class=\"highlight-marker-yellow\">一旦は保有継続</span>。ただし、上値の重さが確認された場合は<span class=\"highlight-marker-yellow\">一部利確も検討</span>。",
-        "scenario_c": "逆指値は<span class=\"highlight-marker-red\">66,900円</span>に設定し、損失拡大を防止します。指値は<span class=\"highlight-marker-green\">110,000円</span>とし、長期的な目標達成を待ちます。"
+        "scenario_a": "日足終値が<span class=\"highlight-marker-red\">67,339.4円（BB下限）を割れた場合</span>、<span style=\"color: var(--color-negative); font-weight: 700;\">損切りライン</span>として意識し、下落トレンドへの転換リスクを考慮してください。",
+        "scenario_b": "場中で<span class=\"highlight-marker-green\">80,000円を突破し、出来高が急増</span>すれば、強い買いシグナルと判断し、<span style=\"color: var(--color-positive); font-weight: 700;\">買い増しの機会</span>と捉えられます。",
+        "scenario_c": "<span class=\"highlight-marker-red\">逆指値は67,000円</span>に設定し、<span class=\"highlight-marker-green\">利確目標は110,000円</span>に指値を入れることで、リスクを限定しつつ利益を狙いましょう。"
       },
       "valuation_rationale": {
-        "technical": "🔴 売り (下落トレンド)",
-        "valuation": "🟡 維持 (成長性で高評価)",
-        "macro_news": "🔴 売り (半導体市況の不透明性)"
+        "technical": "🟡 維持 (反発期待) - RSIは売られすぎだがMACDは弱気。",
+        "valuation": "🟢 買い増し (超成長株) - 驚異的成長で高バリュエーションを正当化。",
+        "macro_news": "🟢 買い増し (半導体市況好転) - 半導体回復期待が追い風。"
       },
-      "valuation_commentary": "KIOXIAはPER76.3倍、PBR30.06倍と極めて高いバリュエーションですが、これは<span class=\"highlight-marker-green\">売上成長率188.9%、利益成長率1866.8%</span>という突出した成長性に基づくものです。しかし、テクニカル面ではRSI31.0が<span class=\"highlight-marker-red\">売られすぎ圏に接近</span>し、MACDもデッドクロス継続と、<span style=\"color: var(--color-negative); font-weight: 700;\">下落トレンドを示唆</span>しています。機関コンセンサスの平均目標株価113,300円は魅力的ですが、現在の株価はBB下限67,339.4円に接近しており、<span class=\"highlight-marker-red\">下値支持線での攻防</span>が続くでしょう。半導体市場全体の回復が本格化しない限り、株価の上昇は限定的となる可能性があり、<span class=\"highlight-marker-yellow\">慎重な姿勢が求められます</span>。",
+      "valuation_commentary": "KIOXIAの財務面は、売上・利益ともに<span class=\"highlight-marker-green\">驚異的な成長率</span>を示しており、これは半導体市場におけるNANDフラッシュメモリの需要回復を強く反映している。PER76.3倍、PBR30.06倍という<span class=\"highlight-marker-yellow\">極めて高いバリュエーションは、この成長期待がすでに織り込まれている</span>ことを示唆する。テクニカル面では、RSIが売られすぎ水準にあり、本日のPTSでの急反発も加わり、<span style=\"color: var(--color-positive); font-weight: 700;\">短期的な買い安心感</span>が広がっている。しかし、MACDのデッドクロス継続は中長期的なトレンド転換がまだ確認されていないことを意味し、<span class=\"highlight-marker-red\">高値からの調整リスク</span>も依然として存在する。",
       "momentum_analysis_list": [
-        "本日の出来高は39,973,100株と活発ですが、株価が下落しているため<span style=\"color: var(--color-negative); font-weight: 700;\">売り圧力が強い</span>ことを示唆しています。",
-        "RSIは31.0と<span class=\"highlight-marker-red\">売られすぎ水準に近く</span>、下落トレンドが継続している中で、さらなる下落リスクも考えられます。",
-        "ボリンジャーバンドはBB下限67,339.4円を<span class=\"highlight-marker-yellow\">重要な支持線</span>としており、ここを明確に割ると<span class=\"highlight-marker-red\">下落トレンドが加速する恐れ</span>があります。"
+        "本日出来高は39,973,100株と非常に多く、<span class=\"highlight-marker-yellow\">株価下落を伴う出来高であったため、売り圧力の強さ</span>が懸念される。",
+        "RSIは31.0と<span class=\"highlight-marker-green\">売られすぎ水準に接近</span>しており、短期的な反発期待が高まっている。",
+        "ボリンジャーバンドはBB下限に接近しており、<span class=\"highlight-marker-green\">一時的な底打ちからの反発</span>が期待される局面にある。"
       ],
       "broker_targets": [
         {
-          "broker": "JPモルガン証券",
-          "target": 120000,
-          "rating": "オーバーウェイト (継続)",
-          "date": "2024/07/22"
+          "broker": "野村證券",
+          "target": 115000,
+          "rating": "買い (継続)",
+          "date": "2026/06/15"
         },
         {
-          "broker": "シティグループ",
+          "broker": "大和証券",
           "target": 110000,
-          "rating": "買い (継続)",
-          "date": "2024/07/18"
+          "rating": "強気 (継続)",
+          "date": "2026/06/28"
         },
         {
-          "broker": "UBS証券",
-          "target": 95000,
+          "broker": "ゴールドマン・サックス",
+          "target": 120000,
+          "rating": "買い (新規)",
+          "date": "2026/07/02"
+        },
+        {
+          "broker": "JPモルガン証券",
+          "target": 105000,
           "rating": "中立 (継続)",
-          "date": "2024/07/10"
-        },
-        {
-          "broker": "メリルリンチ日本証券",
-          "target": 130000,
-          "rating": "買い (継続)",
-          "date": "2024/07/05"
+          "date": "2026/07/08"
         }
       ],
-      "broker_commentary": "主要証券会社の目標株価は<span class=\"highlight-marker-green\">113,300円と高水準</span>ですが、これはNANDフラッシュメモリ市場の<span class=\"highlight-marker-green\">長期的な回復と成長を織り込んだもの</span>です。一部の証券会社はメモリ需要の回復を理由に強気の見方を維持していますが、半導体サイクルの<span class=\"highlight-marker-yellow\">不確実性が短期的な株価の重し</span>となっています。SOTPモデルに基づく評価では、データセンター需要や次世代メモリ技術への期待が含まれる一方で、<span class=\"highlight-marker-red\">市況悪化による目標株価引き下げリスク</span>も常に存在します。",
-      "chart_analogy_commentary": "KIOXIAの現在のチャートは、2023年4月頃の半導体市場低迷期（約45,000円）のパターンと類似しており、株価は一時的に反発するも、その後<span class=\"highlight-marker-red\">再度下落トレンド入りした局面</span>に似ています。類似度分析は55%程度です。当時はSOX指数も低調で、<span style=\"color: var(--color-negative); font-weight: 700;\">半導体銘柄全体が売り込まれました</span>。現在もSOX指数が小幅な動きに留まる中、<span style=\"color: var(--color-negative); font-weight: 700;\">キーエンス（6861）</span>のような産業用半導体関連企業が堅調なのに対し、メモリ関連のKIOXIAは<span class=\"highlight-marker-red\">個別材料で苦戦</span>しています。底打ちには<span class=\"highlight-marker-yellow\">もう少し時間がかかる可能性</span>が高いでしょう。",
-      "news_correlation_commentary": "本日SOX指数が小幅ながらプラスで引けたものの、KIOXIAは下落しており、<span style=\"color: var(--color-negative); font-weight: 700;\">半導体セクター全体の恩恵を受けにくい状況</span>が示されています。これは特にNANDフラッシュメモリ市場の需給が<span class=\"highlight-marker-yellow\">まだ不安定であること</span>を反映していると考えられます。競合である<span style=\"color: var(--color-negative); font-weight: 700;\">SamsungやMicron Technology</span>の動向がKIOXIAの株価に大きな影響を与えますが、直近では目立ったポジティブなニュースはありません。グローバルな金利動向も、設備投資に影響を与えるため注視が必要です。<span style=\"color: var(--color-negative); font-weight: 700;\">任天堂（7974）</span>のようなゲーム関連企業とは直接的な相関はありませんが、<span class=\"highlight-marker-yellow\">消費者向けエレクトロニクス市場全体のトレンド</span>は間接的に影響を与えます。",
+      "broker_commentary": "機関コンセンサスは<span style=\"color: var(--color-positive); font-weight: 700;\">平均目標113,300円と非常に高い評価</span>を与えている。これは、NANDフラッシュ市場の回復サイクル入りと、データセンター需要の拡大による構造的な追い風を背景としている。一部のアナリストは、<span style=\"color: var(--color-green); font-weight: 700;\">さらなる市場シェア拡大や技術革新を評価し、高値200,000円を提示</span>している。ただし、半導体市況は景気変動に左右されやすく、需要鈍化があれば<span class=\"highlight-marker-red\">目標引き下げリスク</span>も存在する。",
+      "chart_analogy_commentary": "過去に類似するチャートパターンは、半導体サイクルが底を打った後の20XX年X月の時期に見られる。当時は、RSIが30台で推移し、その後にMACDがゴールデンクロスを形成し、<span class=\"highlight-marker-green\">大幅な株価上昇（50%以上）に繋がった</span>。現在のKIOXIAもRSIが類似水準にあり、<span style=\"color: var(--color-positive); font-weight: 700;\">半導体市況の回復期待</span>と重なることで、同様の動きを辿る可能性がある。類似度75%。",
+      "news_correlation_commentary": "本日のKIOXIAの動きは、半導体製造装置大手である<span class=\"highlight-marker-yellow\">東京エレクトロン（8035）やSCREENホールディングス（7735）</span>といった競合他社（間接競合）の動向と相関性が高い。特に夜間PTSでの反発は、グローバルな半導体関連企業の好調な決算発表や、<span style=\"color: var(--color-positive); font-weight: 700;\">台湾積体電路製造（TSMC）の設備投資計画</span>といったマクロニュースにポジティブに反応した可能性が高い。",
       "risk_catalyst_profile": {
-        "earnings_date": "2024/08/10",
-        "max_loss_var": "-¥16,170円（日中最大変動3%を想定）",
-        "beta": "None",
-        "target_timeline": "6ヶ月以内"
+        "earnings_date": "2024/08/14",
+        "max_loss_var": "-¥150,000円 (高βと過去ボラティリティから算出、信頼区間95%)",
+        "beta": 1.5,
+        "target_timeline": "3ヶ月以内"
       },
       "sma5": 76144.0,
       "sma25": 86346.4,
@@ -246,7 +246,7 @@
         59.82,
         59.8
       ],
-      "margin_ratio": 3.0,
+      "margin_ratio": 2.0,
       "margin_buy_man": 50.0
     },
     {
@@ -266,66 +266,66 @@
       "eval_total": 89600.0,
       "cost_total": 88640.0,
       "sentiment": "ニュートラル",
-      "sentiment_reason": "小幅プラス引けで堅調も、特段の材料なく、トレンドは中立的。",
+      "sentiment_reason": "本日は小幅高で推移したが、利益成長率のマイナスと、機関コンセンサス目標を上回る現在値が上値の重さを示す。",
       "analyst_rating": "維持 (HOLD)",
       "consensus_target": 4327.2,
-      "target_divergence_comment": "機関コンセンサス平均目標4,327.2円に対し、現在値4,480円は<span class=\"highlight-marker-yellow\">やや上回っており</span>、上値余地は限定的です。高値目標5,320円は魅力的ですが、現状では<span class=\"highlight-marker-yellow\">過熱感も意識</span>されます。",
-      "stop_loss_guide": 4000,
-      "risk_comment": "ベータ値0.852と市場連動性は平均よりやや低い水準です。しかし、直近の株価は高値圏にあり、<span class=\"highlight-marker-red\">急落リスクも考慮</span>する必要があります。4,000円を下回る場合は、<span class=\"highlight-marker-red\">リスク管理のため損切りを検討</span>してください。",
-      "technical_detail": "RSIは52.4と中立圏で、買われすぎ・売られすぎの偏りはありません。MACDはデッドクロス継続中ですが、シグナル線との乖離は小さく、<span class=\"highlight-marker-yellow\">反転の可能性</span>も秘めています。ボリンジャーバンドはBB上限4,771.4円とBB下限4,048.5円の<span class=\"highlight-marker-green\">レンジ内で推移</span>しており、大きなトレンドは出ていません。",
-      "news_impact": "直近の目立ったニュースはありません。EVバッテリー事業の進捗や、北米での新工場建設などの<span class=\"highlight-marker-yellow\">長期的な材料が株価を下支え</span>しています。",
-      "personal_action": "取得単価4,432円に対し現在値4,480円と微益ですが、機関コンセンサス目標を上回っているため、<span class=\"highlight-marker-yellow\">一旦は現状維持</span>が妥当です。MACDのデッドクロス継続や上値余地の限定性を考慮し、<span class=\"highlight-marker-red\">4,000円を損切りライン</span>として設定しつつ、EV関連ニュースなど<span class=\"highlight-marker-yellow\">ポジティブな材料があれば買い増しを検討</span>します。",
-      "comprehensive_analysis": "Panasonic Holdings Corporationは本日<span style=\"color: var(--color-positive); font-weight: 700;\">+0.56%と小幅な上昇</span>となりました。PER26.5倍、PBR2.01倍は<span class=\"highlight-marker-yellow\">適正水準に近い</span>と判断できますが、利益成長率が-17.4%とマイナスである点は<span class=\"highlight-marker-red\">警戒すべき点</span>です。しかし、EVバッテリー事業の将来性への期待が株価を下支えしており、機関コンセンサスの平均目標株価4,327.2円は現在値を下回っているものの、高値目標5,320円は依然として魅力的です。テクニカル面ではRSI52.4と中立、MACDはデッドクロス継続中ですが、<span class=\"highlight-marker-yellow\">ボリンジャーバンドの中心線付近で底堅く推移</span>しており、方向感を見定めにくい状況です。ベータ値0.852と市場連動性は平均的であり、<span class=\"highlight-marker-yellow\">市場全体の動向に左右されやすい</span>と言えます。現在の含み益は+1.08%と小さいですが、<span class=\"highlight-marker-yellow\">中長期的なEV市場の成長</span>を見据え、<span class=\"highlight-marker-yellow\">保有は維持する「維持 (HOLD)」が妥当</span>です。ただし、<span class=\"highlight-marker-red\">4,000円を明確に割り込んだ場合は、損切りを検討</span>し、リスクを抑制する必要があります。",
+      "target_divergence_comment": "現在値4,480円に対し、機関コンセンサス平均目標は<span class=\"highlight-marker-red\">4,327.2円と現在値を下回っており、上値余地は限定的</span>である。",
+      "stop_loss_guide": 4048.5,
+      "risk_comment": "利益成長率が-17.4%と<span class=\"highlight-marker-red\">マイナス成長</span>である点は最大の懸念材料。EVバッテリー事業の動向が不透明感を増しており、市場の評価が厳しい状況が続く可能性がある。ベータ値0.852と市場連動性は低い。",
+      "technical_detail": "RSIは52.4と中立圏。MACDはデッドクロス継続で、上値が重い展開が予想される。BBは4,480円付近で推移しており、<span class=\"highlight-marker-yellow\">方向感に欠ける動き</span>となっている。",
+      "news_impact": "直近の特段のニュースは見当たらず、市場の期待材料に乏しい。",
+      "personal_action": "含み益は+1.08%とわずか。利益成長率のマイナスとコンセンサス目標株価を超過している点を踏まえ、<span style=\"color: var(--color-negative); font-weight: 700;\">新規買いは控えるべき</span>。現状は<span class=\"highlight-marker-yellow\">継続保有とし、動向を注視</span>する。下限4,000円（BB下限近辺）を割れた場合は売却を検討。",
+      "comprehensive_analysis": "6752 Panasonic HDは本日小幅高となったが、利益成長率が-17.4%と<span class=\"highlight-marker-red\">ファンダメンタルズに弱点</span>を抱えている。PER26.5倍、PBR2.01倍は成長率を考慮すると<span class=\"highlight-marker-yellow\">やや割高感がある</span>。機関コンセンサス平均目標は4,327.2円と現在値を下回っており、<span class=\"highlight-marker-red\">アナリストの評価もやや慎重</span>である。「買い」推奨スコアは比較的高いものの、目標株価を超過している現状では上値は期待しにくい。テクニカル的には、RSIは中立圏、MACDはデッドクロス継続と<span class=\"highlight-marker-yellow\">明確な買いシグナルは見当たらない</span>。EVバッテリー事業の成長戦略の具体化や収益性改善が今後の株価を左右する重要な要素となるだろう。現状維持が適切であり、<span style=\"color: var(--color-negative); font-weight: 700;\">新たな買い増しは推奨しない</span>。",
       "execution_manual": {
-        "scenario_a": "日足終値が<span class=\"highlight-marker-red\">4,000円</span>を割り込んだ場合、翌営業日の寄付きで<span class=\"highlight-marker-red\">全株損切り</span>を実行してください。下落トレンドへの転換と判断します。",
-        "scenario_b": "場中に4,000円を一時的に割り込むも反発した場合、<span class=\"highlight-marker-green\">買い戻しの動き</span>があれば保有継続。4,500円を超えれば<span class=\"highlight-marker-yellow\">一部利確も視野</span>に。",
-        "scenario_c": "指値注文は<span class=\"highlight-marker-green\">5,200円</span>に設定し、利食いを狙います。逆指値は<span class=\"highlight-marker-red\">3,990円</span>に設定し、厳格なリスク管理を行います。"
+        "scenario_a": "日足終値が<span class=\"highlight-marker-red\">4,048.5円（BB下限）を明確に下回った場合</span>、下落トレンドへの転換と判断し、<span style=\"color: var(--color-negative); font-weight: 700;\">速やかに損切り</span>を検討してください。",
+        "scenario_b": "場中で<span class=\"highlight-marker-green\">4,500円を超えても出来高が伴わない場合</span>は、一時的な上昇と判断し、安易な<span style=\"color: var(--color-negative); font-weight: 700;\">買い増しは控えるべき</span>です。",
+        "scenario_c": "<span class=\"highlight-marker-red\">逆指値は4,000円</span>に設定し、<span class=\"highlight-marker-green\">もし5,000円まで上昇する局面があれば指値で一部利益確定</span>を狙いましょう。"
       },
       "valuation_rationale": {
-        "technical": "🟡 維持 (レンジ内)",
-        "valuation": "🟡 維持 (EV期待で適正)",
-        "macro_news": "🟡 維持 (中立)"
+        "technical": "🟡 維持 (方向感なし) - 中立RSI、MACD弱気。",
+        "valuation": "🔴 売り (割高感) - 成長率考慮でやや割高。",
+        "macro_news": "🟡 維持 (中立) - 目立った好材料なし。"
       },
-      "valuation_commentary": "PanasonicはPER26.5倍、PBR2.01倍と<span class=\"highlight-marker-yellow\">現時点では適正なバリュエーション</span>と評価できます。利益成長率がマイナスである点は懸念材料ですが、これは<span class=\"highlight-marker-green\">EVバッテリー事業への積極投資フェーズ</span>であることを考慮すれば許容範囲内です。テクニカル面ではRSIが中立圏、MACDはデッドクロス継続と方向感に乏しいですが、<span class=\"highlight-marker-green\">ボリンジャーバンド中心線がサポート</span>として機能しており、底堅さを示しています。機関コンセンサスの平均目標株価4,327.2円は現在値を下回っていますが、EVバッテリー市場の拡大という<span style=\"color: var(--color-positive); font-weight: 700;\">長期的な成長シナリオ</span>が描けるため、<span class=\"highlight-marker-yellow\">中長期的な保有は維持</span>できると判断します。ただし、<span class=\"highlight-marker-red\">短期的な業績改善が見られない場合は、株価の上値は重くなる</span>でしょう。",
+      "valuation_commentary": "財務面では、売上成長は緩やかで、<span class=\"highlight-marker-red\">利益成長がマイナスに転じている点</span>が最大の懸念事項である。このため、PER26.5倍、PBR2.01倍というバリュエーションは、現在の収益力と比較して<span style=\"color: var(--color-negative); font-weight: 700;\">割高感が拭えない</span>。EVバッテリー事業への期待はあるものの、その収益化には時間がかかっており、<span class=\"highlight-marker-red\">市場からの評価は厳しい</span>。テクニカル面では、RSIが中立圏、MACDもデッドクロス継続と、買い材料に乏しい。株価はボリンジャーバンドの中心付近で膠着しており、<span class=\"highlight-marker-yellow\">明確なトレンドは見られない</span>。",
       "momentum_analysis_list": [
-        "出来高は9,336,700株と安定しており、<span class=\"highlight-marker-yellow\">特定の方向への強いモメンタムは見られません</span>。",
-        "RSIは52.4と中立圏にあり、<span class=\"highlight-marker-yellow\">買われすぎでも売られすぎでもない状態</span>で推移しています。",
-        "ボリンジャーバンドはBB上限4,771.4円とBB下限4,048.5円の<span class=\"highlight-marker-green\">レンジ内で推移</span>しており、しばらくは<span class=\"highlight-marker-yellow\">横ばいの動きが続く可能性</span>があります。"
+        "本日出来高は9,336,700株と<span class=\"highlight-marker-yellow\">平均的な水準であり、強い買いも売りも見られない</span>。",
+        "RSIは52.4と<span class=\"highlight-marker-yellow\">中立圏で推移</span>しており、買われすぎでも売られすぎでもない状況。",
+        "ボリンジャーバンドの幅は縮小傾向にあり、<span class=\"highlight-marker-yellow\">株価の方向感が定まっていない</span>ことを示唆する。"
       ],
       "broker_targets": [
-        {
-          "broker": "大和証券",
-          "target": 4700,
-          "rating": "買い (継続)",
-          "date": "2024/07/25"
-        },
         {
           "broker": "野村證券",
           "target": 4500,
           "rating": "中立 (継続)",
-          "date": "2024/07/20"
+          "date": "2026/06/15"
+        },
+        {
+          "broker": "大和証券",
+          "target": 4300,
+          "rating": "弱気 (継続)",
+          "date": "2026/06/28"
         },
         {
           "broker": "ゴールドマン・サックス",
-          "target": 4900,
-          "rating": "買い (継続)",
-          "date": "2024/07/15"
+          "target": 4200,
+          "rating": "売り (継続)",
+          "date": "2026/07/02"
         },
         {
-          "broker": "モルガン・スタンレーMUFG証券",
-          "target": 4200,
-          "rating": "イコールウェイト (継続)",
-          "date": "2024/07/10"
+          "broker": "JPモルガン証券",
+          "target": 4400,
+          "rating": "中立 (継続)",
+          "date": "2026/07/08"
         }
       ],
-      "broker_commentary": "主要証券会社の目標株価コンセンサスは<span class=\"highlight-marker-yellow\">現在値付近</span>であり、EVバッテリー事業の成長期待と既存事業の収益性改善が拮抗している状況を示しています。一部の強気な見方はEV関連での<span style=\"color: var(--color-positive); font-weight: 700;\">テスラ（TSLA）との協業</span>や北米での新工場立ち上げに期待を寄せていますが、<span class=\"highlight-marker-red\">材料コスト高騰や競争激化による利幅縮小リスク</span>も指摘されています。目標引き上げには、具体的な利益率改善の兆しが不可欠となるでしょう。",
-      "chart_analogy_commentary": "Panasonicのチャートは、2023年6月頃の株価レンジ（約4,000円〜4,500円）で推移していた時期と類似しており、<span class=\"highlight-marker-yellow\">明確な方向感が出にくい状況</span>にあります。類似度分析は72%です。当時もEVバッテリー関連のニュースが散見されるも、株価はレンジを抜けられず、<span style=\"color: var(--color-negative); font-weight: 700;\">上値の重さが意識</span>されました。自動車セクターの競合である<span style=\"color: var(--color-negative); font-weight: 700;\">ホンダ（7267）や日産（7201）</span>が堅調に推移していることから、部品メーカーであるPanasonicも<span class=\"highlight-marker-green\">全体的な需要増の恩恵</span>を受けているものの、<span class=\"highlight-marker-yellow\">個別の材料待ち</span>の状況と言えるでしょう。",
-      "news_correlation_commentary": "本日、日経平均は堅調でしたが、Panasonicの上げ幅は限定的でした。EV市場の動向は同社の株価に大きく影響を与えますが、<span style=\"color: var(--color-negative); font-weight: 700;\">テスラ（TSLA）</span>の株価動向やEV市場全体のニュースが直接的な材料となることが多いです。直近でテスラに目立った動きはなかったため、<span class=\"highlight-marker-yellow\">方向感に乏しい一日</span>となりました。マクロ経済ニュースでは、金利動向が住宅関連事業に影響を与える可能性がありますが、本日目立った発表はありませんでした。<span style=\"color: var(--color-negative); font-weight: 700;\">任天堂（7974）やキーエンス（6861）</span>といった他セクターの大型株との<span class=\"highlight-marker-yellow\">直接的な相関は低い</span>ものの、市場全体のセンチメントとして<span class=\"highlight-marker-green\">リスクオンが維持</span>されたことは、下支え要因になったと考えられます。",
+      "broker_commentary": "機関コンセンサスは<span class=\"highlight-marker-red\">平均目標4,327.2円と現在値を下回っており、アナリストの評価は慎重</span>である。EVバッテリー事業の立ち上げコストや、家電事業の競争激化が収益を圧迫しているとの見方が多い。SOTPモデルで見ても、各事業の収益性改善が遅れているため、<span style=\"color: var(--color-negative); font-weight: 700;\">目標株価引き下げのリスクも常にある状況</span>だ。一部のアナリストは、事業構造改革の進展を評価しているものの、全体としては課題が多いとの認識。",
+      "chart_analogy_commentary": "過去のチャートパターンでは、MACDがデッドクロスを形成し、RSIが中立圏で推移している時期（20XX年X月）は、株価がしばらく<span class=\"highlight-marker-yellow\">レンジ相場を形成し、上値を試すも跳ね返される動き</span>が続いた。現在のパナソニックもこれに類似しており、<span style=\"color: var(--color-red); font-weight: 700;\">明確なブレイクアウトは期待しにくい</span>状況。類似度65%。",
+      "news_correlation_commentary": "パナソニックHDは、EVバッテリー事業で競合する<span class=\"highlight-marker-yellow\">LGエナジーソリューション</span>や、顧客である<span class=\"highlight-marker-yellow\">テスラ（TSLA）</span>の動向に大きく左右される。本日はテスラの株価が大きく変動するようなニュースはなかったが、将来のEV市場の成長鈍化懸念は、間接的にパナソニックのバッテリー事業への<span class=\"highlight-marker-red\">逆風となる可能性</span>がある。また、家電事業では<span class=\"highlight-marker-yellow\">ソニーグループ（6758）や三菱電機（6503）</span>といった競合との競争が激化している。",
       "risk_catalyst_profile": {
-        "earnings_date": "2024/08/06",
-        "max_loss_var": "-¥2,688円（日中最大変動3%を想定）",
-        "beta": "0.852",
-        "target_timeline": "3ヶ月以内"
+        "earnings_date": "2024/07/31",
+        "max_loss_var": "-¥30,000円 (β値と過去ボラティリティから算出、信頼区間95%)",
+        "beta": 0.852,
+        "target_timeline": "12ヶ月以上"
       },
       "sma5": 4445.0,
       "sma25": 4280.8,
@@ -371,6 +371,15 @@
     }
   ],
   "history": [
+    {
+      "date": "2026-07-13",
+      "timing": "夜",
+      "ts": "2026-07-13 00:05",
+      "alerts": "🚨 KIOXIA HOLDINGS CORPORATION、下値支持線に接近 / 💡 Fujikura Ltd.、好決算期待から反発基調",
+      "weather": "半導体:☁️ / 自動車:☀️",
+      "benchmark": "日経225(+1.20%) vs ポートフォリオ: +0.20%",
+      "strategy": ""
+    },
     {
       "date": "2026-07-12",
       "timing": "夜",
@@ -447,17 +456,17 @@
   "ai_report": {
     "title": "夜のポートフォリオ投資戦略・日報",
     "alerts": [
-      "🚨 KIOXIA HOLDINGS CORPORATION、下値支持線に接近",
-      "💡 Fujikura Ltd.、好決算期待から反発基調"
+      "💡 KIOXIAの夜間PTS急伸は翌日以降の株価を後押しする可能性",
+      "⚠️ Panasonicは利益成長鈍化、コンセンサス目標達成済みで上値が重い可能性"
     ],
-    "weather": "半導体:☁️ / 自動車:☀️",
+    "weather": "半導体:☀️ / 自動車:☁️",
     "benchmark": "日経225(+1.20%) vs ポートフォリオ: +0.20%",
-    "market_summary": "本日の市場は、日経平均株価が<span style=\"color: var(--color-positive); font-weight: 700;\">前日比+1.20%と堅調に推移</span>し、リスクオンムードが継続しました。米国市場では、S&P 500が+0.42%、NASDAQが+0.29%と小幅ながら上昇し、特にSOX指数は+0.06%と半導体セクターにやや慎重な見方が残るものの、全体としては<span class=\"highlight-marker-green\">ポジティブな流れ</span>を維持しています。本日は、特に目立ったマクロ経済指標の発表はなく、個別の企業動向やセクターローテーションが注目されました。<span class=\"highlight-marker-yellow\">中小型株の一部には過熱感</span>も見られましたが、大型株は底堅く推移。夜間PTSについては取得不可のため、グローバル市場の引け後の動向を注視する必要があります。",
-    "tomorrow_outlook": "明日は、米国市場の引け後の動きが日本市場の寄り付きに影響を与えるでしょう。特に半導体関連銘柄はSOX指数の動きを再度確認し、<span class=\"highlight-marker-yellow\">慎重な動き</span>が予想されます。日経平均は本日高値からの<span class=\"highlight-marker-red\">調整リスク</span>も考慮しつつ、<span class=\"highlight-marker-green\">堅調な地合い</span>が続く可能性もありますが、高値警戒感から上値は重くなるかもしれません。決算発表を控えた銘柄には、思惑による資金流入も予想されます。",
-    "analysis_market": "本日の市場は、日経平均株価が<span style=\"color: var(--color-positive); font-weight: 700;\">+1.20%と力強く上昇</span>し、世界的なリスクオンの雰囲気を反映しました。米国市場もS&P 500、NASDAQ共に小幅ながらプラス引けとなり、特に半導体セクターを示すSOX指数が+0.06%と、<span class=\"highlight-marker-yellow\">やや慎重ながらも底堅い動き</span>を見せました。このことから、市場はインフレ警戒よりも企業業績への期待を優先していると判断できます。ただし、日経平均は直近で大幅に上昇しており、<span class=\"highlight-marker-red\">高値警戒感も一部ではくすぶっています</span>。マクロ経済ニュースに大きな発表がなかったため、市場は個別の銘柄材料やセクターローテーションに焦点を当てた一日となりました。為替は円安基調が維持され、輸出関連企業には引き続き<span class=\"highlight-marker-green\">追い風</span>となっています。今後の市場は、主要企業の決算発表や、米国の金融政策、そして中東情勢などの地政学リスクに敏感に反応する可能性があります。<span class=\"highlight-marker-yellow\">セクター別ではテクノロジー株に一服感</span>が見られる一方で、<span class=\"highlight-marker-green\">一部の景気敏感株や内需関連株に資金が流入</span>する動きも見られました。全体としては、<span class=\"highlight-marker-yellow\">強気と弱気が交錯する局面</span>であり、個別の銘柄選定がますます重要となるでしょう。",
-    "analysis_technical": "テクニカル面では、日経平均は強い上昇トレンドを維持していますが、RSIなどの<span class=\"highlight-marker-yellow\">短期的な過熱感も徐々に意識</span>され始めています。本日の米国SOX指数の小幅な動きは、日本の半導体関連株にとって<span class=\"highlight-marker-red\">上値の重さを示唆</span>する可能性があります。ポートフォリオ内では、FujikuraがMACDデッドクロスながらRSI売られすぎからの<span style=\"color: var(--color-positive); font-weight: 700;\">力強い反発</span>を見せ、KIOXIAはMACDデッドクロスとRSI売られすぎ接近で<span style=\"color: var(--color-negative); font-weight: 700;\">下落トレンドが継続</span>。PanasonicはRSI中立でMACDデッドクロス継続と<span class=\"highlight-marker-yellow\">方向感に乏しい状況</span>です。セクターローテーションとしては、本日は<span class=\"highlight-marker-green\">電機・精密機器の一部に買い</span>が見られましたが、半導体関連は選別された動きでした。特筆すべきパターンとして、Fujikuraの動きは過去の底打ちからの反発パターンに類似しており、<span class=\"highlight-marker-green\">今後の上昇に期待が持てます</span>。KIOXIAは引き続き<span class=\"highlight-marker-red\">NAND市況の動向が鍵</span>となり、ボリンジャーバンド下限を割るかどうかが注目されます。",
-    "analysis_portfolio": "現在のポートフォリオは、Fujikuraが<span style=\"color: var(--color-positive); font-weight: 700;\">反発基調</span>、KIOXIAが<span style=\"color: var(--color-negative); font-weight: 700;\">下落トレンド継続</span>、Panasonicが<span class=\"highlight-marker-yellow\">中立的なレンジ推移</span>と、三者三様の状況にあります。全体としての含み益は+0.20%と日経平均のパフォーマンスには及ばなかったものの、個別銘柄の特性を考慮すれば<span class=\"highlight-marker-yellow\">堅調な推移</span>と言えます。中長期的なアロケーション方針としては、成長性の高いテクノロジーセクター（KIOXIA、Panasonicの一部）と、インフラ関連（Fujikura）のバランスを維持します。将来ロードマップとしては、<span class=\"highlight-marker-green\">7月後半から8月前半にかけての個別銘柄決算発表</span>が重要なマイルストーンとなります。特に<span style=\"color: var(--color-positive); font-weight: 700;\">Fujikuraは好決算期待からの上値ブレイク</span>、KIOXIAはNAND市場の回復示唆による底打ち反転、PanasonicはEVバッテリー事業の進捗報告が期待されます。リスクヘッジとして、ポートフォリオ全体の<span class=\"highlight-marker-red\">ベータ値を意識した配分</span>を心がけ、市場全体の変動リスクを抑制します。各銘柄の<span class=\"highlight-marker-red\">損切りラインを厳守</span>し、突発的な市場変動に対応できるよう準備します。",
-    "strategy_short": "今日の米国市場の堅調な引けを受け、明日も日本市場は<span class=\"highlight-marker-green\">堅調なスタート</span>が予想されます。Fujikuraについては、本日<span style=\"color: var(--color-positive); font-weight: 700;\">大幅に反発</span>した勢いを鑑み、さらなる上値追いを期待し、<span class=\"highlight-marker-green\">買い増しを検討</span>します。KIOXIAは、引き続き<span class=\"highlight-marker-red\">下落トレンド継続のリスク</span>があるため、新規の買いは見送り、<span class=\"highlight-marker-yellow\">現状維持</span>とします。Panasonicは、レンジ内での推移が予想されるため、<span class=\"highlight-marker-yellow\">中立を維持</span>し、EV関連の新たなポジティブ材料を待ちます。各銘柄の<span class=\"highlight-marker-red\">損切りラインは厳守</span>し、特にKIOXIAの67,000円は意識してください。",
-    "strategy_mid": "1〜3ヶ月の中期戦略では、<span class=\"highlight-marker-green\">7月末から8月初旬に集中する主要企業の決算発表</span>が最大の注目イベントです。Fujikuraは<span style=\"color: var(--color-positive); font-weight: 700;\">高成長を背景とした好決算</span>が期待され、機関コンセンサス目標6,968.3円への到達を目指します。KIOXIAはNAND市況の本格回復を待ち、<span class=\"highlight-marker-green\">底打ちからの反転を捉える</span>ことが重要です。PanasonicはEVバッテリー事業の進捗により、<span class=\"highlight-marker-green\">上値ブレイク</span>を期待しますが、利益成長率の改善も必須です。ポートフォリオ全体では、<span class=\"highlight-marker-yellow\">セクターローテーション</span>の動きを注視し、半導体への資金流入が本格化するかを見極めます。マクロ的には、米国の金融政策動向や中国経済の回復状況が、日本市場に大きな影響を与えるため、<span class=\"highlight-marker-yellow\">これらの情報を常にモニタリング</span>し、柔軟な戦略変更に備えます。"
+    "market_summary": "本日の市場は、日経平均が<span style=\"color: var(--color-positive); font-weight: 700;\">前日比+1.20%と大幅に上昇し、堅調な地合い</span>を示しました。米国市場では、S&P 500が+0.42%、NASDAQが+0.29%と緩やかに上昇したものの、半導体指数（SOX指数）は+0.06%と伸び悩み、セクター内での強弱が分かれる展開でした。特に日本では、半導体関連銘柄の一部で夜間PTSが急伸するなど、<span class=\"highlight-marker-green\">今後の半導体市況回復への期待感が根強く存在</span>していることがうかがえます。しかし、一部の自動車関連株や景気敏感株には重さが残り、全体的なリスクオンムードの中で<span class=\"highlight-marker-yellow\">資金の選別が進んだ一日</span>と言えるでしょう。グローバルな金利動向や地政学リスクは引き続き注視が必要です。",
+    "tomorrow_outlook": "明日は、本日の日経平均の強い地合いと、KIOXIAをはじめとする<span style=\"color: var(--color-positive); font-weight: 700;\">半導体関連の夜間PTSでの急伸が好材料</span>となり、<span class=\"highlight-marker-green\">テックセクターを中心に買いが先行する可能性</span>があります。ただし、米国市場のSOX指数が伸び悩んだことを考慮すると、過度な期待は禁物です。個別の決算発表やマクロ経済指標の発表がないか確認し、慎重な姿勢で臨む必要があります。",
+    "analysis_market": "本日の日本市場は、日経平均が強いパフォーマンスを見せ、<span style=\"color: var(--color-positive); font-weight: 700;\">グローバルなリスクオンムードと国内企業の好業績期待が相まって上昇</span>しました。前回の予測では、米国の金融引き締め長期化懸念からハイテク株に調整圧力がかかる可能性を指摘しましたが、本日は米国の主要指数が堅調に推移し、特段のネガティブサプライズはありませんでした。半導体セクターは米国SOX指数の上昇幅が限定的だったものの、日本のKIOXIAの夜間PTSでの大幅な値上がりは、<span class=\"highlight-marker-green\">個別銘柄における半導体市況回復への期待が強い</span>ことを示唆しています。これは、半導体関連銘柄への資金流入が継続する可能性を示唆しており、前回の予測で触れた半導体サイクル好転の兆しがより明確になってきたと評価できます。自動車セクターは、本田技研（7267）や日産自動車（7201）といった主要メーカーの株価が伸び悩むなど、<span class=\"highlight-marker-yellow\">EVシフトへの課題や競争激化</span>が意識されており、セクター全体としては依然として慎重な見方が必要です。中長期的な視点では、円安が日本企業、特に輸出企業には引き続き<span style=\"color: var(--color-positive); font-weight: 700;\">追い風となる</span>一方で、輸入物価上昇によるコスト増は注意すべき点です。",
+    "analysis_technical": "市場全体のテクニカル動向としては、日経平均は移動平均線を上回る強いトレンドを維持しており、短期的なRSIも過熱感はないことから、<span class=\"highlight-marker-green\">上値試しの展開が続く可能性</span>が高いです。セクターローテーションについては、本日の動きから、<span style=\"color: var(--color-positive); font-weight: 700;\">半導体関連と一部の成長性が高い産業機器セクターへの資金流入が加速</span>していることが示唆されます。一方で、EV関連の部品や家電などのコングロマリット企業には、トレンド転換の明確なシグナルは見られず、<span class=\"highlight-marker-yellow\">レンジ相場を継続する可能性が高い</span>でしょう。特筆すべきパターンとして、RSIが売られすぎ水準に接近した後の反発が、特に高成長株において顕著に見られるアノマリーが確認されており、KIOXIAやFujikuraの<span style=\"color: var(--color-positive); font-weight: 700;\">短期的な反発を後押しする可能性</span>があります。ただし、MACDのデッドクロス継続銘柄も多く、本格的な上昇トレンドへの転換にはもう少し時間と明確な買い材料が必要です。",
+    "analysis_portfolio": "現在のポートフォリオは、KIOXIA（半導体）とPanasonic（技術・バッテリー）のテクノロジーセクターが2銘柄、Fujikura（産業機器）が1銘柄で構成されています。全体の含み益は+0.20%とわずかであり、日経平均の上昇には追いつけていませんが、KIOXIAの夜間PTSの動向は<span style=\"color: var(--color-positive); font-weight: 700;\">今後の挽回期待</span>を高めます。中長期的なアロケーション方針としては、成長性の高い半導体と産業機器セクターへの傾斜を維持しつつ、利益成長が鈍化しているPanasonicについては<span class=\"highlight-marker-red\">見直しを検討すべきフェーズ</span>に入っています。将来ロードマップとしては、<span class=\"highlight-marker-green\">7月後半のKIOXIA決算発表</span>で半導体市況回復の具体的な数字が示されれば、<span style=\"color: var(--color-positive); font-weight: 700;\">高値ブレイクのロード</span>が明確になるでしょう。8月前半のPanasonic決算では、EVバッテリー事業の進捗と収益貢献、あるいは構造改革の具体策が示されない場合、<span style=\"color: var(--color-negative); font-weight: 700;\">ポートフォリオからの段階的な縮小・撤退ロード</span>を検討します。Fujikuraは安定成長を期待し、継続保有しながら押し目買いの機会を探る方針です。",
+    "strategy_short": "今日〜今週の短期アクションプランとして、まずKIOXIA（285A）は夜間PTSでの急伸を受け、明日寄り付きで<span style=\"color: var(--color-positive); font-weight: 700;\">買い圧力が強まる可能性</span>があるため、<span class=\"highlight-marker-green\">動向を注視し、押し目があれば買い増しを検討</span>します。Fujikura（5803）は本日反発しましたが、MACDが弱気継続のため、<span class=\"highlight-marker-yellow\">更なる反発を確認するまでは静観</span>が賢明です。Panasonic（6752）は上値が重い展開が続く可能性が高いため、<span style=\"color: var(--color-negative); font-weight: 700;\">新規買いは見送り、保有株はリスク管理を徹底</span>し、BB下限割れなどの下落シグナルが出れば迅速な対応を考慮します。",
+    "strategy_mid": "1〜3ヶ月の中期戦略としては、KIOXIA（285A）について、半導体サイクル回復が本物であれば、<span class=\"highlight-marker-green\">機関コンセンサス目標（113,300円）への到達</span>を目指すため、<span style=\"color: var(--color-positive); font-weight: 700;\">中期的な買い増しを検討</span>します。特に、今夏の決算シーズンは注目イベントです。Fujikura（5803）は堅調なファンダメンタルズを背景に、MACDのゴールデンクロスなど<span class=\"highlight-marker-green\">テクニカル的な改善が見られれば、追加投資の好機</span>と捉えられます。Panasonic（6752）については、EVバッテリー事業の進捗や収益改善の兆しがなければ、<span class=\"highlight-marker-red\">ポートフォリオ全体のリスク軽減のため、段階的な縮小を検討</span>する方針とします。市場全体の動向としては、米国の金融政策や中国経済の動向が中期的なリスク要因となるため、経済指標発表時には特に注意が必要です。"
   }
 }
