@@ -542,8 +542,6 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
   "title": "{timing}のポートフォリオ投資戦略・日報",
   "statusColor": "#b91c1c",
   "alerts": ["🚨 A社が52週安値接近", "💡 B社に好材料"],
-  "weather": "半導体:☀️ / 自動車:☁️",
-  "benchmark": "日経225({nikkei_change}) vs ポートフォリオ: ±X.XX%",
   "market_summary": "市場全体の概況・地合いを400字程度で解説。適宜HTMLハイライトタグを埋め込んでください。",
   "tomorrow_outlook": "明日の見通しを200字程度で。適宜HTMLハイライトタグを埋め込んでください。",
   "stocks": [{{
@@ -632,12 +630,18 @@ def generate_analysis_report(sheet, spreadsheet, timing, tech_context, market_da
 # 詳細はダッシュボードで確認できるため、LINEは通知として機能する最小限に絞る
 # ========================
 
+import re
+
+def strip_html(text):
+    if not text:
+        return ""
+    return re.sub(r'<[^>]+>', '', text)
+
 def send_to_line(data, today_str=None, dashboard_url=""):
     if not data:
         return
     url = "https://api.line.me/v2/bot/message/push"
 
-    # 感情絵文字マッピング
     s_emoji = {"ポジティブ": "📈", "ネガティブ": "📉", "ニュートラル": "➡️"}
     r_color = {
         "強気買い": "#15803d", "買い増し": "#16a34a",
@@ -645,68 +649,68 @@ def send_to_line(data, today_str=None, dashboard_url=""):
         "利確": "#ea580c", "売却": "#b91c1c",
     }
 
-    # アラート行（最大2件）
     alert_contents = []
     for a in data.get("alerts", [])[:2]:
+        clean_alert = strip_html(a)
         alert_contents.append({
-            "type": "text", "text": a,
-            "size": "sm", "wrap": True, "color": "#fca5a5",
+            "type": "text", "text": f"⚠️ {clean_alert}",
+            "size": "sm", "wrap": True, "color": "#fca5a5", "weight": "bold",
         })
 
-    # 銘柄サマリー行（1銘柄1行）
     stock_rows = []
     for s in data.get("stocks", []):
         emoji  = s_emoji.get(s.get("sentiment", "ニュートラル"), "➡️")
         rec    = s.get("analyst_rating", "データなし").split(" ")[0]
         c      = r_color.get(rec, "#94a3b8")
-        liner  = s.get("one_liner") or ""
-        tgt    = s.get("consensus_target")
-        tgt_str = f" 目標:{int(tgt):,}円" if tgt and int(tgt) > 0 else ""
+        liner  = strip_html(s.get("one_liner") or "")
+        code   = s.get("code", "")
+        name   = s.get("name", "")
+        price  = s.get("price", "")
+
         stock_rows.append({
-            "type": "box", "layout": "horizontal",
+            "type": "box", "layout": "vertical", "margin": "md",
             "contents": [
-                {"type": "text", "text": f"{emoji} {s.get('code','')}",
-                 "size": "sm", "weight": "bold", "flex": 3, "color": "#e2e8f0"},
-                {"type": "text", "text": s.get("price", ""),
-                 "size": "sm", "flex": 4, "align": "center", "wrap": True, "color": "#94a3b8"},
-                {"type": "text", "text": f"[{rec}]{tgt_str} {liner}",
-                 "size": "sm", "flex": 5, "align": "end", "wrap": True, "color": c},
+                {
+                    "type": "box", "layout": "horizontal",
+                    "contents": [
+                        {"type": "text", "text": f"{emoji} {code} {name}", "size": "sm", "weight": "bold", "color": "#e2e8f0", "flex": 7},
+                        {"type": "text", "text": f"[{rec}]", "size": "xs", "color": c, "align": "end", "flex": 3, "weight": "bold"}
+                    ]
+                },
+                {"type": "text", "text": f"価格: {price}", "size": "xs", "color": "#94a3b8", "margin": "xs"},
+                {"type": "text", "text": liner, "size": "xs", "color": "#cbd5e1", "wrap": True, "margin": "xs"}
             ]
         })
 
-    # 短期戦略（60字で切り捨て）
-    strategy_short = (data.get("strategy_short") or "")[:60]
-    if len(data.get("strategy_short") or "") > 60:
+    strategy_short = strip_html(data.get("strategy_short") or "")[:80]
+    if len(strip_html(data.get("strategy_short") or "")) > 80:
         strategy_short += "…"
 
     body_contents = []
     if alert_contents:
         body_contents.append({
             "type": "box", "layout": "vertical",
-            "backgroundColor": "#1a0a0a", "paddingAll": "sm", "cornerRadius": "sm",
+            "backgroundColor": "#2a0a0a", "paddingAll": "md", "cornerRadius": "sm",
             "contents": alert_contents,
         })
-    if data.get("benchmark"):
-        body_contents.append({
-            "type": "text",
-            "text": f"📊 {data['benchmark']}",
-            "size": "sm", "color": "#60a5fa", "wrap": True, "margin": "sm",
-        })
-    body_contents.append({"type": "separator", "margin": "sm"})
-    body_contents += stock_rows
-    body_contents.append({"type": "separator", "margin": "sm"})
+        body_contents.append({"type": "separator", "margin": "md"})
+
+    if stock_rows:
+        body_contents.extend(stock_rows)
+        body_contents.append({"type": "separator", "margin": "md"})
+
     body_contents.append({
         "type": "text",
-        "text": f"📌 {strategy_short}",
-        "size": "sm", "wrap": True, "color": "#a5b4fc", "margin": "sm",
+        "text": f"📌 アクションプラン:
+{strategy_short}",
+        "size": "sm", "wrap": True, "color": "#a5b4fc", "margin": "md",
     })
 
-    # ダッシュボードリンクボタン
     footer_contents = []
     if dashboard_url:
         footer_contents.append({
             "type": "button",
-            "action": {"type": "uri", "label": "📊 詳細レポートを見る", "uri": dashboard_url},
+            "action": {"type": "uri", "label": "📊 ダッシュボードを開く", "uri": dashboard_url},
             "style": "primary", "color": "#1d4ed8", "height": "sm",
         })
 
@@ -716,27 +720,27 @@ def send_to_line(data, today_str=None, dashboard_url=""):
             "type": "box", "layout": "vertical",
             "backgroundColor": "#0f172a", "paddingAll": "md",
             "contents": [
-                {"type": "text", "text": data.get("title", "レポート"),
+                {"type": "text", "text": strip_html(data.get("title", "レポート")),
                  "weight": "bold", "color": "#f1f5f9", "size": "md", "wrap": True},
-                {"type": "text", "text": data.get("weather", ""),
-                 "color": "#64748b", "size": "xs", "margin": "xs", "wrap": True},
             ],
         },
         "body": {
             "type": "box", "layout": "vertical",
             "spacing": "sm", "paddingAll": "md",
+            "backgroundColor": "#1e293b",
             "contents": body_contents,
         },
     }
     if footer_contents:
         bubble["footer"] = {
             "type": "box", "layout": "vertical", "paddingAll": "md",
+            "backgroundColor": "#1e293b",
             "contents": footer_contents,
         }
 
-    alt_text = data.get("title", "アナリストレポート")
+    alt_text = strip_html(data.get("title", "アナリストレポート"))
     if data.get("alerts"):
-        alt_text += " ⚠️" + data["alerts"][0][:20]
+        alt_text += " " + strip_html(data["alerts"][0])[:30]
 
     flex_message = {
         "to": LINE_USER_ID,
