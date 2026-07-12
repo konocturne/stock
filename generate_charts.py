@@ -377,6 +377,15 @@ def get_history_data(spreadsheet) -> list:
 # ========================
 
 if __name__ == "__main__":
+    # 自動実行（スケジュール / API自動キック）かつ土日の場合はスキップ
+    # 手動実行（workflow_dispatch）やローカル実行の場合は土日でも実行する
+    github_event = os.environ.get("GITHUB_EVENT_NAME", "")
+    is_automated = github_event in ("schedule", "repository_dispatch")
+    if is_automated and datetime.now(JST).weekday() >= 5:
+        print(f"=== [自動実行スキップ] 土日のため、チャート生成をスキップして終了します。 ===")
+        import sys
+        sys.exit(0)
+
     today_str     = datetime.now(JST).strftime("%Y-%m-%d")
     charts_dir    = os.path.join(OUTPUT_DIR, "charts", today_str)
     github_pages  = os.environ.get("GITHUB_PAGES_URL", "")

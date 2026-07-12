@@ -768,9 +768,12 @@ if __name__ == "__main__":
     today_str    = datetime.now(JST).strftime("%Y-%m-%d")
     now_jst      = datetime.now(JST)
 
-    # 日本時間の土曜日(5) または 日曜日(6) の場合はスキップ
-    if now_jst.weekday() >= 5:
-        print(f"=== [スキップ] {today_str} ({now_jst.strftime('%A')}) は土日のため、処理を実行せず早期終了します。 ===")
+    # 自動実行（スケジュール / API自動キック）かつ土日の場合はスキップ
+    # 手動実行（workflow_dispatch）やローカル実行の場合は土日でも実行する
+    github_event = os.environ.get("GITHUB_EVENT_NAME", "")
+    is_automated = github_event in ("schedule", "repository_dispatch")
+    if is_automated and now_jst.weekday() >= 5:
+        print(f"=== [自動実行スキップ] {today_str} ({now_jst.strftime('%A')}) は土日のため、処理を実行せず早期終了します。 ===")
         import sys
         sys.exit(0)
 

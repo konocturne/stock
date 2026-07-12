@@ -194,6 +194,15 @@ def save_alert_history(alert_sheet, today_str, alerts):
 # ========================
 
 if __name__ == "__main__":
+    # 自動実行（スケジュール / API自動キック）かつ土日の場合はスキップ
+    # 手動実行（workflow_dispatch）やローカル実行の場合は土日でも実行する
+    github_event = os.environ.get("GITHUB_EVENT_NAME", "")
+    is_automated = github_event in ("schedule", "repository_dispatch")
+    if is_automated and datetime.now(JST).weekday() >= 5:
+        print(f"=== [自動実行スキップ] 土日のため、アラート判定をスキップして終了します。 ===")
+        import sys
+        sys.exit(0)
+
     today_str = datetime.now(JST).strftime("%Y-%m-%d")
 
     spreadsheet  = get_spreadsheet()
