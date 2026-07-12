@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>株式ポートフォリオ投資戦略ダッシュボード</title>
+  <meta name="description" content="Gemini AI × GitHub Actions による自動株式ポートフォリオ管理ダッシュボード。詳細分析レポート付き。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ===== ヘッダー ===== -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-icon">📊</span>
+          <div>
+            <h1>株式ポートフォリオ投資戦略ダッシュボード</h1>
+            <p class="header-sub">Gemini AI × GitHub Actions 自動株式管理システム</p>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="update-badge">
+            <span class="update-dot"></span>
+            <span id="updated-at">読み込み中...</span>
+          </div>
+          <nav class="header-nav">
+            <a href="#section-roadmap" class="nav-link">将来見通し</a>
+            <a href="#section-position" class="nav-link">需給マップ</a>
+            <a href="#section-report" class="nav-link">AI総括</a>
+            <a href="#section-summary" class="nav-link">概要サマリー</a>
+            <a href="#section-stocks" class="nav-link">銘柄詳細</a>
+            <a href="#section-history" class="nav-link">履歴</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== ローディング ===== -->
+    <div id="loading" class="loading-screen">
+      <div class="loader"></div>
+      <p>データを読み込み中...</p>
+    </div>
+
+    <!-- ===== メインコンテンツ ===== -->
+    <main id="main-content" class="main" style="display:none;">
+
+      <!-- ===== ヘッダー ===== -->
+      <header class="main-header" style="margin-bottom: 24px;">
+        <h1 class="main-title" id="display-header-title">ポートフォリオ投資戦略・日報</h1>
+        <p class="update-time" id="display-header-time">---</p>
+      </header>
+
+      <!-- ① ポートフォリオ将来見通し ＆ 上昇ロードマップ -->
+      <div class="report-card" id="section-roadmap">
+        <div class="card-headline">
+          <span>ポートフォリオ将来見通し ＆ 上昇ロードマップ</span>
+          <span>保有銘柄の未来展望</span>
+        </div>
+        
+        <div class="summary-grid-wrapper">
+          <!-- 左側: 主要マイルストーン timeline -->
+          <div>
+            <div class="summary-prime" style="text-align: left; padding-bottom: 12px;">
+              <span class="summary-label">想定ポートフォリオ期待リターン</span>
+              <div class="summary-amount-large" style="color:var(--color-positive);" id="expected-return-val">+14.8%</div>
+              <p style="font-size:12px; color:var(--text-muted);">※保有ウェイトに基づく加重平均目標株価からの算出</p>
+            </div>
+
+            <div class="stat-list-vertical" style="border-top: 2px solid var(--border-color); padding-top: 12px; font-size:13.5px;">
+              <div style="font-weight:700; color:var(--text-dark); margin-bottom:4px;">■ 主要ロードマップ ＆ マイルストーン</div>
+              <div id="portfolio-roadmap-text" style="font-size:13px; line-height:1.6; color:var(--text-main); white-space:pre-wrap;">
+                <!-- JSで動的挿入 -->
+              </div>
+            </div>
+          </div>
+          
+          <!-- 右側: 各銘柄の上値ポテンシャル棒グラフ -->
+          <div class="chart-card" style="padding: 16px;">
+            <div class="chart-card-title">目標株価までの上値ポテンシャル（％）</div>
+            <div class="portfolio-chart-wrapper">
+              <canvas id="portfolioChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② 需給 ＆ 乖離相関プロット（信用倍率 vs 25日線乖離率） -->
+      <div class="report-card" id="section-position" style="margin-top: 24px;">
+        <div class="card-headline">
+          <span>🎯 ポートフォリオ需給 ＆ 乖離相関マップ</span>
+          <span>(今後の反発・過熱度見極め)</span>
+        </div>
+        <div class="valuation-plot-card" style="margin-top:0;">
+          <div class="valuation-plot-title">信用需給ポジションマップ (信用倍率 vs 25日線乖離率)</div>
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.4;">
+            ※縦軸は **25日線乖離率(%)**、横軸は **信用倍率(倍)** です。
+            左上＝好需給/割安（押し目狙い）、右上＝高信用/過熱、左下＝信用低調/弱気、右下＝高信用残/乖離マイナス（需給悪化警戒）の4象限で分析。
+          </p>
+          <div class="valuation-plot-frame">
+            <canvas id="valuationPlot"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ 市場全体の急所 ＆ 本日のAI総括 -->
+      <div class="report-card" id="section-report" style="display:none; margin-top: 24px;">
+        <div class="card-headline">
+          <span id="report-title">市場全体の急所 ＆ 本日のAI総括</span>
+          <span class="market-weather" id="report-badge">🌤 市場天気: 良好</span>
+        </div>
+
+        <!-- 警告バナー (重大トピック用) -->
+        <div id="alerts-banner" class="alert-banner" style="display:none;"></div>
+
+        <!-- 市況・ベンチマーク対比 -->
+        <div class="report-strip" id="report-strip" style="display:none; background-color:#ffffff; border:2px solid var(--border-color); border-radius:8px; color:var(--text-main); font-weight:700;"></div>
+
+        <!-- AIレポート・ナビゲーションタブ -->
+        <div class="tab-nav">
+          <button class="tab-btn active" data-tab="market">🌐 市場分析</button>
+          <button class="tab-btn" data-tab="technical">📉 テクニカル</button>
+          <button class="tab-btn" data-tab="portfolio">🗂️ PF評価</button>
+          <button class="tab-btn" data-tab="strategy">🎯 投資戦略</button>
+        </div>
+
+        <!-- 各種タブパネル -->
+        <div id="tab-market"    class="tab-panel active" class="report-block"></div>
+        <div id="tab-technical" class="tab-panel" class="report-block"></div>
+        <div id="tab-portfolio" class="tab-panel"></div>
+        <div id="tab-strategy"  class="tab-panel"></div>
+      </div>
+
+      <!-- ④ ポートフォリオ概要サマリー -->
+      <div class="report-card" id="section-summary" style="margin-top: 24px;">
+        <div class="card-headline">
+          <span>ポートフォリオ財務状況</span>
+          <span id="perf-date">---</span>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-card" id="card-eval">
+            <div class="summary-label">評価額合計</div>
+            <div class="summary-value" id="total-eval">---</div>
+          </div>
+          <div class="summary-card" id="card-pnl">
+            <div class="summary-label">個別含み損益</div>
+            <div class="summary-value" id="total-pnl">---</div>
+            <div class="summary-sub" id="total-pnl-pct">---</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">取得金額合計</div>
+            <div class="summary-value" id="total-cost">---</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">監視・保有銘柄数</div>
+            <div class="summary-value" id="stock-count">---</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑤ 個別銘柄詳細 -->
+      <div class="section-title" id="section-stocks" style="margin-top: 32px;">📊 個別銘柄 詳細アナリストレポート</div>
+
+      <div class="stock-container">
+        <!-- AIレポートローディング等があればここに -->
+        <div id="ai-loading" style="display:none;"></div>
+        <!-- 銘柄カードがここに動的生成される -->
+        <div class="stocks-grid" id="stocks-grid" style="display:flex; flex-direction:column; gap:32px; margin-bottom:24px;"></div>
+      </div>
+
+      <!-- ⑥ AIレポート履歴 -->
+      <div class="report-card" id="section-history" style="margin-top: 24px;">
+        <div class="card-headline">
+          <span>AI レポート履歴</span>
+          <span>直近10件</span>
+        </div>
+        <div class="history-list" id="history-list"></div>
+      </div>
+
+    </main>
+
+    <!-- エラー画面 -->
+    <div id="error-screen" class="error-screen" style="display:none;">
+      <div class="error-inner">
+        <p class="error-icon">⚠️</p>
+        <p class="error-title">データを読み込めませんでした</p>
+        <p class="error-msg">GitHub Actions が実行されていないか、data.json が存在しない可能性があります。</p>
+      </div>
+    </div>
+
+    <!-- フッター -->
+    <footer class="footer">
+      <p>提供：Gemini AI &times; GitHub Actions &times; LINE Bot &times; Google Sheets</p>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

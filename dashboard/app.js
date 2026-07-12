@@ -363,12 +363,16 @@ function renderStockCard(stock, index) {
 
   return `
     <div class="stock-card" style="animation-delay:${index * 0.04}s">
-      <!-- 銘柄ヘッダー -->
+      <!-- ==================== A. 結論・取引マニュアル・リスク (横幅100%全展開) ==================== -->
+      <div class="decision-row">
+        <span class="decision-label">総合投資判断</span>
+        ${renderRatingBadge(stock.analyst_rating)}
+      </div>
+
       <div class="stock-meta-header">
-        <div>
-          <span class="stock-code">${stock.code}</span>
-          <div class="stock-meta-name-code">${stock.name}</div>
-          <span class="stock-sector">${stock.sector || '---'}</span>
+        <div class="stock-title-area">
+          <span class="stock-meta-name-code">${stock.code} ${stock.name}</span>
+          <span class="stock-meta-sub">${stock.sector || '---'}</span>
         </div>
         <div class="stock-price-block-pro">
           <div class="stock-price-val-pro">¥${fmt(current_price)}</div>
@@ -376,10 +380,10 @@ function renderStockCard(stock, index) {
         </div>
       </div>
 
-      <!-- 取引マニュアル（最上部） -->
+      <!-- 具体的アクション指示 -->
       <div class="live-action-box">
         <div class="live-action-title">
-          <span>⚠️ 最適行動・指値水準（本日執行マニュアル）</span>
+          <span>⚠️ 本日の最適行動・指値水準 (トレーダーマニュアル)</span>
         </div>
         <div style="font-size:13.5px; line-height:1.65; color:var(--text-main);">
           <p style="margin-bottom:8px;"><b>シナリオA (終値損切り目安割れ):</b> ${stock.execution_manual?.scenario_a || '---'}</p>
@@ -391,7 +395,7 @@ function renderStockCard(stock, index) {
       <!-- リスク・カタリストプロファイル -->
       <div class="risk-catalyst-card">
         <div class="risk-cat-item">
-          <span class="risk-cat-lbl">直近決算予定日</span>
+          <span class="risk-cat-lbl">直近決算予定日 (カタリスト警戒)</span>
           <span class="risk-cat-val" style="color:var(--color-negative);">${profile.earnings_date || '---'}</span>
         </div>
         <div class="risk-cat-item">
@@ -399,21 +403,22 @@ function renderStockCard(stock, index) {
           <span class="risk-cat-val">${profile.max_loss_var || '---'}</span>
         </div>
         <div class="risk-cat-item">
-          <span class="risk-cat-lbl">ベータ値 (対日経225感度)</span>
+          <span class="risk-cat-lbl">ベータ値 (市場感応度)</span>
           <span class="risk-cat-val">${profile.beta || '---'}</span>
         </div>
         <div class="risk-cat-item">
           <span class="risk-cat-lbl">目標価格到達想定期間</span>
-          <span class="risk-cat-val" style="color:var(--color-positive);">${profile.target_timeline || '---'}</span>
+          <span class="risk-cat-val" style="color:var(--color-warning);">${profile.target_timeline || '---'}</span>
         </div>
       </div>
 
-      <!-- 2カラムブロックレイアウト -->
-      <div class="theme-block-grid">
-        
-        <!-- 左カラム: テクニカル指標・出来高・感情・パーソナル提案 -->
-        <div>
+      <!-- ==================== B. テーマ別レイアウトブロック ==================== -->
 
+      <!-- 【評価軸1】割安性評価 ＆ 判断の客観的根拠 -->
+      <div class="theme-block-title-bar">📊 【評価軸1】割安性評価 ＆ 判断の客観的根拠</div>
+      <div class="theme-block-grid">
+        <!-- 左側 -->
+        <div>
           <!-- テクニカル分析詳細 -->
           <div class="opinion-card">
             <div class="opinion-card-title">📈 テクニカル分析・モメンタム</div>
@@ -441,49 +446,12 @@ function renderStockCard(stock, index) {
               <p><b>材料・ニュース影響:</b> ${stock.news_impact || '---'}</p>
             </div>
           </div>
-
-          <!-- 個人戦略提案 -->
-          <div class="opinion-card analyst" style="border-left-color: var(--color-primary-border); background-color: var(--color-primary-light);">
-            <div class="opinion-card-title" style="color: var(--color-primary);">👤 個人宛トレード戦略提案</div>
-            <div style="font-size:13.5px; line-height:1.7; color: var(--text-dark);">${stock.personal_action || '---'}</div>
-          </div>
         </div>
-
-        <!-- 右カラム: 投資判断、節目メーター、バリュエーション、多期間比較、証券会社目標、財務複合、過去チャート、競合相関 -->
+        
+        <!-- 右側 -->
         <div>
-          <!-- 総合投資判断バッジ -->
-          <div class="decision-row">
-            <span class="decision-label">総合投資判断:</span>
-            ${renderRatingBadge(stock.analyst_rating)}
-          </div>
-
-          <!-- 節目メーター -->
-          <div class="price-position-meter-card">
-            <div class="meter-title">📍 株価位置 ＆ 重要節目メーター</div>
-            <div class="meter-bar-wrapper">
-              <div class="meter-current-pin" style="left: ${currentPct}%;"></div>
-              <div class="meter-current-label" style="left: ${currentPct}%;">現在: ¥${fmt(current)}</div>
-              ${stopLoss ? `
-                <div class="meter-line stop-loss" style="left: ${stopLossPct}%;"></div>
-                <div class="meter-line-label" style="left: ${stopLossPct}%;">損切: ¥${fmt(stopLoss)}</div>
-              ` : ''}
-              ${avgCost ? `
-                <div class="meter-line" style="left: ${avgCostPct}%; background-color:#3b82f6; width:2px;"></div>
-                <div class="meter-line-label" style="left: ${avgCostPct}%; color:#1e3a8a;">取得平均: ¥${fmt(avgCost)}</div>
-              ` : ''}
-              ${target ? `
-                <div class="meter-line target" style="left: ${targetPct}%;"></div>
-                <div class="meter-line-label" style="left: ${targetPct}%;">目標: ¥${fmt(target)}</div>
-              ` : ''}
-            </div>
-            <div class="meter-scale-extremes">
-              <span>安値圏 (¥${fmt(minVal)})</span>
-              <span>高値圏 (¥${fmt(maxVal)})</span>
-            </div>
-          </div>
-
           <!-- バリュエーション visualizer -->
-          <div class="valuation-visualizer">
+          <div class="valuation-visualizer" style="margin-bottom:16px;">
             <div class="valuation-bar-group">
               <div class="valuation-bar-header">
                 <span>PER (株価収益率)</span>
@@ -514,6 +482,53 @@ function renderStockCard(stock, index) {
             </div>
           </div>
 
+          <!-- 財務×テクニカル複合分析 -->
+          <div class="opinion-card" style="margin-bottom:16px; background-color:#fafbfc;">
+            <div class="opinion-card-title">📊 財務 ＆ テクニカル複合評価</div>
+            <div style="font-size:13.5px; line-height:1.75; color:var(--text-main);">${stock.valuation_commentary || '---'}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 【評価軸2】株価位置 ＆ 短期モメンタム -->
+      <div class="theme-block-title-bar">📈 【評価軸2】株価位置 ＆ 短期モメンタム</div>
+      <div class="theme-block-grid">
+        <!-- 左側 -->
+        <div>
+          <!-- 節目メーター -->
+          <div class="price-position-meter-card">
+            <div class="meter-title">📍 株価位置 ＆ 重要節目メーター</div>
+            <div class="meter-bar-wrapper">
+              <div class="meter-current-pin" style="left: ${currentPct}%;"></div>
+              <div class="meter-current-label" style="left: ${currentPct}%;">現在: ¥${fmt(current)}</div>
+              ${stopLoss ? \`
+                <div class="meter-line stop-loss" style="left: ${stopLossPct}%;"></div>
+                <div class="meter-line-label" style="left: ${stopLossPct}%;">損切: ¥${fmt(stopLoss)}</div>
+              \` : ''}
+              ${avgCost ? \`
+                <div class="meter-line" style="left: ${avgCostPct}%; background-color:#3b82f6; width:2px;"></div>
+                <div class="meter-line-label" style="left: ${avgCostPct}%; color:#1e3a8a;">取得平均: ¥${fmt(avgCost)}</div>
+              \` : ''}
+              ${target ? \`
+                <div class="meter-line target" style="left: ${targetPct}%;"></div>
+                <div class="meter-line-label" style="left: ${targetPct}%;">目標: ¥${fmt(target)}</div>
+              \` : ''}
+            </div>
+            <div class="meter-scale-extremes">
+              <span>安値圏 (¥${fmt(minVal)})</span>
+              <span>高値圏 (¥${fmt(maxVal)})</span>
+            </div>
+          </div>
+          
+          <!-- 個人戦略提案 -->
+          <div class="opinion-card analyst" style="border-left-color: var(--color-primary-border); background-color: var(--color-primary-light);">
+            <div class="opinion-card-title" style="color: var(--color-primary);">👤 個人宛トレード戦略提案</div>
+            <div style="font-size:13.5px; line-height:1.7; color: var(--text-dark);">${stock.personal_action || '---'}</div>
+          </div>
+        </div>
+
+        <!-- 右側 -->
+        <div>
           <!-- 指標トレンド比較テーブル -->
           <div class="trend-table-card" style="margin-bottom:16px;">
             <div class="trend-table-title">📊 主要指標の多期間トレンド比較</div>
@@ -582,19 +597,12 @@ function renderStockCard(stock, index) {
             </div>
           </div>
 
-          <!-- アナリスト目標価格の算出根拠 (左線・十分なパディング) -->
+          <!-- アナリスト目標価格の算出根拠 -->
           <div class="opinion-card analyst" style="margin-bottom:16px;">
             <div class="opinion-card-title">📝 アナリスト目標価格の算出根拠</div>
             <div style="font-size:13.5px; line-height:1.7; color: var(--text-dark);">${stock.broker_commentary || '---'}</div>
           </div>
-
-          <!-- 財務×テクニカル複合分析 -->
-          <div class="opinion-card" style="margin-bottom:16px; background-color:#fafbfc;">
-            <div class="opinion-card-title">📊 財務 ＆ テクニカル複合評価</div>
-            <div style="font-size:13.5px; line-height:1.75; color:var(--text-main);">${stock.valuation_commentary || '---'}</div>
-          </div>
         </div>
-
       </div>
 
       <!-- 下部: 過去類似チャートアノマリー ＆ マクロニュース競合相関 (横に大きく展開) -->
