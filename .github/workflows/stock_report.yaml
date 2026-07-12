@@ -53,12 +53,27 @@ jobs:
           echo "REPORT_TIMING=${TIMING}" >> $GITHUB_ENV
           echo "実行タイミング: ${TIMING} / Pages URL: ${PAGES_URL}"
 
+      - name: Check Weekend Skip
+        id: check_skip
+        run: |
+          DAY=$(TZ=Asia/Tokyo date +%u)
+          EVENT="${{ github.event_name }}"
+          if [ "$EVENT" = "schedule" ] || [ "$EVENT" = "repository_dispatch" ]; then
+            if [ "$DAY" -eq 6 ] || [ "$DAY" -eq 7 ]; then
+              echo "skip=true" >> $GITHUB_OUTPUT
+              echo "=== [自動実行スキップ] 日本時間で土日のため、後続の全ステップをスキップします ==="
+              exit 0
+            fi
+          fi
+          echo "skip=false" >> $GITHUB_OUTPUT
+
       # -------------------------------------------------------
       # STEP 1: メインレポート生成・LINE 送信
       #   ★ Gemini 呼び出しはここで 1回のみ ★
       #   → last_report.json に保存
       # -------------------------------------------------------
       - name: Run Main Report Script (Gemini + LINE)
+        if: steps.check_skip.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           LINE_ACCESS_TOKEN: ${{ secrets.LINE_ACCESS_TOKEN }}
@@ -74,6 +89,7 @@ jobs:
       #   → gh_pages_output/ に書き出す
       # -------------------------------------------------------
       - name: Generate Charts and data.json
+        if: steps.check_skip.outputs.skip != 'true'
         env:
           GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
           GITHUB_PAGES_URL: ${{ env.GITHUB_PAGES_URL }}
@@ -83,6 +99,7 @@ jobs:
       # STEP 3: ダッシュボード静的ファイルをデプロイ用ディレクトリにコピー
       # -------------------------------------------------------
       - name: Copy dashboard files to deploy directory
+        if: steps.check_skip.outputs.skip != 'true'
         run: |
           cp dashboard/index.html gh_pages_output/index.html
           cp dashboard/style.css  gh_pages_output/style.css
@@ -93,6 +110,7 @@ jobs:
       #   keep_files: true → 過去のチャート画像を保持
       # -------------------------------------------------------
       - name: Deploy to GitHub Pages
+        if: steps.check_skip.outputs.skip != 'true'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -104,6 +122,7 @@ jobs:
       # STEP 5: アラートチェック（Gemini 不使用・数値判定のみ）
       # -------------------------------------------------------
       - name: Run Alert Check
+        if: steps.check_skip.outputs.skip != 'true'
         env:
           LINE_ACCESS_TOKEN: ${{ secrets.LINE_ACCESS_TOKEN }}
           LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
@@ -114,6 +133,7 @@ jobs:
       # STEP 6: レポートをスプレッドシートの「履歴」シートに追記
       # -------------------------------------------------------
       - name: Save Report History to Spreadsheet
+        if: steps.check_skip.outputs.skip != 'true'
         env:
           GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
         run: python history.py
