@@ -436,6 +436,7 @@ function renderStockCard(stock, index) {
         <!-- 左側: 3大評価根拠テーブル + PER/PBRバー -->
         <div>
           <div class="rating-justification-card" style="margin-bottom:16px;">
+            <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
             <table class="data-table" style="margin-bottom:0; font-size:11.5px;">
               <thead>
                 <tr>
@@ -462,6 +463,7 @@ function renderStockCard(stock, index) {
                 </tr>
               </tbody>
             </table>
+            </div>
           </div>
 
           <div class="valuation-visualizer" style="margin-bottom:0;">

@@ -270,6 +270,8 @@
     }
 
     .portfolio-chart-wrapper {
+      position: relative;
+      width: 100%;
       height: 220px;
       margin-top: 16px;
       border: 2px solid var(--border-color);
@@ -297,8 +299,9 @@
     }
 
     .valuation-plot-frame {
-      height: 250px;
       position: relative;
+      width: 100%;
+      height: 250px;
     }
 
     /* ==========================================================================
@@ -666,21 +669,17 @@
   }
 
   /* ③ 横はみ出し（テーブル）のスクロール対応 */
-  .data-table {
-    display: block;
+  .table-responsive {
     width: 100%;
     overflow-x: auto;
-    white-space: nowrap;
     -webkit-overflow-scrolling: touch;
+  }
+  .data-table {
+    white-space: nowrap;
     font-size: 11.5px;
-    border: none;
-    border-top: 2px solid var(--border-color);
   }
   .data-table th, .data-table td {
     padding: 8px 10px;
-    border-left: none;
-    border-right: none;
-    border-bottom: 2px solid var(--border-color);
   }
 
   /* ④ 各種ブロックの縦積み化（スマホでの視認性向上） */
