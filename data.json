@@ -1,11 +1,11 @@
 {
-  "updated_at": "2026-07-21T08:01:36.506351+09:00",
+  "updated_at": "2026-07-21T12:01:52.243849+09:00",
   "today": "2026-07-21",
   "github_pages_url": "https://konocturne.github.io/stock",
   "portfolio": {
     "total_cost": 0.0,
-    "total_eval": 3609676340.0,
-    "total_pnl": 3609676340.0,
+    "total_eval": 3906892540.0,
+    "total_pnl": 3906892540.0,
     "total_pnl_pct": 0.0
   },
   "stocks": [
@@ -14,108 +14,92 @@
       "name": "140",
       "quantity": 5182,
       "avg_cost": 0.0,
-      "current_price": 4472.0,
-      "change_pct_str": "-6.07%",
-      "change_str": "-289円",
-      "per": "14.8倍",
-      "pbr": "13.21倍",
+      "current_price": 4570.0,
+      "change_pct_str": "+2.19%",
+      "change_str": "+98円",
+      "per": "15.1倍",
+      "pbr": "13.50倍",
       "div_yield": "85.00%",
       "sector": "Industrials",
-      "pnl": 23173904.0,
+      "pnl": 23681740.0,
       "pnl_pct": null,
-      "eval_total": 23173904.0,
+      "eval_total": 23681740.0,
       "cost_total": 0.0,
-      "sentiment": "ネガティブ",
-      "sentiment_reason": "大幅な株価下落、RSI売られすぎ、MACDデッドクロス継続。",
-      "analyst_rating": "買い増し (BUY)",
+      "sentiment": "ニュートラル",
+      "sentiment_reason": "前場は上昇するも、テクニカル指標は依然として弱気シグナルを示唆。BB下限は維持。",
+      "analyst_rating": "維持 (HOLD)",
       "consensus_target": 6968.3,
-      "target_divergence_comment": "機関コンセンサス目標株価6,968.3円に対し、現在値4,472円と<span class='highlight-marker-green'>大幅な上昇余地あり</span>。ただし市場全体の地合い悪化で達成には時間要す。",
-      "stop_loss_guide": 4200,
-      "risk_comment": "PBR13.21倍と高水準。市場連動性は低めだが、<span class='highlight-marker-red'>市場全体の地合い悪化には敏感</span>。テクニカル指標の悪化がリスク。",
-      "technical_detail": "<span class='highlight-marker-red'>RSIは29.6と売られすぎ水準</span>。MACDはデッドクロス継続。BB圏内だが、<span class='highlight-marker-red'>SMA50を大幅に下回っており下落トレンドが強い</span>。",
-      "news_impact": "直近の特筆すべきニュースなし。市場全体のネガティブな流れに追随。",
-      "personal_action": "取得単価不明のため含み損益は不明だが、<span class='highlight-marker-red'>現在の強い下落トレンドではナンピン買いは厳禁</span>。BB下限に近い4,200円を損切りラインとし、厳格に管理。",
-      "comprehensive_analysis": "<ul><li><span class='highlight-marker-red'>急落中だが高成長率と機関コンセンサスは買い</span>。</li><li>ただし、<span class='highlight-marker-red'>高いPBRとテクニカルの悪化に警戒</span>。</li><li>市場全体の下げに連動しやすく、<span class='highlight-marker-red'>損切り水準を厳守すること</span>。</li></ul>",
+      "target_divergence_comment": "現在値は機関コンセンサス平均目標より<span class=\"highlight-marker-red\">大幅に低い</span>が、安値水準を維持し反発。",
+      "stop_loss_guide": 4109.1,
+      "risk_comment": "PER/PBRが<span class=\"highlight-marker-red\">高水準</span>。MACDデッドクロス継続。BB下限割れリスクに注意。",
+      "technical_detail": "RSI売られすぎ圏から反発。MACDはデッドクロスのまま。SMA50大幅下回りは継続。",
+      "news_impact": "特になし。",
+      "personal_action": "<span class=\"highlight-marker-yellow\">BB下限割れなければ維持</span>。後場も上昇継続なら一部利益確定も検討。",
+      "comprehensive_analysis": "<ul><li>RSIは売られすぎもMACDはデッド継続。</li><li>PBRが<span class=\"highlight-marker-red\">非常に高い</span>。</li><li>機関コンセンサス目標には<span class=\"highlight-marker-red\">乖離</span>あり。</li><li>BB下限維持で反発の兆し。</li></ul>",
       "execution_manual": {
-        "scenario_a": [
-          "<span class='highlight-marker-red'>本日終値が4,200円を下回る場合</span>、即座に成行で全株売却。",
-          "反発の兆しが見えない限り、<span style='color: var(--color-negative); font-weight: 700;'>厳格な損切りを優先</span>。"
-        ],
-        "scenario_b": [
-          "<span class='highlight-marker-green'>場中に一時的な反発が見られても</span>、直近の支持線4,400円を超えない限り静観。",
-          "反発時でも、<span class='highlight-marker-red'>ナンピン買いは厳禁</span>。下落トレンド継続リスクが高い。"
-        ],
-        "scenario_c": [
-          "<span class='highlight-marker-yellow'>損切り指値は4,200円に設定</span>。",
-          "<span class='highlight-marker-green'>利確指値は設定せず、まずは下落の止まりを見極める</span>。"
-        ]
+        "scenario_a": "<ul><li>後場始値が<span class=\"highlight-marker-red\">BB下限4,109.1円を下回った場合</span>、速やかに<span class=\"highlight-marker-red\">成行売却</span>。</li></ul>",
+        "scenario_b": "<ul><li>後場に<span style=\"color: var(--color-positive); font-weight: 700;\">4,600円超えで推移</span>すれば、<span class=\"highlight-marker-green\">維持</span>。</li></ul>",
+        "scenario_c": "<ul><li>損切り指値は<span class=\"highlight-marker-red\">4,100円</span>。</li><li>利益確定指値は<span class=\"highlight-marker-yellow\">5,000円</span>。</li></ul>"
       },
       "valuation_rationale": {
-        "technical": "<span class='highlight-marker-red'>ネガティブ</span>：RSI売られすぎ、MACDデッド。",
-        "valuation": "<span class='highlight-marker-red'>ネガティブ</span>：PBRが非常に高く割高感。",
-        "macro_news": "<span class='highlight-marker-yellow'>ニュートラル</span>：特段の個別材料なし。"
+        "technical": "売り圧力<span class=\"highlight-marker-yellow\">継続</span>。MACDデッドクロス。",
+        "valuation": "PBRが<span class=\"highlight-marker-red\">高すぎ</span>。割高感。",
+        "macro_news": "特になし。影響軽微。"
       },
-      "valuation_commentary": "<ul><li>高成長率にも関わらず、<span class='highlight-marker-red'>市場全体の調整とテクニカル指標の悪化が重荷</span>。</li><li>PBR13.21倍と<span class='highlight-marker-red'>高いバリュエーションは修正リスク</span>を内包。</li><li>機関コンセンサスは買いだが、<span class='highlight-marker-red'>短期的な下落圧力には要注意</span>。</li></ul>",
+      "valuation_commentary": "PBRは極めて高いが、高い利益成長率が評価されている可能性。テクニカルは売られすぎからの反発だが、MACDはデッドクロスのまま。目標株価との乖離は大きい。",
       "momentum_analysis_list": [
-        "出来高: 47百万株と<span class='highlight-marker-yellow'>普段より高い水準</span>。売りが売りを呼ぶ展開。",
-        "RSI: <span class='highlight-marker-red'>29.6と売られすぎ水準</span>。短期的な反発期待もあるが、下落余地も。",
-        "ボリバン幅: BB下限4,209.7円に接近。バンドウォークの可能性に注意。"
+        "出来高は<span class=\"highlight-marker-yellow\">やや増加</span>、上昇に伴う買い意欲の兆し。",
+        "RSIは売られすぎ水準(24)から反発、<span class=\"highlight-marker-green\">底打ち期待</span>高まる。",
+        "ボリンジャーバンドは<span class=\"highlight-marker-yellow\">圏内を維持</span>、下限4,109.1円でのサポート意識。"
       ],
-      "broker_targets": [
-        {
-          "broker": "仮称証券A",
-          "target": 6968,
-          "rating": "買い",
-          "date": "2024/09/30"
-        }
-      ],
-      "broker_commentary": "<ul><li>機関コンセンサスは<span class='highlight-marker-green'>平均目標株価6,968.3円と現在値から大幅な上昇余地</span>を示唆。</li><li>しかし、<span class='highlight-marker-red'>コンセンサス安値3,500円も存在</span>し、下振れリスクも認識されている。</li><li>市場全体の地合いが悪い中、短期的な評価は厳しくなる見込み。</li></ul>",
-      "chart_analogy_commentary": "<ul><li>過去の急落局面では、<span class='highlight-marker-red'>BB下限を割り込むと一時的なリバウンド後、再度下落するパターン</span>が見られる。</li><li>MACDのデッドクロスは、<span class='highlight-marker-red'>中期的な下落トレンド入りを示唆</span>。</li><li>短期的な底値を探る展開が続く可能性が高い。</li></ul>",
-      "news_correlation_commentary": "<ul><li>個別ニュースはなし。<span class='highlight-marker-yellow'>市場全体のネガティブな地合いに強く影響</span>を受けている。</li><li>同業種他社も下落傾向にあり、<span class='highlight-marker-red'>セクター全体への売り圧力</span>。</li><li>経済指標の悪化が続けば、一段の調整も。</li></ul>",
+      "broker_targets": [],
+      "broker_commentary": "機関コンセンサスは買い推奨も、目標株価との<span class=\"highlight-marker-red\">乖離が大きい</span>。",
+      "chart_analogy_commentary": "52週安値からは大きく反発しているが、52週高値から大幅下落。長期トレンドは<span class=\"highlight-marker-red\">下向き</span>。",
+      "news_correlation_commentary": "直近ニュースなし。市場全体の動向に連動しやすい。",
       "risk_catalyst_profile": {
-        "earnings_date": "N/A",
-        "max_loss_var": "高",
+        "earnings_date": "未定",
+        "max_loss_var": "推計不能",
         "beta": "0.778",
-        "target_timeline": "中長期"
+        "target_timeline": "中短期"
       },
-      "sma5": 4837.0,
-      "sma25": 5326.4,
-      "sma75": 5340.5,
-      "dev25": -16.04,
+      "sma5": 4749.6,
+      "sma25": 5335.4,
+      "sma75": 5346.9,
+      "dev25": -14.35,
       "price_trend": [
+        4570.0,
         4472.0,
-        4761.0,
-        4837.0,
-        5326.44,
-        5340.55
+        4749.6,
+        5335.4,
+        5346.95
       ],
       "volume_trend": [
+        1659,
         4708,
-        3603,
-        4026,
-        4639,
-        5707
+        3543,
+        4555,
+        5650
       ],
       "value_trend": [
+        7582041,
         21052119,
-        17153645,
-        19382870,
-        25371552,
-        30588907
+        16818653,
+        25022470,
+        30369206
       ],
       "rsi_trend": [
+        23.99,
         29.59,
-        29.96,
-        28.39,
-        51.57,
-        53.23
+        27.99,
+        51.33,
+        52.86
       ],
       "bb_width_trend": [
+        48.0,
         46.54,
-        43.33,
-        45.75,
-        51.14,
-        48.73
+        45.95,
+        51.76,
+        49.09
       ],
       "margin_ratio": 3.0,
       "margin_buy_man": 50.0
@@ -125,108 +109,92 @@
       "name": "7",
       "quantity": 68486,
       "avg_cost": 0.0,
-      "current_price": 52110.0,
-      "change_pct_str": "-16.10%",
-      "change_str": "-10,000円",
-      "per": "51.5倍",
-      "pbr": "20.34倍",
+      "current_price": 56440.0,
+      "change_pct_str": "+8.31%",
+      "change_str": "+4,330円",
+      "per": "55.8倍",
+      "pbr": "22.03倍",
       "div_yield": "---",
       "sector": "Technology",
-      "pnl": 3568805460.0,
+      "pnl": 3865349840.0,
       "pnl_pct": null,
-      "eval_total": 3568805460.0,
+      "eval_total": 3865349840.0,
       "cost_total": 0.0,
-      "sentiment": "ネガティブ",
-      "sentiment_reason": "<span style='color: var(--color-negative); font-weight: 700;'>本日超大幅な下落</span>、RSI売られすぎ、MACDデッドクロス、BB下限割れ。",
+      "sentiment": "ポジティブ",
+      "sentiment_reason": "前場<span style=\"color: var(--color-positive); font-weight: 700;\">8.31%の大幅上昇</span>、出来高も急増。地合いの改善と半導体セクターの強さに連動。",
       "analyst_rating": "買い増し (BUY)",
       "consensus_target": 113987.5,
-      "target_divergence_comment": "機関コンセンサス目標株価113,987.5円に対し、現在値52,110円と<span class='highlight-marker-green'>非常に大きな上昇余地</span>。しかし<span class='highlight-marker-red'>現在の急落は短期的なコンセンサスからの乖離を深める</span>。",
-      "stop_loss_guide": 50000,
-      "risk_comment": "PER51.5倍、PBR20.34倍と<span class='highlight-marker-red'>非常に高いバリュエーション</span>。ベータ値不明だが、ボラティリティが極めて高い。本日の大幅下落で<span class='highlight-marker-red'>需給悪化が懸念</span>。",
-      "technical_detail": "<span class='highlight-marker-red'>RSIは26.4と極度の売られすぎ水準</span>。MACDはデッドクロス継続。<span class='highlight-marker-red'>BB下限53,236.7円を既に割っており、強い下落トレンド</span>。",
-      "news_impact": "直近の特筆すべきニュースなし。<span class='highlight-marker-red'>地合いの悪化に加えて個別的な売りが集中</span>。",
-      "personal_action": "取得単価不明のため含み損益は不明だが、<span style='color: var(--color-negative); font-weight: 700;'>本日-16.10%と超大幅下落</span>。BB下限割れは危険信号。<span class='highlight-marker-red'>ナンピン買いは厳禁</span>。心理的な節目50,000円を損切りラインとして設定。",
-      "comprehensive_analysis": "<ul><li><span class='highlight-marker-red'>驚異的な成長率だが、超高バリュエーションと市場全体の地合い悪化で大幅下落</span>。</li><li>テクニカル指標は<span style='color: var(--color-negative); font-weight: 700;'>全てが売りシグナル</span>。</li><li>機関コンセンサスは買いだが、<span class='highlight-marker-red'>短期的なリスクは極めて高い</span>。</li></ul>",
+      "target_divergence_comment": "現在値は機関コンセンサス平均目標より<span class=\"highlight-marker-red\">大幅に低い</span>が、安値水準を維持し<span style=\"color: var(--color-positive); font-weight: 700;\">力強く反発</span>。",
+      "stop_loss_guide": 51797.6,
+      "risk_comment": "PBRが<span class=\"highlight-marker-red\">極めて高水準</span>。短期急騰後の反落リスク。ベータ値None。",
+      "technical_detail": "RSI売られすぎ圏から急反発。MACDはデッドクロスのままも、今後のクロス転換に期待。BB下限維持。",
+      "news_impact": "特になし。半導体セクター全体の好調さが背景か。",
+      "personal_action": "<span style=\"color: var(--color-positive); font-weight: 700;\">引き続き保有</span>。BB下限割れなければ利益確定は慎重に。",
+      "comprehensive_analysis": "<ul><li><span style=\"color: var(--color-positive); font-weight: 700;\">売上・利益成長率が非常に高い</span>。</li><li>PBRは<span class=\"highlight-marker-red\">非常に高い</span>。</li><li>RSI売られすぎからの<span style=\"color: var(--color-positive); font-weight: 700;\">急反発</span>。</li><li>機関コンセンサス目標には<span class=\"highlight-marker-red\">乖離</span>。</li></ul>",
       "execution_manual": {
-        "scenario_a": [
-          "<span class='highlight-marker-red'>本日中に50,000円を割り込むか、終値で下回る場合</span>、即座に成行で全株売却。",
-          "市場センチメントが極めて悪いため、<span style='color: var(--color-negative); font-weight: 700;'>厳格な損切りが必須</span>。"
-        ],
-        "scenario_b": [
-          "<span class='highlight-marker-yellow'>場中に一時的な反発があっても</span>、BB下限53,236.7円を明確に回復しない限り静観。",
-          "この状況での<span class='highlight-marker-red'>ナンピン買いは絶対禁止</span>。資金拘束リスクが高い。"
-        ],
-        "scenario_c": [
-          "<span class='highlight-marker-red'>損切り指値は50,000円に設定</span>。",
-          "利確指値は設定せず、<span class='highlight-marker-red'>まずは下落の止まりと底打ちを確認する</span>。"
-        ]
+        "scenario_a": "<ul><li>後場始値が<span class=\"highlight-marker-red\">BB下限51,797.6円を下回った場合</span>は、<span class=\"highlight-marker-red\">一部利益確定</span>を検討。</li></ul>",
+        "scenario_b": "<ul><li>後場に<span style=\"color: var(--color-positive); font-weight: 700;\">57,000円超えを維持</span>すれば、<span class=\"highlight-marker-green\">積極的な保有</span>。</li></ul>",
+        "scenario_c": "<ul><li>損切り指値は<span class=\"highlight-marker-red\">51,700円</span>。</li><li>利益確定指値は<span class=\"highlight-marker-yellow\">60,000円</span>。</li></ul>"
       },
       "valuation_rationale": {
-        "technical": "<span class='highlight-marker-red'>超ネガティブ</span>：BB下限割れ、RSI極度売られすぎ。",
-        "valuation": "<span class='highlight-marker-red'>超ネガティブ</span>：PER/PBR共に異常な高水準。",
-        "macro_news": "<span class='highlight-marker-red'>ネガティブ</span>：半導体セクターの調整懸念も。"
+        "technical": "RSI売られすぎからの<span style=\"color: var(--color-positive); font-weight: 700;\">強力反発</span>。",
+        "valuation": "成長性<span style=\"color: var(--color-positive); font-weight: 700;\">極めて高い</span>。PBR高も期待先行。",
+        "macro_news": "SOX指数上昇が<span style=\"color: var(--color-positive); font-weight: 700;\">追い風</span>。"
       },
-      "valuation_commentary": "<ul><li><span class='highlight-marker-red'>驚異的な成長率を誇るが、PER/PBRが極めて高く、市場の調整局面で真っ先に売られやすい</span>。</li><li>テクニカル指標は全て<span class='highlight-marker-red'>強い売りシグナル</span>を示しており、短期的には<span style='color: var(--color-negative); font-weight: 700;'>大幅な下落リスクが継続</span>。</li><li>機関コンセンサスの目標株価は高いが、<span class='highlight-marker-yellow'>現状との乖離は極めて大きい</span>。</li></ul>",
+      "valuation_commentary": "驚異的な成長率を背景にPBRは高水準。テクニカルは売られすぎからのV字回復の兆し。半導体セクター全体の好調も支援。機関目標株価は遥か上だが、現在の株価は安値付近から大きく反発。",
       "momentum_analysis_list": [
-        "出来高: 41百万株と<span class='highlight-marker-red'>異常な高水準</span>。パニック売りが発生している可能性。",
-        "RSI: <span class='highlight-marker-red'>26.4と極度の売られすぎ</span>。短期的な反発への期待もあるが、需給悪化が深刻。",
-        "ボリバン幅: <span class='highlight-marker-red'>BB下限を大きく割っており、強いバンドウォークの可能性</span>。"
+        "出来高は<span style=\"color: var(--color-positive); font-weight: 700;\">急増</span>、強い買い圧力の証。",
+        "RSIは売られすぎ水準(29)から<span style=\"color: var(--color-positive); font-weight: 700;\">力強く反発</span>、トレンド転換の兆し。",
+        "ボリンジャーバンドは<span class=\"highlight-marker-green\">下限を維持し上昇</span>、バンドウォーク期待。"
       ],
-      "broker_targets": [
-        {
-          "broker": "仮称証券B",
-          "target": 113987,
-          "rating": "買い",
-          "date": "2024/10/15"
-        }
-      ],
-      "broker_commentary": "<ul><li>機関コンセンサスは<span class='highlight-marker-green'>平均目標株価113,987.5円と極めて高い水準</span>を設定。</li><li>ただし、<span class='highlight-marker-yellow'>コンセンサス安値40,000円も存在する</span>点に注意。</li><li>短期的な市場の動きと、<span class='highlight-marker-red'>高バリュエーションの修正圧力</span>が強く意識される。</li></ul>",
-      "chart_analogy_commentary": "<ul><li>今回のBB下限割れと急落は、過去の<span class='highlight-marker-red'>ボラティリティの高い銘柄に見られる短期的なオーバーシュート下落</span>に類似。</li><li>MACDの強いデッドクロスは、<span class='highlight-marker-red'>トレンド転換の兆しではなく、むしろ下落加速</span>を示唆。</li><li>底打ちには時間を要し、慎重な対応が必要。</li></ul>",
-      "news_correlation_commentary": "<ul><li>個別ニュースはなし。<span class='highlight-marker-red'>半導体セクター全体の地合いと、投資家のリスクオフ姿勢が複合的に影響</span>。</li><li>競合他社の業績動向にも注視が必要だが、<span class='highlight-marker-red'>KIOXIA個別の特殊性（超高バリュエーション）</span>も原因か。</li><li>市場全体の警戒感が非常に高い。</li></ul>",
+      "broker_targets": [],
+      "broker_commentary": "機関コンセンサスは買い推奨、目標株価との乖離は大きいが、それは<span style=\"color: var(--color-positive); font-weight: 700;\">上昇余地</span>と捉えることも可能。",
+      "chart_analogy_commentary": "急激な下落からの急反発は<span style=\"color: var(--color-positive); font-weight: 700;\">底打ちパターン</span>を示唆。52週高値にはまだ遠い。",
+      "news_correlation_commentary": "直近ニュースなし。SOX指数上昇が<span style=\"color: var(--color-positive); font-weight: 700;\">強い連動性</span>を示唆。",
       "risk_catalyst_profile": {
-        "earnings_date": "N/A",
-        "max_loss_var": "極めて高",
+        "earnings_date": "未定",
+        "max_loss_var": "推計不能",
         "beta": "None",
-        "target_timeline": "中長期"
+        "target_timeline": "短期"
       },
-      "sma5": 64704.0,
-      "sma25": 84268.4,
-      "sma75": 59489.8,
-      "dev25": -38.16,
+      "sma5": 62572.0,
+      "sma25": 82889.6,
+      "sma75": 59987.9,
+      "dev25": -31.91,
       "price_trend": [
+        56440.0,
         52110.0,
-        62110.0,
-        64704.0,
-        84268.4,
-        59489.8
+        62572.0,
+        82889.6,
+        59987.93
       ],
       "volume_trend": [
+        2710,
         4150,
-        4533,
-        4520,
-        4030,
-        3779
+        4088,
+        4003,
+        3749
       ],
       "value_trend": [
+        152965946,
         216266922,
-        281552704,
-        292891841,
-        332835262,
-        226962863
+        258123189,
+        326682468,
+        227741086
       ],
       "rsi_trend": [
+        29.21,
         26.36,
-        28.7,
-        30.44,
-        52.33,
-        65.12
+        29.56,
+        50.53,
+        64.87
       ],
       "bb_width_trend": [
+        67.81,
         68.52,
-        64.09,
-        60.86,
-        58.15,
-        62.27
+        63.55,
+        58.34,
+        62.83
       ],
       "margin_ratio": 2.0,
       "margin_buy_man": 50.0
@@ -236,114 +204,107 @@
       "name": "20",
       "quantity": 4432,
       "avg_cost": 0.0,
-      "current_price": 3993.0,
-      "change_pct_str": "-5.33%",
-      "change_str": "-225円",
-      "per": "23.6倍",
-      "pbr": "1.79倍",
+      "current_price": 4030.0,
+      "change_pct_str": "+0.93%",
+      "change_str": "+37円",
+      "per": "23.9倍",
+      "pbr": "1.81倍",
       "div_yield": "135.00%",
       "sector": "Technology",
-      "pnl": 17696976.0,
+      "pnl": 17860960.0,
       "pnl_pct": null,
-      "eval_total": 17696976.0,
+      "eval_total": 17860960.0,
       "cost_total": 0.0,
-      "sentiment": "ネガティブ",
-      "sentiment_reason": "大幅な株価下落、MACDデッドクロス、BB下限割れ。",
-      "analyst_rating": "買い増し (BUY)",
+      "sentiment": "ニュートラル",
+      "sentiment_reason": "前場は小幅上昇するも、現在値がBB下限に<span class=\"highlight-marker-red\">極めて接近</span>。MACDデッドクロス継続。利益成長率はマイナス。",
+      "analyst_rating": "維持 (HOLD)",
       "consensus_target": 4327.2,
-      "target_divergence_comment": "機関コンセンサス目標株価4,327.2円に対し、現在値3,993円と<span class='highlight-marker-yellow'>やや上昇余地あり</span>。ただし市場全体のセンチメント悪化で上値は重い。",
-      "stop_loss_guide": 3950,
-      "risk_comment": "利益成長率が<span class='highlight-marker-red'>マイナス</span>。市場連動性は低めだが、<span class='highlight-marker-red'>市場全体の売り圧力には弱い</span>。BB下限割れが短期的なリスク。",
-      "technical_detail": "RSIは中立(38.9)だが、<span class='highlight-marker-red'>MACDはデッドクロス継続</span>。<span class='highlight-marker-red'>BB下限4,068.7円を割っており、売られすぎの状況</span>。",
-      "news_impact": "直近の特筆すべきニュースなし。市場全体のネガティブな流れに追随。",
-      "personal_action": "取得単価不明のため含み損益は不明だが、<span class='highlight-marker-red'>BB下限割れは売り圧力強化のサイン</span>。利益成長率がマイナスであることも考慮し、<span class='highlight-marker-red'>ナンピン買いは厳禁</span>。心理的節目3,950円を損切りラインとして設定。",
-      "comprehensive_analysis": "<ul><li><span class='highlight-marker-red'>利益成長率はマイナスだが、機関コンセンサスは買い推奨</span>。</li><li>テクニカルは<span class='highlight-marker-red'>下落トレンドと売られすぎ</span>を示唆。</li><li>市場全体の地合い悪化で<span class='highlight-marker-red'>短期的な反発は期待薄</span>。</li></ul>",
+      "target_divergence_comment": "現在値は機関コンセンサス平均目標より<span class=\"highlight-marker-yellow\">低い水準</span>。安値よりは上。",
+      "stop_loss_guide": 4010.0,
+      "risk_comment": "BB下限4,010.0円に<span class=\"highlight-marker-red\">極めて接近</span>。利益成長率がマイナス。MACDデッドクロス。",
+      "technical_detail": "RSIは中立圏。MACDはデッドクロスのまま。現在値がBB下限に迫る。",
+      "news_impact": "特になし。",
+      "personal_action": "<span class=\"highlight-marker-red\">BB下限割れれば損切り検討</span>。後場BB下限を維持できるか注視。",
+      "comprehensive_analysis": "<ul><li>現在値が<span class=\"highlight-marker-red\">BB下限に接近</span>。</li><li>MACDはデッド継続、利益成長率<span class=\"highlight-marker-red\">マイナス</span>。</li><li>機関コンセンサス目標には<span class=\"highlight-marker-yellow\">乖離</span>あり。</li><li>リスクは<span class=\"highlight-marker-red\">下限割れ</span>。</li></ul>",
       "execution_manual": {
-        "scenario_a": [
-          "<span class='highlight-marker-red'>本日中に3,950円を割り込むか、終値で下回る場合</span>、即座に成行で全株売却。",
-          "BB下限割れ継続の場合、<span style='color: var(--color-negative); font-weight: 700;'>一段安のリスクが高い</span>。"
-        ],
-        "scenario_b": [
-          "<span class='highlight-marker-yellow'>場中に一時的な反発が見られても</span>、BB下限4,068.7円を明確に回復しない限り静観。",
-          "利益成長マイナスを考慮し、<span class='highlight-marker-red'>ナンピン買いは厳禁</span>。"
-        ],
-        "scenario_c": [
-          "<span class='highlight-marker-red'>損切り指値は3,950円に設定</span>。",
-          "<span class='highlight-marker-yellow'>利確指値は設定せず、まずは下落トレンドの終息を待つ</span>。"
-        ]
+        "scenario_a": "<ul><li>後場始値が<span class=\"highlight-marker-red\">BB下限4,010.0円を下回った場合</span>、速やかに<span class=\"highlight-marker-red\">成行売却</span>。</li></ul>",
+        "scenario_b": "<ul><li>後場に<span class=\"highlight-marker-yellow\">4,050円超えで推移</span>すれば、<span class=\"highlight-marker-yellow\">維持</span>。</li></ul>",
+        "scenario_c": "<ul><li>損切り指値は<span class=\"highlight-marker-red\">4,000円</span>。</li><li>利益確定指値は<span class=\"highlight-marker-yellow\">4,200円</span>。</li></ul>"
       },
       "valuation_rationale": {
-        "technical": "<span class='highlight-marker-red'>ネガティブ</span>：MACDデッド、BB下限割れ。",
-        "valuation": "<span class='highlight-marker-yellow'>ニュートラル</span>：PER/PBRは標準的。",
-        "macro_news": "<span class='highlight-marker-red'>ネガティブ</span>：特段の個別材料なし、市場全体悪化。"
+        "technical": "BB下限<span class=\"highlight-marker-red\">間近</span>。売り圧力。",
+        "valuation": "利益成長率が<span class=\"highlight-marker-red\">マイナス</span>で懸念。",
+        "macro_news": "特になし。影響軽微。"
       },
-      "valuation_commentary": "<ul><li><span class='highlight-marker-red'>利益成長率がマイナスである点は懸念材料</span>だが、バリュエーションは極端な割高感なし。</li><li>テクニカル指標は<span class='highlight-marker-red'>BB下限を割り込み、強い下落トレンドを示唆</span>。</li><li>機関コンセンサスは買い推奨だが、<span class='highlight-marker-red'>短期的な市場の売り圧力が先行</span>。</li></ul>",
+      "valuation_commentary": "利益成長率がマイナスである点が懸念材料。現在値はBB下限に肉薄しており、ここを割り込むとテクニカル面からの売り圧力が強まる可能性。機関コンセンサス目標にはまだ届かず。",
       "momentum_analysis_list": [
-        "出来高: 11百万株と<span class='highlight-marker-yellow'>やや高い水準</span>。市場全体の売り圧力が影響。",
-        "RSI: <span class='highlight-marker-yellow'>38.9と中立圏</span>。しかし、下落基調が継続している。",
-        "ボリバン幅: <span class='highlight-marker-red'>BB下限4,068.7円を割れており、オーバーシュート下落</span>。"
+        "出来高は<span class=\"highlight-marker-yellow\">やや増加</span>、買いは限定的か。",
+        "RSIは中立圏(36)で、<span class=\"highlight-marker-yellow\">方向感に欠ける</span>。",
+        "ボリンジャーバンドは<span class=\"highlight-marker-red\">下限に接近</span>、下落リスクを警戒。"
       ],
-      "broker_targets": [
-        {
-          "broker": "仮称証券C",
-          "target": 4327,
-          "rating": "買い",
-          "date": "2024/09/20"
-        }
-      ],
-      "broker_commentary": "<ul><li>機関コンセンサスは<span class='highlight-marker-green'>平均目標株価4,327.2円と現在の株価より上</span>。</li><li><span class='highlight-marker-yellow'>コンセンサス安値2,600円は下振れリスク</span>を示唆。</li><li>足元の業績と市場環境を考慮すると、<span class='highlight-marker-red'>目標達成には時間を要する</span>と見られる。</li></ul>",
-      "chart_analogy_commentary": "<ul><li>BB下限割れは、過去の<span class='highlight-marker-red'>短期的な強い下落局面で頻繁に見られるパターン</span>。</li><li>RSIが中立圏ながら下落基調継続は、<span class='highlight-marker-yellow'>買い意欲の弱さ</span>を示唆。</li><li>明確な反発シグナルが出るまで静観が賢明。</li></ul>",
-      "news_correlation_commentary": "<ul><li>個別ニュースはなし。<span class='highlight-marker-yellow'>市場全体のネガティブな動きに同調</span>。</li><li>電気機器セクター全体も軟調な動きであり、<span class='highlight-marker-red'>セクター内での個別反発は難しい</span>。</li><li>特に目立った材料が見当たらないため、市場の影響が大きくなる。</li></ul>",
+      "broker_targets": [],
+      "broker_commentary": "機関コンセンサスは買い推奨も、現在の株価は平均目標を下回る。下落リスクを鑑みるべき。",
+      "chart_analogy_commentary": "BB下限に何度も接近するパターンは<span class=\"highlight-marker-red\">サポートラインの弱体化</span>を示唆。",
+      "news_correlation_commentary": "直近ニュースなし。個別要素よりも市場全体の地合いに影響されやすい。",
       "risk_catalyst_profile": {
-        "earnings_date": "N/A",
-        "max_loss_var": "中",
+        "earnings_date": "未定",
+        "max_loss_var": "推計不能",
         "beta": "0.852",
-        "target_timeline": "中長期"
+        "target_timeline": "短期"
       },
-      "sma5": 4224.2,
-      "sma25": 4372.8,
-      "sma75": 3629.7,
-      "dev25": -8.69,
+      "sma5": 4146.4,
+      "sma25": 4373.6,
+      "sma75": 3648.9,
+      "dev25": -7.86,
       "price_trend": [
+        4030.0,
         3993.0,
-        4218.0,
-        4224.2,
-        4372.8,
-        3629.67
+        4146.4,
+        4373.6,
+        3648.93
       ],
       "volume_trend": [
+        563,
         1169,
-        912,
-        1047,
-        1364,
-        1188
+        971,
+        1339,
+        1179
       ],
       "value_trend": [
+        2267520,
         4667498,
-        3846015,
-        4408628,
-        5987745,
-        4432783
+        4026702,
+        5890552,
+        4421339
       ],
       "rsi_trend": [
+        36.41,
         38.94,
-        40.69,
-        43.69,
-        60.78,
-        63.68
+        39.85,
+        59.77,
+        63.4
       ],
       "bb_width_trend": [
+        17.61,
         15.7,
-        12.8,
-        13.54,
-        24.77,
-        21.59
+        14.28,
+        24.6,
+        21.64
       ],
       "margin_ratio": 3.0,
       "margin_buy_man": 50.0
     }
   ],
   "history": [
+    {
+      "date": "2026-07-21",
+      "timing": "朝",
+      "ts": "2026-07-21 08:01",
+      "alerts": "🚨 日経225大幅下落、市場は強い売り圧力 / 🚨 KIOXIA HOLDINGS、本日大幅な下落とBB下限割れ / 🚨 全保有銘柄が大幅下落、厳重なリスク管理が必要",
+      "weather": "",
+      "benchmark": "",
+      "strategy": ""
+    },
     {
       "date": "2026-07-20",
       "timing": "夜",
@@ -424,32 +385,22 @@
       "weather": "",
       "benchmark": "",
       "strategy": ""
-    },
-    {
-      "date": "2026-07-14",
-      "timing": "昼",
-      "ts": "2026-07-14 12:02",
-      "alerts": "🚨 KIOXIA HOLDINGS CORPORATION: ボリンジャーバンド下限接近、前場予測に基づき売却検討。 / 🚨 Panasonic Holdings Corporation: ボリンジャーバンド下限に極めて接近、損切り準備。 / 🚨 Fujikura Ltd.: RSI売られすぎ圏、BB下限接近、下落警戒継続。",
-      "weather": "",
-      "benchmark": "",
-      "strategy": ""
     }
   ],
   "ai_report": {
-    "title": "朝のポートフォリオ投資戦略",
+    "title": "昼のポートフォリオ投資戦略",
     "alerts": [
-      "🚨 日経225大幅下落、市場は強い売り圧力",
-      "🚨 KIOXIA HOLDINGS、本日大幅な下落とBB下限割れ",
-      "🚨 全保有銘柄が大幅下落、厳重なリスク管理が必要"
+      "🚨 Panasonic BB下限接近",
+      "💡 KIOXIA 大幅反発"
     ],
     "weather": "",
     "benchmark": "",
-    "market_summary": "米国市場は小幅安、SOX指数はプラス圏。しかし日経225は前日比<span style='color: var(--color-negative); font-weight: 700;'>-4.03%と大幅下落</span>。日本市場は<span class='highlight-marker-red'>強い売り圧力が予想</span>され、リスク回避の動きが鮮明。半導体関連の米国での底堅さとは対照的に、国内センチメントは極めて悪い。",
-    "tomorrow_outlook": "今晩の米国市場の動きが注目されるが、日本市場は<span class='highlight-marker-yellow'>調整局面が続く可能性が高い</span>。主要指数が心理的節目を割り込むと、更なる下押し圧力に注意が必要。特に経済指標発表や地政学リスクには警戒を。",
-    "analysis_market": "日経225の大幅下落は、市場全体のセンチメント悪化を示唆。米国市場の動きと乖離が生じており、<span class='highlight-marker-red'>国内固有のリスク回避の動き</span>が強い。特にテクノロジー株を中心に警戒感が高まっており、<span class='highlight-marker-red'>全面安の展開が懸念</span>される。",
-    "analysis_technical": "保有全銘柄でMACDデッドクロス継続、RSI売られすぎ、BB下限割れが散見されるなど、<span style='color: var(--color-negative); font-weight: 700;'>極めて悪いテクニカルシグナルが多数点灯</span>。市場全体も大幅下落しており、<span class='highlight-marker-red'>短期的なリバウンドは期待しにくい</span>状況。",
-    "analysis_portfolio": "<ul><li><span class='highlight-marker-red'>全銘柄で本日大幅下落</span>。ポートフォリオ全体で<span style='color: var(--color-negative); font-weight: 700;'>強い下押し圧力</span>を受けている。</li><li><span class='highlight-marker-red'>ナンピン買いは全面禁止</span>。現状ではリスクを増やす行為に他ならない。</li><li>損切りラインを厳格に設定し、<span style='color: var(--color-negative); font-weight: 700;'>損失拡大を防ぐことを最優先</span>とする。</li></ul>",
-    "strategy_short": "<ul><li><span class='highlight-marker-red'>本日寄り付き後は、損切りラインに到達した銘柄は躊躇なく売却</span>。</li><li>市場全体の地合いが非常に悪いため、<span style='color: var(--color-negative); font-weight: 700;'>短期的な反発を期待しない</span>。</li><li>新規購入および<span class='highlight-marker-red'>ナンピン買いは厳禁</span>。手元資金の温存を最優先。</li></ul>",
-    "strategy_mid": "<ul><li>市場の底打ちサイン（日経平均の反発、出来高減少と株価反転など）が確認されるまで<span class='highlight-marker-yellow'>ポートフォリオを現金比率高く維持</span>。</li><li>個別の好材料や業績改善が見られる銘柄に対し、<span class='highlight-marker-green'>中期的な視点で慎重に買い付けを検討</span>する。</li><li>バリュエーションが過度に調整された銘柄を注視。</li></ul>"
+    "market_summary": "前場の日経225は+1.74%と大幅反発し、地合いは一時的ながら改善傾向。SOX指数も上昇。米国市場は小幅安。為替の急変動はデータ無し。KIOXIAが大幅高、個別銘柄ではポジティブな動きが目立つ。",
+    "tomorrow_outlook": "日経の反発が継続すれば短期的な底打ち期待も。ただし、利益確定売りや米国市場の動向には注意が必要。個別銘柄の資金流入は注視。",
+    "analysis_market": "日経225は前場大幅反発し、地合いは一時的ながら改善。半導体セクターはSOX指数上昇に連動。ただし、米国市場の動向には引き続き注意。為替の急変動は不明だが円安方向が好影響か。",
+    "analysis_technical": "KIOXIAは売られすぎからの力強い反発。富士通はBB下限維持し反発もテクニカル弱。PanasonicはBB下限に極めて接近し警戒が必要。全体的に地合い改善で売り圧力が緩和された。",
+    "analysis_portfolio": "<ul><li>KIOXIAの大幅反発は<span style=\"color: var(--color-positive); font-weight: 700;\">ポートフォリオ全体の押し上げ要因</span>。</li><li>富士通も反発したが、Panasonicは依然として<span class=\"highlight-marker-red\">BB下限割れリスク</span>がある。</li><li>朝の「短期的な反発を期待しない」との予測は<span class=\"highlight-marker-red\">修正が必要</span>。</li><li>「損切りライン到達銘柄は躊躇なく売却」の方針は維持し、特に<span class=\"highlight-marker-red\">Panasonicに注視</span>。</li></ul>",
+    "strategy_short": "<ul><li><span class=\"highlight-marker-red\">Panasonic(6752)</span>: 後場始値がBB下限<span class=\"highlight-marker-red\">4,010円を下回る場合</span>、速やかに<span class=\"highlight-marker-red\">損切りを実行</span>。</li><li><span style=\"color: var(--color-positive); font-weight: 700;\">KIOXIA(285A)</span>: 大幅反発を享受し<span class=\"highlight-marker-green\">保有継続</span>。短期的な利確目標を設定することも検討。</li><li><span class=\"highlight-marker-yellow\">Fujikura(5803)</span>: BB下限維持できれば<span class=\"highlight-marker-yellow\">引き続き保有</span>。4,600円超えを維持できるか注視。</li></ul>",
+    "strategy_mid": "<ul><li>日経225の地合い改善が本物か見極めつつ、<span class=\"highlight-marker-yellow\">慎重なスタンス</span>を維持。</li><li>手元資金は温存し、新たなポジションは<span class=\"highlight-marker-red\">当面見送り</span>。</li><li>回復基調にある銘柄は、<span class=\"highlight-marker-green\">トレンド転換を確認してから</span>徐々にポートフォリオのリバランスを検討。</li></ul>"
   }
 }
