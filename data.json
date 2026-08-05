@@ -1,11 +1,11 @@
 {
-  "updated_at": "2026-08-05T08:01:44.983782+09:00",
+  "updated_at": "2026-08-05T12:01:33.757628+09:00",
   "today": "2026-08-05",
   "github_pages_url": "https://konocturne.github.io/stock",
   "portfolio": {
     "total_cost": 0.0,
-    "total_eval": 3610187556.0,
-    "total_pnl": 3610187556.0,
+    "total_eval": 3790911572.0,
+    "total_pnl": 3790911572.0,
     "total_pnl_pct": 0.0
   },
   "stocks": [
@@ -14,99 +14,92 @@
       "name": "140",
       "quantity": 5182,
       "avg_cost": 0.0,
-      "current_price": 4628.0,
-      "change_pct_str": "+7.88%",
-      "change_str": "+338円",
-      "per": "15.3倍",
-      "pbr": "13.67倍",
+      "current_price": 4996.0,
+      "change_pct_str": "+7.95%",
+      "change_str": "+368円",
+      "per": "16.5倍",
+      "pbr": "14.76倍",
       "div_yield": "89.00%",
       "sector": "Industrials",
-      "pnl": 23982296.0,
+      "pnl": 25889272.0,
       "pnl_pct": null,
-      "eval_total": 23982296.0,
+      "eval_total": 25889272.0,
       "cost_total": 0.0,
-      "sentiment": "ニュートラル",
-      "sentiment_reason": "<span style=\"color: var(--color-positive); font-weight: 700;\">本日大幅高</span>だが、MACDデッドクロス、SMA50大幅下回りなど<span style=\"color: var(--color-negative); font-weight: 700;\">テクニカルの弱さ</span>が残るため。",
+      "sentiment": "ポジティブ",
+      "sentiment_reason": "前場に大幅高を記録し、MACDはゴールデンクロスを維持。RSIは中立圏ながら上昇基調。",
       "analyst_rating": "維持 (HOLD)",
       "consensus_target": 7174.5,
-      "target_divergence_comment": "現在値は機関コンセンサス平均目標7,174.5円を<span class=\"highlight-marker-yellow\">大きく下回ります</span>が、コンセンサス安値4,500円には<span class=\"highlight-marker-yellow\">接近</span>しています。",
+      "target_divergence_comment": "現在の株価は平均目標から約30%乖離しており、上昇余地は大きいと見られます。",
       "stop_loss_guide": 4500,
-      "risk_comment": "ベータ値0.728と市場連動性はやや低いものの、<span class=\"highlight-marker-red\">MACDデッドクロス</span>と<span class=\"highlight-marker-red\">SMA50大幅下回り</span>は短期的な下落リスクを示唆しています。",
-      "technical_detail": "RSIは中立圏ですが、MACDは<span class=\"highlight-marker-red\">デッドクロス継続</span>。株価はボリンジャーバンド圏内にありますが、<span class=\"highlight-marker-red\">SMA50を大幅に下回って推移</span>しており、上値は重いと判断されます。",
-      "news_impact": "直近の目立ったニュースはありません。",
-      "personal_action": "本日の<span style=\"color: var(--color-positive); font-weight: 700;\">大幅高は短期的な利確の好機</span>と捉え、機関コンセンサス安値4,500円を<span class=\"highlight-marker-red\">損切りラインとして設定</span>し、上値での一部利確を検討してください。ナンピン買いは厳禁とします。",
-      "comprehensive_analysis": "<ul><li><span style=\"color: var(--color-positive); font-weight: 700;\">高い成長性</span>と<span class=\"highlight-marker-green\">機関の買い推奨</span>はポジティブ。</li><li>テクニカル指標は<span style=\"color: var(--color-negative); font-weight: 700;\">弱気を示唆</span>しており、注意が必要。</li><li>本日の上昇は<span class=\"highlight-marker-yellow\">短期的な過熱感</span>の可能性も考慮。</li></ul>",
+      "risk_comment": "PBRが高水準。機関コンセンサス安値4,500円を意識した動きが必要です。",
+      "technical_detail": "RSI47.7で中立圏。MACDはゴールデンクロスを維持し、上昇トレンドを示唆。BBは圏内で過熱感は低い。",
+      "news_impact": "特筆すべきニュースは確認されず、市場全体の地合いと内部要因による上昇と判断。",
+      "personal_action": "<span class=\"highlight-marker-red\">前場高値を利確の機会</span>と捉えつつ、<span class=\"highlight-marker-yellow\">機関コンセンサス安値4,500円割れは損切り</span>の準備。",
+      "comprehensive_analysis": "<ul><li><span class=\"highlight-marker-green\">前場大幅高で堅調を維持</span>。</li><li>MACDゴールデンクロス継続でテクニカルは良好。</li><li>PBR高水準に注意し、<span class=\"highlight-marker-yellow\">短期的な利益確定を検討</span>。</li></ul>",
       "execution_manual": {
-        "scenario_a": "<ul><li><span class=\"highlight-marker-red\">終値が4,500円を下回った場合</span>: <span style=\"color: var(--color-negative); font-weight: 700;\">全株損切り</span>を検討してください。</li><li>理由: 機関コンセンサス安値の信頼性。</li></ul>",
-        "scenario_b": "<ul><li><span class=\"highlight-marker-green\">場中に高値を更新し続けた場合</span>: <span class=\"highlight-marker-yellow\">一部利確の指値</span>を検討。</li><li>理由: テクニカルの弱さから、反発は一時的と判断。</li></ul>",
-        "scenario_c": "<ul><li><span class=\"highlight-marker-red\">損切り指値</span>: 4,500円（機関コンセンサス安値）。</li><li><span class=\"highlight-marker-green\">利確指値</span>: 本日の高値付近（短期的な急騰を考慮）。</li><li><span class=\"highlight-marker-red\">追加購入</span>: <span style=\"color: var(--color-negative); font-weight: 700;\">推奨しません</span>。</li></ul>"
+        "scenario_a": "<ul><li><span class=\"highlight-marker-red\">4,500円を割れた場合</span>: 成行で全株損切り注文準備。</li><li>終値で4,500円を下回る場合も同様。</li></ul>",
+        "scenario_b": "<ul><li><span class=\"highlight-marker-green\">前場高値を更新し続伸の場合</span>: 一部利益確定を検討。</li><li>後場の出来高を注視し、更なる上昇期待も。</li></ul>",
+        "scenario_c": "<ul><li><span class=\"highlight-marker-yellow\">指値設定</span>: 現在値近辺で買い指値はせず。</li><li>4,500円での損切り指値を準備。</li></ul>"
       },
       "valuation_rationale": {
-        "technical": "弱気: デッドクロス、SMA50下回り。",
-        "valuation": "割高: PBR13.67倍は同業比高水準。",
-        "macro_news": "中立: 特に材料なし、市場は好転。"
+        "technical": "上昇トレンドでポジティブ",
+        "valuation": "PBR高く中立",
+        "macro_news": "影響なし中立"
       },
-      "valuation_commentary": "<ul><li>PER15.3倍、PBR13.67倍と、PBRは<span class=\"highlight-marker-yellow\">割高感</span>があります。</li><li>売上・利益成長率は<span style=\"color: var(--color-positive); font-weight: 700;\">非常に良好</span>でファンダメンタルズは強い。</li><li>しかし、MACDデッドクロスやSMA50を大幅に下回るなど、<span style=\"color: var(--color-negative); font-weight: 700;\">テクニカル指標は弱く</span>、短期的な株価上昇の持続性には疑問符が残ります。</li></ul>",
+      "valuation_commentary": "PER・PBRは高水準ですが、高成長率が評価されている可能性があります。テクニカル面ではMACDゴールデンクロスを維持しており、上昇モメンタムは継続しています。しかし、急騰後の反動には警戒が必要です。中長期的なファンダメンタルは強いものの、短期的な過熱感には注意が必要です。",
       "momentum_analysis_list": [
-        "出来高は<span class=\"highlight-marker-green\">5,400万株超と活況</span>。本日の急騰に<span style=\"color: var(--color-positive); font-weight: 700;\">強い買い圧力</span>が確認できます。",
-        "RSIは47.3で<span class=\"highlight-marker-yellow\">中立圏</span>。しかし、下落トレンド中の反発であるため、今後の推移に注意が必要です。",
-        "ボリンジャーバンドは<span class=\"highlight-marker-yellow\">標準的な幅</span>で推移中。株価はBB下限から反発していますが、<span class=\"highlight-marker-red\">中心線以下で推移</span>しています。"
+        "出来高は<span class=\"highlight-marker-green\">前場も非常に活発</span>で、買い意欲の強さを示唆。",
+        "RSIは47.7と<span class=\"highlight-marker-yellow\">中立圏</span>に留まり、過熱感は限定的。",
+        "ボリンジャーバンドは<span class=\"highlight-marker-green\">上限付近で推移</span>、バンド幅も拡大傾向。"
       ],
-      "broker_targets": [
-        {
-          "broker": "機関コンセンサス",
-          "target": 7174.5,
-          "rating": "買い",
-          "date": "直近"
-        }
-      ],
-      "broker_commentary": "<ul><li>アナリスト11名による平均目標株価は7,174.5円で、現在の株価から<span style=\"color: var(--color-positive); font-weight: 700;\">大幅な上昇余地</span>があります。</li><li>推奨スコア1.54545は<span class=\"highlight-marker-green\">強い買い推奨</span>を示しています。</li><li>しかし、コンセンサス安値4,500円に<span class=\"highlight-marker-yellow\">接近しており</span>、下値リスクも意識されています。</li></ul>",
-      "chart_analogy_commentary": "<ul><li>過去のMACDデッドクロス後の反発局面では、多くの場合<span class=\"highlight-marker-red\">一時的なものに留まり</span>、再度下落するパターンが見られます。</li><li>今回の急騰も<span class=\"highlight-marker-yellow\">短期的な調整</span>である可能性を視野に入れるべきです。</li></ul>",
-      "news_correlation_commentary": "<ul><li>直近で特定の材料は見当たりませんが、市場全体の地合い改善が寄与していると考えられます。</li><li>同業他社の動向も注視し、今後のトレンドを判断する必要があります。</li></ul>",
+      "broker_targets": [],
+      "broker_commentary": "直近のブローカー目標株価は確認できませんが、機関コンセンサスは高い目標を提示しており、現在の株価はそれに大きく届いていません。しかし、短期的な急騰は調整を招く可能性もあります。",
+      "chart_analogy_commentary": "過去の急騰局面では、出来高を伴って上昇を続けましたが、一時的な調整を挟むパターンが見られます。RSIが50以下で上昇を継続している点はポジティブです。ただし、52週高値からまだ乖離があるため、更なる上値余地も。",
+      "news_correlation_commentary": "直近で特定の材料は見られませんが、市場全体のAI・半導体関連の期待感が背景にある可能性があります。競合銘柄の動向も全般的に堅調で、セクター全体での上昇トレンドに乗っていると見られます。",
       "risk_catalyst_profile": {
         "earnings_date": "不明",
-        "max_loss_var": "算出不可",
+        "max_loss_var": "機関コンセンサス安値4,500円を参考に",
         "beta": "0.728",
         "target_timeline": "短期"
       },
-      "sma5": 4114.0,
-      "sma25": 4801.0,
-      "sma75": 5262.3,
-      "dev25": -3.6,
+      "sma5": 4361.2,
+      "sma25": 4751.3,
+      "sma75": 5253.1,
+      "dev25": 5.15,
       "price_trend": [
+        4996.0,
         4628.0,
-        4290.0,
-        4114.0,
-        4800.96,
-        5262.27
+        4361.2,
+        4751.28,
+        5253.11
       ],
       "volume_trend": [
+        2879,
         5443,
-        3840,
-        5374,
-        4150,
-        5469
+        4871,
+        4080,
+        5431
       ],
       "value_trend": [
+        14384084,
         25190019,
-        16474115,
-        22126278,
-        19748494,
-        28993423
+        20947972,
+        19172298,
+        28749621
       ],
       "rsi_trend": [
+        47.71,
         47.34,
-        38.45,
-        36.23,
-        41.25,
-        49.46
+        39.36,
+        40.18,
+        49.23
       ],
       "bb_width_trend": [
+        36.45,
         36.79,
-        39.35,
-        39.38,
-        49.35,
-        50.89
+        38.79,
+        48.14,
+        50.72
       ],
       "margin_ratio": 3.0,
       "margin_buy_man": 50.0
@@ -116,99 +109,92 @@
       "name": "7",
       "quantity": 68486,
       "avg_cost": 0.0,
-      "current_price": 52090.0,
-      "change_pct_str": "+5.96%",
-      "change_str": "+2,930円",
-      "per": "48.8倍",
-      "pbr": "11.87倍",
+      "current_price": 54690.0,
+      "change_pct_str": "+4.99%",
+      "change_str": "+2,600円",
+      "per": "51.2倍",
+      "pbr": "12.47倍",
       "div_yield": "---",
       "sector": "Technology",
-      "pnl": 3567435740.0,
+      "pnl": 3745499340.0,
       "pnl_pct": null,
-      "eval_total": 3567435740.0,
+      "eval_total": 3745499340.0,
       "cost_total": 0.0,
-      "sentiment": "ニュートラル",
-      "sentiment_reason": "<span style=\"color: var(--color-positive); font-weight: 700;\">本日大幅高</span>だが、<span class=\"highlight-marker-red\">極めて高いバリュエーション</span>と<span style=\"color: var(--color-negative); font-weight: 700;\">テクニカルの弱さ</span>が共存するため。",
+      "sentiment": "ポジティブ",
+      "sentiment_reason": "前場は大幅高。ただし、MACDがデッドクロスしており、技術的な注意が必要。",
       "analyst_rating": "維持 (HOLD)",
       "consensus_target": 112993.8,
-      "target_divergence_comment": "現在値は機関コンセンサス平均目標112,993.8円を<span class=\"highlight-marker-yellow\">大幅に下回ります</span>が、コンセンサス安値40,000円よりは上に位置しています。",
+      "target_divergence_comment": "平均目標から約50%の乖離があり、長期的な上昇余地は非常に大きい。",
       "stop_loss_guide": 40000,
-      "risk_comment": "ベータ値は不明ですが、<span class=\"highlight-marker-red\">MACDデッドクロス</span>と<span class=\"highlight-marker-red\">高バリュエーション</span>は調整リスクを示唆します。半導体市況の変動もリスク要因です。",
-      "technical_detail": "RSIは中立圏ながら、MACDは<span class=\"highlight-marker-red\">デッドクロス継続</span>。株価はボリンジャーバンド圏内にありますが、<span=\"highlight-marker-red\">SMA50を大幅に下回っており</span>、上値抵抗が強い状況です。",
-      "news_impact": "直近の目立ったニュースはありません。",
-      "personal_action": "本日の<span style=\"color: var(--color-positive); font-weight: 700;\">大幅高は半導体セクター全体の恩恵</span>と捉え、機関コンセンサス安値40,000円を<span class=\"highlight-marker-red\">損切りラインとして設定</span>し、高いバリュエーションを考慮した利確を検討してください。ナンピン買いは厳禁とします。",
-      "comprehensive_analysis": "<ul><li><span style=\"color: var(--color-positive); font-weight: 700;\">驚異的な成長率</span>はポジティブ。</li><li>PER、PBRは<span style=\"color: var(--color-negative); font-weight: 700;\">極めて高い水準</span>で、高バリュエーションが懸念。</li><li>テクニカルは<span style=\"color: var(--color-negative); font-weight: 700;\">弱気を示唆</span>しており、短期的な調整に注意。</li></ul>",
+      "risk_comment": "MACDデッドクロス継続は弱気シグナル。配当なし。ボラティリティが高い銘柄です。",
+      "technical_detail": "RSI37.8とやや弱気圏。MACDはデッドクロスを継続しており、下降トレンドに注意。SMA50を大幅に下回っています。",
+      "news_impact": "特段のニュースなし。半導体市場のセンチメント改善が背景と推測。",
+      "personal_action": "<span class=\"highlight-marker-red\">MACDデッドクロスによる短期調整に注意</span>しつつ、<span class=\"highlight-marker-yellow\">機関コンセンサス安値40,000円割れは損切り</span>を検討。",
+      "comprehensive_analysis": "<ul><li><span class=\"highlight-marker-green\">前場堅調に推移</span>も、MACDデッドクロスは<span style=\"color: var(--color-negative); font-weight: 700;\">短期的な懸念材料</span>。</li><li>機関コンセンサス安値40,000円を意識。</li><li>高成長銘柄として長期的な視点も持つ。</li></ul>",
       "execution_manual": {
-        "scenario_a": "<ul><li><span class=\"highlight-marker-red\">終値が40,000円を下回った場合</span>: <span style=\"color: var(--color-negative); font-weight: 700;\">全株損切り</span>を検討してください。</li><li>理由: 機関コンセンサス安値の信頼性。</li></ul>",
-        "scenario_b": "<ul><li><span class=\"highlight-marker-green\">場中に高値を更新し続けた場合</span>: <span class=\"highlight-marker-yellow\">一部利確の指値</span>を検討。</li><li>理由: テクニカルの弱さと高バリュエーションを考慮。</li></ul>",
-        "scenario_c": "<ul><li><span class=\"highlight-marker-red\">損切り指値</span>: 40,000円（機関コンセンサス安値）。</li><li><span class=\"highlight-marker-green\">利確指値</span>: 本日の高値付近（短期的な急騰を考慮）。</li><li><span class=\"highlight-marker-red\">追加購入</span>: <span style=\"color: var(--color-negative); font-weight: 700;\">推奨しません</span>。</li></ul>"
+        "scenario_a": "<ul><li><span class=\"highlight-marker-red\">40,000円を割れた場合</span>: 成行で全株損切り注文準備。</li><li>終値で40,000円を下回る場合も同様。</li></ul>",
+        "scenario_b": "<ul><li><span class=\"highlight-marker-green\">前場高値を更新し続伸の場合</span>: MACDデッドクロスを考慮し、一部利益確定を検討。</li><li>トレンド転換点を見極める。</li></ul>",
+        "scenario_c": "<ul><li><span class=\"highlight-marker-yellow\">指値設定</span>: 現在値近辺で買い指値はせず。</li><li>40,000円での損切り指値を準備。</li></ul>"
       },
       "valuation_rationale": {
-        "technical": "弱気: デッドクロス、SMA50下回り。",
-        "valuation": "割高: PER48.8倍、PBR11.87倍は極めて高い。",
-        "macro_news": "ポジティブ: 半導体市況回復期待、SOX指数急伸。"
+        "technical": "デッドクロスでややネガティブ",
+        "valuation": "高成長で中立",
+        "macro_news": "影響なし中立"
       },
-      "valuation_commentary": "<ul><li>PER48.8倍、PBR11.87倍は<span class=\"highlight-marker-red\">極めて高いバリュエーション</span>であり、織り込まれた成長期待が大きいことを示唆します。</li><li>売上・利益成長率は<span style=\"color: var(--color-positive); font-weight: 700;\">圧倒的に高く</span>、ファンダメンタルズの魅力は絶大です。</li><li>しかし、MACDデッドクロスやSMA50を大幅に下回るなど、<span style=\"color: var(--color-negative); font-weight: 700;\">テクニカルは弱く</span>、急騰後の調整リスクに留意が必要です。</li></ul>",
+      "valuation_commentary": "PER・PBRは非常に高水準ですが、売上・利益成長率が極めて高く、成長期待が織り込まれています。テクニカル的にはMACDデッドクロスが継続しており、短期的な下落リスクに注意が必要です。しかし、機関コンセンサス目標株価は非常に高く、半導体市場の回復期待も支えとなります。ボラティリティが高い銘柄特性も考慮し、慎重な対応が必要です。",
       "momentum_analysis_list": [
-        "出来高は<span class=\"highlight-marker-green\">5,100万株超と非常に活況</span>。市場の関心が高く、<span style=\"color: var(--color-positive); font-weight: 700;\">強い買いが集中</span>しています。",
-        "RSIは38.9で<span class=\"highlight-marker-yellow\">中立圏下限</span>。過熱感はありませんが、反転の勢いはまだ強くありません。",
-        "ボリンジャーバンドは<span class=\"highlight-marker-yellow\">標準的な幅</span>。株価はBB下限から反発していますが、<span class=\"highlight-marker-red\">中心線を大きく下回っています</span>。"
+        "出来高は<span class=\"highlight-marker-green\">前場も非常に活発</span>で、上昇の勢いを感じる。",
+        "RSIは37.8と<span class=\"highlight-marker-yellow\">やや弱気圏</span>だが、回復傾向を示唆。",
+        "ボリンジャーバンドは<span class=\"highlight-marker-red\">BB下限に接近</span>、バンド幅は縮小傾向。"
       ],
-      "broker_targets": [
-        {
-          "broker": "機関コンセンサス",
-          "target": 112993.8,
-          "rating": "買い",
-          "date": "直近"
-        }
-      ],
-      "broker_commentary": "<ul><li>アナリスト16名による平均目標株価は112,993.8円で、現在の株価から<span style=\"color: var(--color-positive); font-weight: 700;\">大幅な上昇余地</span>があります。</li><li>推奨スコア1.5625は<span class=\"highlight-marker-green\">強い買い推奨</span>を示していますが、高値20万円と安値4万円の<span class=\"highlight-marker-yellow\">目標株価のレンジが広い</span>点に注意が必要です。</li></ul>",
-      "chart_analogy_commentary": "<ul><li>半導体関連株はSOX指数の影響を受けやすく、外部環境に左右される傾向があります。</li><li>過去の急騰後には<span class=\"highlight-marker-red\">調整が入るケース</span>が多いため、警戒が必要です。</li></ul>",
-      "news_correlation_commentary": "<ul><li>米国SOX指数の急騰が直接的な<span class=\"highlight-marker-green\">ポジティブ要因</span>です。</li><li>NAND型フラッシュメモリ市場の動向や価格回復が今後の株価を左右します。</li></ul>",
+      "broker_targets": [],
+      "broker_commentary": "ブローカー目標株価は非常に高い水準にありますが、これは長期的な成長期待を反映したものです。短期的な株価の変動には、技術的指標の悪化が影響を与える可能性があります。",
+      "chart_analogy_commentary": "過去のチャートでは、急騰後にMACDデッドクロスで一時調整するパターンが見られます。今回はSMA50を大幅に下回っており、レジスタンスラインとなる可能性も。半導体市場の動向が鍵を握ります。",
+      "news_correlation_commentary": "特段のニュースはありませんが、米国半導体指数（SOX）の大幅高はKIOXIAにとって追い風となります。競合他社の動向と連動しやすい特性があり、業界全体のセンチメントが株価に影響を与えます。",
       "risk_catalyst_profile": {
         "earnings_date": "不明",
-        "max_loss_var": "算出不可",
+        "max_loss_var": "機関コンセンサス安値40,000円を参考に",
         "beta": "None",
-        "target_timeline": "短期"
+        "target_timeline": "短期〜中期"
       },
-      "sma5": 45126.0,
-      "sma25": 64382.4,
-      "sma75": 63307.7,
-      "dev25": -19.09,
+      "sma5": 48388.0,
+      "sma25": 62982.8,
+      "sma75": 63604.8,
+      "dev25": -13.17,
       "price_trend": [
+        54690.0,
         52090.0,
-        49160.0,
-        45126.0,
-        64382.4,
-        63307.73
+        48388.0,
+        62982.8,
+        63604.8
       ],
       "volume_trend": [
+        2565,
         5181,
-        6947,
-        6005,
-        4749,
-        3951
+        4793,
+        4706,
+        3931
       ],
       "value_trend": [
+        140290241,
         269891312,
-        341494364,
-        261880738,
-        296094375,
-        250228061
+        223748101,
+        288650872,
+        250329003
       ],
       "rsi_trend": [
+        37.78,
         38.92,
-        38.17,
-        32.66,
-        36.4,
-        61.11
+        34.32,
+        35.45,
+        60.6
       ],
       "bb_width_trend": [
+        80.84,
         81.96,
-        85.29,
-        83.1,
-        62.7,
-        67.86
+        83.61,
+        63.82,
+        67.92
       ],
       "margin_ratio": 2.0,
       "margin_buy_man": 50.0
@@ -218,105 +204,107 @@
       "name": "20",
       "quantity": 4432,
       "avg_cost": 0.0,
-      "current_price": 4235.0,
-      "change_pct_str": "-1.07%",
-      "change_str": "-46円",
-      "per": "25.1倍",
-      "pbr": "1.83倍",
+      "current_price": 4405.0,
+      "change_pct_str": "+4.01%",
+      "change_str": "+170円",
+      "per": "26.1倍",
+      "pbr": "1.90倍",
       "div_yield": "126.00%",
       "sector": "Technology",
-      "pnl": 18769520.0,
+      "pnl": 19522960.0,
       "pnl_pct": null,
-      "eval_total": 18769520.0,
+      "eval_total": 19522960.0,
       "cost_total": 0.0,
-      "sentiment": "ニュートラル",
-      "sentiment_reason": "MACDゴールデンクロスは<span style=\"color: var(--color-positive); font-weight: 700;\">改善の兆候</span>だが、<span style=\"color: var(--color-negative); font-weight: 700;\">本日軟調</span>。",
-      "analyst_rating": "維持 (HOLD)",
+      "sentiment": "ポジティブ",
+      "sentiment_reason": "前場は堅調に上昇。MACDゴールデンクロスを維持し、テクニカルは良好。",
+      "analyst_rating": "買い増し (BUY)",
       "consensus_target": 4638.6,
-      "target_divergence_comment": "現在値は機関コンセンサス平均目標4,638.6円を<span class=\"highlight-marker-yellow\">やや下回る水準</span>です。",
-      "stop_loss_guide": 3524,
-      "risk_comment": "ベータ値0.844と市場連動性はやや低い。本日の軟調な動きは市場の地合いと乖離しており、<span class=\"highlight-marker-yellow\">個別の材料</span>に注意が必要です。",
-      "technical_detail": "RSIは中立圏。MACDは<span class=\"highlight-marker-green\">ゴールデンクロスを形成</span>しており、短期的な上昇トレンドへの転換を示唆します。株価はボリンジャーバンド圏内で推移しています。",
-      "news_impact": "直近の目立ったニュースはありません。",
-      "personal_action": "MACDゴールデンクロスは<span class=\"highlight-marker-green\">ポジティブなサイン</span>ですが、本日軟調なため、<span class=\"highlight-marker-yellow\">追加購入は一旦見送り</span>ます。ボリンジャーバンド下限3,524円を<span class=\"highlight-marker-red\">損切りラインとして設定</span>し、状況を静観してください。ナンピン買いは厳禁とします。",
-      "comprehensive_analysis": "<ul><li><span style=\"color: var(--color-positive); font-weight: 700;\">利益成長良好</span>でファンダメンタルズは堅調。</li><li>MACDゴールデンクロスは<span class=\"highlight-marker-green\">テクニカルの改善</span>を示唆。</li><li>本日軟調なため、<span class=\"highlight-marker-yellow\">エントリータイミングは慎重に判断</span>。</li></ul>",
+      "target_divergence_comment": "平均目標株価に比較的近く、さらなる上昇余地は限定的。",
+      "stop_loss_guide": 3523.7,
+      "risk_comment": "株価は高値圏にあり、急な調整には注意。BB下限割れは損切りを検討。",
+      "technical_detail": "RSI52.2で中立圏。MACDゴールデンクロスを維持。SMA50を大幅に上回っており、上昇トレンドが強い。",
+      "news_impact": "特段のニュースは確認されず、市場全体の地合いと内部要因による上昇。",
+      "personal_action": "<span class=\"highlight-marker-green\">前場の堅調な動きを評価</span>し、継続保有を推奨。<span class=\"highlight-marker-yellow\">BB下限3,523.7円割れは損切り</span>の準備。",
+      "comprehensive_analysis": "<ul><li><span class=\"highlight-marker-green\">前場は予測に反し堅調</span>。</li><li>MACDゴールデンクロス継続でテクニカルは良好。</li><li>BB下限3,523.7円を意識し、<span class=\"highlight-marker-green\">継続保有を検討</span>。</li></ul>",
       "execution_manual": {
-        "scenario_a": "<ul><li><span class=\"highlight-marker-red\">終値が3,524円を下回った場合</span>: <span style=\"color: var(--color-negative); font-weight: 700;\">全株損切り</span>を検討してください。</li><li>理由: BB下限割れは下落トレンド入りを示唆。</li></ul>",
-        "scenario_b": "<ul><li><span class=\"highlight-marker-green\">場中に反発し上昇した場</span>: <span class=\"highlight-marker-yellow\">再度下落しないか確認</span>し、慎重に追加購入を検討。</li><li>理由: MACDゴールデンクロスが継続すれば買いシグナル。</li></ul>",
-        "scenario_c": "<ul><li><span class=\"highlight-marker-red\">損切り指値</span>: 3,524円（ボリンジャーバンド下限）。</li><li><span class=\"highlight-marker-yellow\">利確指値</span>: 4,638.6円（機関コンセンサス平均目標）。</li><li><span class=\"highlight-marker-red\">追加購入</span>: <span style=\"color: var(--color-negative); font-weight: 700;\">本日は見送り</span>。</li></ul>"
+        "scenario_a": "<ul><li><span class=\"highlight-marker-red\">3,523.7円（BB下限）を割れた場合</span>: 成行で全株損切り注文準備。</li><li>終値で3,523.7円を下回る場合も同様。</li></ul>",
+        "scenario_b": "<ul><li><span class=\"highlight-marker-green\">前場高値を更新し続伸の場合</span>: 継続保有を推奨。</li><li>押し目での追加購入はナンピン禁止ルールに抵触するため見送り。</li></ul>",
+        "scenario_c": "<ul><li><span class=\"highlight-marker-yellow\">指値設定</span>: 現在値近辺で買い指値はせず。</li><li>3,523.7円での損切り指値を準備。</li></ul>"
       },
       "valuation_rationale": {
-        "technical": "強気: MACDゴールデンクロス、BB圏内。",
-        "valuation": "中立: PER25.1倍、PBR1.83倍は妥当水準。",
-        "macro_news": "中立: 特に材料なし、市場は好転。"
+        "technical": "上昇トレンドでポジティブ",
+        "valuation": "PER・PBRで中立",
+        "macro_news": "影響なし中立"
       },
-      "valuation_commentary": "<ul><li>PER25.1倍、PBR1.83倍は<span class=\"highlight-marker-yellow\">概ね妥当な水準</span>と判断できます。</li><li>売上成長率6.4%、利益成長率89.2%と<span style=\"color: var(--color-positive); font-weight: 700;\">利益成長が非常に良好</span>であり、ファンダメンタルズは堅調です。</li><li>MACDゴールデンクロスは<span style=\"color: var(--color-positive); font-weight: 700;\">上昇トレンドへの転換</span>を示唆しており、テクニカルは改善傾向にあります。</li></ul>",
+      "valuation_commentary": "PER・PBRは業種平均と比較して妥当な水準にあり、堅実なファンダメンタルズを評価できます。テクニカル面ではMACDゴールデンクロスを維持し、SMA50を大幅に上回るなど、強い上昇トレンドが継続しています。平均目標株価に接近しているため、ここからの上値は限定的かもしれませんが、安定した動きが期待されます。朝の予測に反して堅調だったため、保有継続が妥当です。",
       "momentum_analysis_list": [
-        "出来高は<span class=\"highlight-marker-yellow\">1,100万株超と標準的</span>。本日の軟調な動きの中、強い売り圧力は見られません。",
-        "RSIは51.6で<span class=\"highlight-marker-yellow\">中立圏</span>。MACDゴールデンクロスと合わせて、今後の上昇期待が高まります。",
-        "ボリンジャーバンドは<span class=\"highlight-marker-yellow\">標準的な幅</span>で推移。株価はBB中心線付近で動いており、<span class=\"highlight-marker-green\">上下どちらにも動きやすい状況</span>です。"
+        "出来高は<span class=\"highlight-marker-green\">前場も活発</span>で、買いが継続している。",
+        "RSIは52.2と<span class=\"highlight-marker-green\">中立よりやや強気</span>で、上昇余地を残す。",
+        "ボリンジャーバンドは<span class=\"highlight-marker-green\">上限付近で推移</span>、バンド幅も拡大傾向。"
       ],
-      "broker_targets": [
-        {
-          "broker": "機関コンセンサス",
-          "target": 4638.6,
-          "rating": "買い",
-          "date": "直近"
-        }
-      ],
-      "broker_commentary": "<ul><li>アナリスト15名による平均目標株価は4,638.6円で、現在の株価から<span style=\"color: var(--color-positive); font-weight: 700;\">上昇余地</span>があります。</li><li>推奨スコア1.8は<span class=\"highlight-marker-green\">買い推奨</span>を示しています。</li><li>しかし、コンセンサス安値2,600円は<span class=\"highlight-marker-yellow\">現在の株価から大きく乖離</span>しており、注意が必要です。</li></ul>",
-      "chart_analogy_commentary": "<ul><li>MACDゴールデンクロス後の株価は、多くの場合<span class=\"highlight-marker-green\">緩やかな上昇トレンド</span>を形成する傾向があります。</li><li>ただし、過去には騙しであるケースもあり、<span class=\"highlight-marker-yellow\">慎重な確認</span>が必要です。</li></ul>",
-      "news_correlation_commentary": "<ul><li>直近で特定の材料は見当たりませんが、EVバッテリー関連の動向や住宅設備市場の回復が株価に影響を与える可能性があります。</li><li>競合他社の動向も注視が必要です。</li></ul>",
+      "broker_targets": [],
+      "broker_commentary": "直近のブローカー目標株価は確認できませんが、機関コンセンサスは現在の株価と近い水準にあります。このため、ここから大幅な上値は期待しにくいですが、安定的な推移が見込まれます。",
+      "chart_analogy_commentary": "過去の高値更新局面では、RSIが70を超えることなく上昇を続ける傾向が見られます。今回は高値圏での推移ですが、MACDゴールデンクロスとRSI50台は更なる上昇を示唆しています。ただし、52週高値更新には注意が必要。",
+      "news_correlation_commentary": "特段のニュースはありませんが、EV関連や住宅設備関連の需要動向が影響を与える可能性があります。競合他社の動向も比較的安定しており、パナソニックHDもその恩恵を受けていると見られます。",
       "risk_catalyst_profile": {
         "earnings_date": "不明",
-        "max_loss_var": "算出不可",
+        "max_loss_var": "BB下限3,523.7円を参考に",
         "beta": "0.844",
-        "target_timeline": "短期"
+        "target_timeline": "中期"
       },
-      "sma5": 3978.2,
-      "sma25": 4205.4,
-      "sma75": 3796.0,
-      "dev25": 0.7,
+      "sma5": 4157.8,
+      "sma25": 4201.5,
+      "sma75": 3815.7,
+      "dev25": 4.84,
       "price_trend": [
+        4405.0,
         4235.0,
-        4281.0,
-        3978.2,
-        4205.4,
-        3796.01
+        4157.8,
+        4201.52,
+        3815.75
       ],
       "volume_trend": [
+        408,
         1120,
-        2047,
-        1255,
-        1177,
-        1213
+        1073,
+        1143,
+        1209
       ],
       "value_trend": [
+        1795698,
         4741760,
-        8763293,
-        4960700,
-        4978147,
-        4683461
+        4396910,
+        4822015,
+        4679169
       ],
       "rsi_trend": [
+        52.16,
         51.56,
-        46.85,
-        38.18,
-        45.77,
-        59.08
+        43.71,
+        44.9,
+        58.88
       ],
       "bb_width_trend": [
+        28.62,
         28.59,
-        29.98,
-        30.57,
-        23.73,
-        22.85
+        30.01,
+        23.63,
+        22.95
       ],
       "margin_ratio": 2.0,
       "margin_buy_man": 50.0
     }
   ],
   "history": [
+    {
+      "date": "2026-08-05",
+      "timing": "朝",
+      "ts": "2026-08-05 08:01",
+      "alerts": "🚨 5803 藤倉: MACDデッドクロス、SMA50下回り警戒 / 🚨 285A KIOXIA: MACDデッドクロス、高バリュエーションに注意 / 💡 6752 パナソニック: MACDゴールデンクロスで改善兆候",
+      "weather": "",
+      "benchmark": "",
+      "strategy": ""
+    },
     {
       "date": "2026-08-04",
       "timing": "昼",
@@ -397,32 +385,23 @@
       "weather": "",
       "benchmark": "",
       "strategy": ""
-    },
-    {
-      "date": "2026-07-29",
-      "timing": "昼",
-      "ts": "2026-07-29 12:02",
-      "alerts": "🚨 285A安値コンセンサス接近 / 🚨 5803アナリスト安値目標割れ / 🚨 SOX指数急落",
-      "weather": "",
-      "benchmark": "",
-      "strategy": ""
     }
   ],
   "ai_report": {
-    "title": "朝のポートフォリオ投資戦略",
+    "title": "昼のポートフォリオ投資戦略",
     "alerts": [
-      "🚨 5803 藤倉: MACDデッドクロス、SMA50下回り警戒",
-      "🚨 285A KIOXIA: MACDデッドクロス、高バリュエーションに注意",
-      "💡 6752 パナソニック: MACDゴールデンクロスで改善兆候"
+      "🚨 藤倉(5803): 機関コンセンサス安値に接近",
+      "💡 KIOXIA(285A): 前場大幅高もMACDデッドクロスに注意",
+      "📈 パナソニックHD(6752): 予測に反し前場堅調"
     ],
     "weather": "",
     "benchmark": "",
-    "market_summary": "米国市場は<span style=\"color: var(--color-positive); font-weight: 700;\">ハイテク株主導で大幅上昇</span>。特にSOX指数が+6.55%と急伸し、日本市場のテクノロジーセクターへの<span class=\"highlight-marker-green\">ポジティブな影響</span>が予想されます。本日の日本市場は米国市場の好調を引き継ぎ、<span class=\"highlight-marker-yellow\">買い先行で始まる見込み</span>です。",
-    "tomorrow_outlook": "米国市場のモメンタムが持続すれば、引き続き日本市場も堅調に推移するでしょう。ただし、過熱感への警戒も必要です。",
-    "analysis_market": "米国市場のハイテク株主導による大幅上昇、特にSOX指数の急伸は日本市場に<span style=\"color: var(--color-positive); font-weight: 700;\">強い追い風</span>となります。円安基調が維持されれば輸出関連企業に恩恵があり、全体的に<span class=\"highlight-marker-green\">ポジティブな地合い</span>でスタートする見込みです。ただし、日経平均先物データが取得できないため、寄り付き前の具体的な動きには警戒が必要です。",
-    "analysis_technical": "全体的にMACDデッドクロス継続中の銘柄が多い中、パナソニックHDは<span class=\"highlight-marker-green\">ゴールデンクロスを形成</span>し改善の兆しが見られます。藤倉とKIOXIAは本日急騰も、SMA50を大幅に下回るなど<span style=\"color: var(--color-negative); font-weight: 700;\">基調の弱さ</span>が残ります。RSIはどの銘柄も中立圏で、過熱感は低いと判断されます。",
-    "analysis_portfolio": "<ul><li><span class=\"highlight-marker-yellow\">ポートフォリオ全体</span>: 米国市場の好調により寄り付きは上昇の見込み。</li><li><span class=\"highlight-marker-red\">個別銘柄のリスク</span>: 藤倉とKIOXIAはテクニカルの弱さと高バリュエーションに注意し、本日の上昇は利確の機会と捉える。</li><li><span class=\"highlight-marker-green\">個別銘柄の機会</span>: パナソニックHDはテクニカル改善の兆しあり、今後の動向を注視。</li></ul>",
-    "strategy_short": "<ul><li><span class=\"highlight-marker-yellow\">藤倉(5803)・KIOXIA(285A)</span>: 本日の大幅高を利確の機会と捉え、機関コンセンサス安値を損切りラインとして設定し、<span class=\"highlight-marker-red\">短期的な上値での利益確定</span>を検討してください。</li><li><span class=\"highlight-marker-red\">パナソニックHD(6752)</span>: 本日軟調のため、<span class=\"highlight-marker-yellow\">追加購入は一旦見送り</span>。MACDゴールデンクロスを注視し、BB下限割れは損切り検討。</li><li><span style=\"color: var(--color-negative); font-weight: 700;\">ナンピン買いは全銘柄で禁止</span>とします。</li></ul>",
-    "strategy_mid": "<ul><li><span class=\"highlight-marker-yellow\">藤倉(5803)・KIOXIA(285A)</span>: 長期的な成長性は魅力的ですが、バリュエーションとテクニカルの調整を待ち、<span class=\"highlight-marker-red\">押し目買いのタイミングを慎重に見極めます</span>。</li><li><span class=\"highlight-marker-green\">パナソニックHD(6752)</span>: MACDゴールデンクロスが続くようなら、中期的な上昇トレンドへの転換を期待し、<span class=\"highlight-marker-green\">買い増しを検討</span>する余地があります。</li><li>市場全体の動向、特にハイテク・半導体セクターのトレンドを注視し、柔軟な戦略変更に備えます。</li></ul>"
+    "market_summary": "米国主要指数が軒並み上昇し、半導体関連のSOX指数は特に大幅高。この好調な地合いが日本市場にも波及し、前場は堅調に推移しました。個別銘柄の多くが上昇基調を維持しています。為替に特段の急変動は見られません。",
+    "tomorrow_outlook": "米株高を背景に、日本市場も底堅い展開が予想されます。ただし、一部銘柄では短期的な過熱感からの調整も視野に入れる必要があります。",
+    "analysis_market": "米国市場の強い地合いが日本市場全体を牽引。特に半導体関連銘柄に資金が流入しており、ポートフォリオ内の銘柄もその恩恵を受けています。為替の急変動はなく、市場全体はリスクオン傾向を維持しています。",
+    "analysis_technical": "ポートフォリオ全体としてMACDゴールデンクロス銘柄が多く、上昇トレンドが継続している銘柄が目立ちます。RSIも過熱感のない水準で推移しており、テクニカル面は比較的良好です。ただし、MACDデッドクロス中のKIOXIAには注意が必要です。",
+    "analysis_portfolio": "<ul><li>前場は<span class=\"highlight-marker-green\">全銘柄で堅調な推移</span>。</li><li>朝の予測と比較し、パナソニックHDは<span class=\"highlight-marker-green\">軟調予想に反して上昇</span>。</li><li>藤倉・KIOXIAは<span class=\"highlight-marker-red\">短期的な利確チャンスを継続注視</span>。</li><li>ナンピン買い禁止は<span style=\"color: var(--color-negative); font-weight: 700;\">厳守</span>。</li><li><span class=\"highlight-marker-yellow\">各銘柄の損切りラインを再確認</span>し、後場に備える。</li></ul>",
+    "strategy_short": "<ul><li>藤倉・KIOXIAは<span class=\"highlight-marker-red\">前場高値を利確の目安</span>とし、後場の寄り付き状況次第で一部利益確定を検討。</li><li>パナソニックHDは<span class=\"highlight-marker-green\">堅調なため継続保有</span>。</li><li>全銘柄で設定した<span class=\"highlight-marker-yellow\">損切りラインを厳守</span>し、下回る場合は躊躇なく執行。</li></ul>",
+    "strategy_mid": "<ul><li>米国市場の動向を注視し、半導体関連のトレンドが継続するか確認。</li><li>各銘柄のファンダメンタルズに変化がないか随時確認。</li><li>PBRが高水準の銘柄については、<span class=\"highlight-marker-yellow\">中長期的なポートフォリオバランスを再検討</span>。</li></ul>"
   }
 }
